@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang='de'>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helionis – Mein Profil</title>
+    <meta name="description" content="Dein persönliches mystisches Profil bei Helionis - verwalte deine Daten und Einstellungen.">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='assets/css/styles.css'>
+</head>
+<body>
+    <header>
+        <div class='brand'>
+            <img src='assets/images/logo.svg' alt="Helionis Logo" loading="lazy" width="40" height="40">
+            <span class='brand-name'>HELIONIS</span>
+        </div>
+        <nav>
+            <a href='index.html'>Home</a>
+            <a href='about.html'>Über uns</a>
+            <a href='shop.html'>Shop</a>
+            <a href='horoskop.html'>Horoskope</a>
+            <a href='news.html'>News</a>
+            <a href='profile.html' class='active'>Profil</a>
+            <button id="logout-btn" class="logout-button">Abmelden</button>
+        </nav>
+    </header>
+
+    <main class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <div class="avatar-circle">
+                    <svg id="zodiac-avatar" width="80" height="80" viewBox="0 0 100 100">
+                        <!-- Zodiac sprite will be loaded here -->
+                    </svg>
+                </div>
+                <div class="profile-info">
+                    <h1 id="profile-name">Lade Profil...</h1>
+                    <p id="profile-email"></p>
+                    <p id="profile-member-since"></p>
+                </div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#B87333">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-orders">0</h3>
+                        <p>Bestellungen</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#B87333">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="profile-level">Novize</h3>
+                        <p>Mystiker Level</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#B87333">
+                            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="energy-points">0</h3>
+                        <p>Energie Punkte</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-section">
+                <h2>Persönliche Daten</h2>
+                <form id="profile-form" class="profile-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="edit-displayName">Anzeigename</label>
+                            <input type="text" id="edit-displayName" name="displayName">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="edit-email">E-Mail</label>
+                            <input type="email" id="edit-email" name="email" readonly>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="edit-zodiacSign">Sternzeichen</label>
+                            <select id="edit-zodiacSign" name="zodiacSign">
+                                <option value="">Wähle dein Sternzeichen</option>
+                                <option value="aries">Widder</option>
+                                <option value="taurus">Stier</option>
+                                <option value="gemini">Zwillinge</option>
+                                <option value="cancer">Krebs</option>
+                                <option value="leo">Löwe</option>
+                                <option value="virgo">Jungfrau</option>
+                                <option value="libra">Waage</option>
+                                <option value="scorpio">Skorpion</option>
+                                <option value="sagittarius">Schütze</option>
+                                <option value="capricorn">Steinbock</option>
+                                <option value="aquarius">Wassermann</option>
+                                <option value="pisces">Fische</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="edit-birthDate">Geburtsdatum</label>
+                            <input type="date" id="edit-birthDate" name="birthDate">
+                        </div>
+                        
+                        <div class="input-group full-width">
+                            <label for="edit-bio">Über mich</label>
+                            <textarea id="edit-bio" name="bio" rows="3" placeholder="Erzähle uns etwas über deine spirituelle Reise..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="save-button">Änderungen speichern</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="profile-section">
+                <h2>Mystische Präferenzen</h2>
+                <div class="preferences-grid">
+                    <div class="preference-card">
+                        <h3>Lieblings-Kristalle</h3>
+                        <div class="preference-tags" id="favorite-crystals">
+                            <span class="tag">Amethyst</span>
+                            <span class="tag">Rosenquarz</span>
+                            <span class="tag">Bergkristall</span>
+                            <button class="add-tag">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-card">
+                        <h3>Interessensgebiete</h3>
+                        <div class="preference-tags" id="interests">
+                            <span class="tag">Astrologie</span>
+                            <span class="tag">Meditation</span>
+                            <span class="tag">Tarot</span>
+                            <button class="add-tag">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-card">
+                        <h3>Benachrichtigungen</h3>
+                        <div class="notification-settings">
+                            <label class="switch">
+                                <input type="checkbox" id="daily-horoscope" checked>
+                                <span class="slider"></span>
+                                Tägliches Horoskop
+                            </label>
+                            <label class="switch">
+                                <input type="checkbox" id="new-products" checked>
+                                <span class="slider"></span>
+                                Neue Produkte
+                            </label>
+                            <label class="switch">
+                                <input type="checkbox" id="moon-phases">
+                                <span class="slider"></span>
+                                Mondphasen
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2>Bestellhistorie</h2>
+                <div id="order-history" class="order-history">
+                    <div class="empty-state">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="#B87333" opacity="0.5">
+                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        <p>Noch keine Bestellungen</p>
+                        <a href="shop.html" class="cta-button">Zum Shop</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-brand">
+            <img src='assets/images/logo.svg' alt="Helionis Logo" loading="lazy" width="30" height="30">
+            <span>HELIONIS</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">IMPRESSUM</a>
+            <a href="#">DATENSCHUTZ</a>
+            <a href="#">AGB</a>
+        </div>
+        <div class="footer-social">
+            <a href="#" aria-label="E-Mail Kontakt">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#B87333">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+            </a>
+            <a href="#" aria-label="Telefon Kontakt">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#B87333">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase App (the core Firebase SDK) is always required
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+        
+        // Initialize Firebase (this should run first)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
+            authDomain: "helionis.firebaseapp.com",
+            projectId: "helionis",
+            storageBucket: "helionis.firebasestorage.app",
+            messagingSenderId: "112789846576",
+            appId: "1:112789846576:web:5a8049942a7c559ca98bf5",
+            measurementId: "G-8W0GMB0F73"
+        };
+        
+        window.firebaseApp = initializeApp(firebaseConfig);
+        window.firebaseAuth = getAuth();
+        window.firebaseDb = getFirestore();
+        window.firebaseAnalytics = getAnalytics();
+    </script>
+
+    <script type="module" src='assets/js/profile.js'></script>
+</body>
+</html>

@@ -40,6 +40,32 @@
         <p>© HELIONIS</p>
     </footer>
     
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase App (the core Firebase SDK) is always required
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+        
+        // Initialize Firebase (this should run first)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
+            authDomain: "helionis.firebaseapp.com",
+            projectId: "helionis",
+            storageBucket: "helionis.firebasestorage.app",
+            messagingSenderId: "112789846576",
+            appId: "1:112789846576:web:5a8049942a7c559ca98bf5",
+            measurementId: "G-8W0GMB0F73"
+        };
+        
+        window.firebaseApp = initializeApp(firebaseConfig);
+        window.firebaseAuth = getAuth();
+        window.firebaseDb = getFirestore();
+        window.firebaseAnalytics = getAnalytics();
+    </script>
+    
+    <script type="module" src='assets/js/navigation.js'></script>
     <script type="module" src='assets/js/main.js' defer></script>
 </body>
 </html>
