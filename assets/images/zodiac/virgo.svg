@@ -1,0 +1,77 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="virgoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#90EE90;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Jungfrau - Ähre und Perfektion -->
+  <g transform="translate(40,40)">
+    <!-- Ähre/Stängel -->
+    <line x1="0" y1="25" x2="0" y2="-15" 
+          stroke="#90EE90" 
+          stroke-width="3">
+      <animateTransform
+        attributeName="transform"
+        type="scale"
+        values="1;1.05;1"
+        dur="3s"
+        repeatCount="indefinite"/>
+    </line>
+    
+    <!-- Ähren-Körner -->
+    <g>
+      <ellipse cx="-3" cy="-12" rx="2" ry="4" fill="url(#virgoGrad)" opacity="0.9">
+        <animate attributeName="ry" values="4;5;4" dur="2s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="3" cy="-8" rx="2" ry="4" fill="url(#virgoGrad)" opacity="0.8">
+        <animate attributeName="ry" values="4;5;4" dur="2.2s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="-2" cy="-4" rx="2" ry="4" fill="url(#virgoGrad)" opacity="0.9">
+        <animate attributeName="ry" values="4;5;4" dur="2.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="2" cy="0" rx="2" ry="4" fill="url(#virgoGrad)" opacity="0.7">
+        <animate attributeName="ry" values="4;5;4" dur="2.8s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="-1" cy="4" rx="2" ry="4" fill="url(#virgoGrad)" opacity="0.8">
+        <animate attributeName="ry" values="4;5;4" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+    </g>
+    
+    <!-- Perfektion-Symbole (Geometrische Formen) -->
+    <polygon points="-20,-20 -15,-25 -10,-20" 
+             fill="none" 
+             stroke="#90EE90" 
+             stroke-width="1" 
+             opacity="0.6">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;360"
+        dur="6s"
+        repeatCount="indefinite"/>
+    </polygon>
+    
+    <polygon points="20,-20 25,-15 20,-10 15,-15" 
+             fill="none" 
+             stroke="#90EE90" 
+             stroke-width="1" 
+             opacity="0.6">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;-360"
+        dur="7s"
+        repeatCount="indefinite"/>
+    </polygon>
+    
+    <!-- Ordnung-Punkte -->
+    <circle cx="-15" cy="15" r="1.5" fill="#90EE90" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="15" cy="15" r="1.5" fill="#90EE90" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2.3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

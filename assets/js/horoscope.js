@@ -121,12 +121,12 @@ class HoroscopeManager {
 }
 
 // Global function to show zodiac selector (called from HTML)
-function showZodiacSelector() {
+window.showZodiacSelector = function() {
     document.querySelector('.zodiac-selector').style.display = 'block';
     document.querySelector('.daily-inspiration').style.display = 'block';
     document.getElementById('horoscopeDisplay').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+};
 
 // Initialize horoscope manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {

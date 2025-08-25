@@ -1,0 +1,82 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="scorpioGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8B0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Skorpion - Mystisch und transformativ -->
+  <g transform="translate(40,40)">
+    <!-- Skorpion Körper -->
+    <ellipse cx="0" cy="0" rx="12" ry="8" 
+             fill="url(#scorpioGrad)" 
+             stroke="#8B0000" 
+             stroke-width="2">
+      <animateTransform
+        attributeName="transform"
+        type="scale"
+        values="1;1.1;1"
+        dur="3s"
+        repeatCount="indefinite"/>
+    </ellipse>
+    
+    <!-- Stachel -->
+    <path d="M12,0 Q20,-5 25,-15 Q22,-18 18,-12 Q15,-5 12,0" 
+          fill="url(#scorpioGrad)" 
+          stroke="#8B0000" 
+          stroke-width="1">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;10;0;-10;0"
+        dur="2.5s"
+        repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Scheren -->
+    <path d="M-12,-5 Q-20,-10 -25,-5 Q-20,0 -15,0" 
+          fill="url(#scorpioGrad)" 
+          stroke="#8B0000" 
+          stroke-width="1">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;-15;0;15;0"
+        dur="3s"
+        repeatCount="indefinite"/>
+    </path>
+    
+    <path d="M-12,5 Q-20,10 -25,5 Q-20,0 -15,0" 
+          fill="url(#scorpioGrad)" 
+          stroke="#8B0000" 
+          stroke-width="1">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;15;0;-15;0"
+        dur="3s"
+        repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Mystische Energie -->
+    <circle cx="0" cy="-20" r="2" fill="#8B0000" opacity="0.8">
+      <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Transformation-Spirale -->
+    <path d="M5,-25 Q10,-30 15,-25 Q10,-20 5,-25" 
+          fill="none" 
+          stroke="#8B0000" 
+          stroke-width="1" 
+          opacity="0.6">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;360"
+        dur="4s"
+        repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

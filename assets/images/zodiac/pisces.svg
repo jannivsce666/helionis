@@ -1,0 +1,90 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="piscesGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#20B2AA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fische - Zwei Fische im Kreis -->
+  <g transform="translate(40,40)">
+    <!-- Oberer Fisch -->
+    <g transform="rotate(45)">
+      <ellipse cx="0" cy="-12" rx="8" ry="4" 
+               fill="url(#piscesGrad)" 
+               stroke="#D4AF37" 
+               stroke-width="1.5">
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          values="0,0;2,0;0,0"
+          dur="3s"
+          repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Schwanzflosse -->
+      <polygon points="-8,-12 -12,-10 -12,-14" 
+               fill="url(#piscesGrad)" 
+               stroke="#D4AF37" 
+               stroke-width="1">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0;10;0;-10;0"
+          dur="2s"
+          repeatCount="indefinite"/>
+      </polygon>
+    </g>
+    
+    <!-- Unterer Fisch -->
+    <g transform="rotate(225)">
+      <ellipse cx="0" cy="-12" rx="8" ry="4" 
+               fill="url(#piscesGrad)" 
+               stroke="#D4AF37" 
+               stroke-width="1.5">
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          values="0,0;-2,0;0,0"
+          dur="3s"
+          repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Schwanzflosse -->
+      <polygon points="-8,-12 -12,-10 -12,-14" 
+               fill="url(#piscesGrad)" 
+               stroke="#D4AF37" 
+               stroke-width="1">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0;-10;0;10;0"
+          dur="2s"
+          repeatCount="indefinite"/>
+      </polygon>
+    </g>
+    
+    <!-- Verbindungslinie -->
+    <circle cx="0" cy="0" r="15" 
+            fill="none" 
+            stroke="#20B2AA" 
+            stroke-width="2" 
+            opacity="0.5" 
+            stroke-dasharray="5,5">
+      <animate attributeName="stroke-dashoffset" values="0;10;0" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Wasser-Blasen -->
+    <circle cx="-20" cy="-5" r="2" fill="#20B2AA" opacity="0.7">
+      <animate attributeName="cy" values="-5;-15;-5" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="20" cy="5" r="1.5" fill="#20B2AA" opacity="0.6">
+      <animate attributeName="cy" values="5;15;5" dur="3.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0.9;0.6" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <circle cx="0" cy="-25" r="1" fill="#20B2AA" opacity="0.8">
+      <animate attributeName="cy" values="-25;-30;-25" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

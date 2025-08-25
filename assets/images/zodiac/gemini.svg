@@ -1,0 +1,65 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="geminiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Zwillinge - Zwei Figuren -->
+  <g transform="translate(40,40)">
+    <!-- Linke Figur -->
+    <g transform="translate(-10,0)">
+      <circle cx="0" cy="-15" r="8" 
+              fill="url(#geminiGrad)" 
+              stroke="#D4AF37" 
+              stroke-width="1.5">
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          values="0,0;2,0;0,0"
+          dur="2s"
+          repeatCount="indefinite"/>
+      </circle>
+      <rect x="-3" y="-5" width="6" height="15" 
+            fill="url(#geminiGrad)" 
+            stroke="#D4AF37" 
+            stroke-width="1"/>
+    </g>
+    
+    <!-- Rechte Figur -->
+    <g transform="translate(10,0)">
+      <circle cx="0" cy="-15" r="8" 
+              fill="url(#geminiGrad)" 
+              stroke="#D4AF37" 
+              stroke-width="1.5">
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          values="0,0;-2,0;0,0"
+          dur="2s"
+          repeatCount="indefinite"/>
+      </circle>
+      <rect x="-3" y="-5" width="6" height="15" 
+            fill="url(#geminiGrad)" 
+            stroke="#D4AF37" 
+            stroke-width="1"/>
+    </g>
+    
+    <!-- Verbindungslinien -->
+    <line x1="-10" y1="-15" x2="10" y2="-15" 
+          stroke="#D4AF37" 
+          stroke-width="2" 
+          opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.5s" repeatCount="indefinite"/>
+    </line>
+    
+    <!-- Kommunikations-Symbole -->
+    <circle cx="-15" cy="-25" r="2" fill="#87CEEB" opacity="0.6">
+      <animate attributeName="cy" values="-25;-30;-25" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="15" cy="-25" r="2" fill="#87CEEB" opacity="0.6">
+      <animate attributeName="cy" values="-25;-30;-25" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

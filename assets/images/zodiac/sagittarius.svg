@@ -1,0 +1,83 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sagittariusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6347;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Schütze - Pfeil und Bogen -->
+  <g transform="translate(40,40)">
+    <!-- Bogen -->
+    <path d="M-20,-15 Q-15,-25 -10,-15" 
+          fill="none" 
+          stroke="url(#sagittariusGrad)" 
+          stroke-width="3">
+      <animateTransform
+        attributeName="transform"
+        type="scale"
+        values="1;1.1;1"
+        dur="2s"
+        repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Pfeil -->
+    <line x1="-15" y1="-15" x2="20" y2="15" 
+          stroke="url(#sagittariusGrad)" 
+          stroke-width="2">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0;2,2;0,0"
+        dur="2.5s"
+        repeatCount="indefinite"/>
+    </line>
+    
+    <!-- Pfeilspitze -->
+    <polygon points="18,13 22,15 18,17" 
+             fill="url(#sagittariusGrad)" 
+             stroke="#D4AF37" 
+             stroke-width="1">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0,0;3,3;0,0"
+        dur="2.5s"
+        repeatCount="indefinite"/>
+    </polygon>
+    
+    <!-- Pfeilfedern -->
+    <polygon points="-15,-15 -18,-12 -18,-18" 
+             fill="url(#sagittariusGrad)" 
+             stroke="#D4AF37" 
+             stroke-width="1">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0;5;0;-5;0"
+        dur="3s"
+        repeatCount="indefinite"/>
+    </polygon>
+    
+    <!-- Abenteuer-Sterne -->
+    <polygon points="-25,10 -23,12 -25,14 -27,12" 
+             fill="#FF6347" 
+             opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.5s" repeatCount="indefinite"/>
+    </polygon>
+    
+    <polygon points="25,-10 27,-8 25,-6 23,-8" 
+             fill="#FF6347" 
+             opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.4;0.8" dur="1.8s" repeatCount="indefinite"/>
+    </polygon>
+    
+    <!-- Horizont-Linie -->
+    <line x1="-30" y1="20" x2="30" y2="20" 
+          stroke="#FF6347" 
+          stroke-width="1" 
+          opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.8;0.5" dur="4s" repeatCount="indefinite"/>
+    </line>
+  </g>
+</svg>
