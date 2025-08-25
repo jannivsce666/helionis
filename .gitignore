@@ -58,8 +58,8 @@ temp/
 *.backup
 *.bak
 
-# Video files (too large for git)
-videos/*.mp4
+# Large video files (keep small optimized videos)
+# videos/*.mp4 - commented out to allow small video files
 videos/*.mov
 videos/*.avi
 
