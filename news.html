@@ -28,6 +28,9 @@
             <a href='shop.html'>Shop</a>
             <a href='horoskop.html'>Horoskope</a>
             <a href='news.html' class='active'>News</a>
+            <a href='login.html' class='dynamic-auth-link' id='auth-nav-link'>
+                <span id='auth-nav-text'>Login</span>
+            </a>
         </nav>
     </header>
     
@@ -41,17 +44,19 @@
     </footer>
     
     <!-- Firebase SDK -->
+        <!-- Firebase SDK -->
     <script type="module">
         // Firebase App (the core Firebase SDK) is always required
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
         
         // Initialize Firebase (this should run first)
         const firebaseConfig = {
             apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
             authDomain: "helionis.firebaseapp.com",
+            databaseURL: "https://helionis-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "helionis",
             storageBucket: "helionis.firebasestorage.app",
             messagingSenderId: "112789846576",
@@ -61,11 +66,14 @@
         
         window.firebaseApp = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth();
-        window.firebaseDb = getFirestore();
+        window.firebaseDatabase = getDatabase();
         window.firebaseAnalytics = getAnalytics();
     </script>
-    
+
+    <script type="module" src='assets/js/google-auth.js'></script>
+    <script type="module" src='assets/js/dynamic-navigation.js'></script>
     <script type="module" src='assets/js/navigation.js'></script>
+    <script type="module" src='assets/js/shopping-cart.js'></script>
     <script type="module" src='assets/js/main.js' defer></script>
 </body>
 </html>

@@ -20,92 +20,137 @@
             <a href='shop.html'>Shop</a>
             <a href='horoskop.html'>Horoskope</a>
             <a href='news.html'>News</a>
-            <a href='login.html' class='active'>Login</a>
+            <a href='login.html' class='dynamic-auth-link active' id='auth-nav-link'>
+                <span id='auth-nav-text'>Login</span>
+            </a>
         </nav>
     </header>
 
-    <main class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="mystical-icon">
-                    <svg width="60" height="60" viewBox="0 0 100 100" class="login-sprite">
-                        <circle cx="50" cy="50" r="20" fill="none" stroke="#B87333" stroke-width="2" opacity="0.8">
-                            <animate attributeName="r" values="15;25;15" dur="3s" repeatCount="indefinite"/>
-                            <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        <path d="M30 50 L50 30 L70 50 L50 70 Z" fill="#B87333" opacity="0.6">
-                            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="8s" repeatCount="indefinite"/>
-                        </path>
-                        <circle cx="50" cy="50" r="5" fill="#EDE9E4"/>
-                    </svg>
+    <main>
+        <!-- Login Hero Section -->
+        <section class="login-hero">
+            <div class="login-container">
+                <div class="login-content">
+                    <div class="mystical-symbols">
+                        <div class="symbol symbol-1">⟐</div>
+                        <div class="symbol symbol-2">☾</div>
+                        <div class="symbol symbol-3">☽</div>
+                        <div class="symbol symbol-4">✧</div>
+                    </div>
+                    
+                    <h1 class="login-title">Willkommen zurück</h1>
+                    <p class="login-subtitle">Betrete das mystische Reich von Helionis</p>
+                    
+                    <!-- Animated Google Login Button -->
+                    <div class="google-login-container">
+                        <button id="google-login-btn" class="google-login-btn-animated">
+                            <div class="button-background"></div>
+                            <div class="google-sprite-container">
+                                <svg width="48" height="48" viewBox="0 0 120 120" class="google-icon-large">
+                                    <defs>
+                                        <style>
+                                            .google-g-main { 
+                                                animation: googlePulseMain 3s ease-in-out infinite;
+                                                transform-origin: center;
+                                            }
+                                            .google-colors-main {
+                                                animation: colorShiftMain 4s ease-in-out infinite;
+                                            }
+                                            @keyframes googlePulseMain {
+                                                0%, 100% { transform: scale(1) rotate(0deg); }
+                                                25% { transform: scale(1.05) rotate(2deg); }
+                                                50% { transform: scale(1.1) rotate(0deg); }
+                                                75% { transform: scale(1.05) rotate(-2deg); }
+                                            }
+                                            @keyframes colorShiftMain {
+                                                0% { fill: #4285f4; }
+                                                20% { fill: #ea4335; }
+                                                40% { fill: #fbbc05; }
+                                                60% { fill: #34a853; }
+                                                80% { fill: #B87333; }
+                                                100% { fill: #4285f4; }
+                                            }
+                                            .google-sparkle-main {
+                                                animation: sparkleMain 2s ease-in-out infinite;
+                                                opacity: 0;
+                                            }
+                                            @keyframes sparkleMain {
+                                                0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+                                                50% { opacity: 1; transform: scale(1) rotate(180deg); }
+                                            }
+                                            .mystical-ring {
+                                                animation: mysticalRotate 12s linear infinite;
+                                                opacity: 0.6;
+                                            }
+                                            @keyframes mysticalRotate {
+                                                from { transform: rotate(0deg); }
+                                                to { transform: rotate(360deg); }
+                                            }
+                                            .energy-pulse {
+                                                animation: energyPulse 2.5s ease-in-out infinite;
+                                                opacity: 0.4;
+                                            }
+                                            @keyframes energyPulse {
+                                                0%, 100% { opacity: 0.2; transform: scale(1); }
+                                                50% { opacity: 0.8; transform: scale(1.2); }
+                                            }
+                                        </style>
+                                    </defs>
+                                    
+                                    <!-- Energy Pulse Background -->
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#B87333" stroke-width="2" class="energy-pulse"/>
+                                    
+                                    <!-- Mystical Rotating Ring -->
+                                    <circle cx="60" cy="60" r="45" fill="none" stroke="#667eea" stroke-width="1" opacity="0.5" class="mystical-ring">
+                                        <animate attributeName="stroke-dasharray" values="0 283;141 142;0 283" dur="3s" repeatCount="indefinite"/>
+                                    </circle>
+                                    
+                                    <!-- Google G Shape -->
+                                    <g class="google-g-main">
+                                        <path d="M60 25 C80 25 95 40 95 60 L80 60 C80 47 72 37 60 37 C48 37 40 47 40 60 C40 73 48 83 60 83 C68 83 75 78 78 71 L88 71 C85 90 75 95 60 95 C40 95 25 80 25 60 C25 40 40 25 60 25 Z" class="google-colors-main"/>
+                                    </g>
+                                    
+                                    <!-- Animated Sparkles -->
+                                    <circle cx="30" cy="30" r="3" class="google-sparkle-main" style="animation-delay: 0s;">
+                                        <animate attributeName="fill" values="#4285f4;#ea4335;#fbbc05;#34a853;#B87333;#4285f4" dur="4s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="90" cy="35" r="2.5" class="google-sparkle-main" style="animation-delay: 0.8s;">
+                                        <animate attributeName="fill" values="#ea4335;#fbbc05;#34a853;#B87333;#4285f4;#ea4335" dur="4s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="35" cy="90" r="2.8" class="google-sparkle-main" style="animation-delay: 1.6s;">
+                                        <animate attributeName="fill" values="#fbbc05;#34a853;#B87333;#4285f4;#ea4335;#fbbc05" dur="4s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="85" cy="85" r="2.2" class="google-sparkle-main" style="animation-delay: 2.4s;">
+                                        <animate attributeName="fill" values="#34a853;#B87333;#4285f4;#ea4335;#fbbc05;#34a853" dur="4s" repeatCount="indefinite"/>
+                                    </circle>
+                                    
+                                    <!-- Additional Mystical Elements -->
+                                    <path d="M60,10 L65,20 L60,30 L55,20 Z" fill="#B87333" opacity="0.7" class="google-sparkle-main" style="animation-delay: 3.2s;"/>
+                                    <path d="M110,60 L100,65 L90,60 L100,55 Z" fill="#667eea" opacity="0.7" class="google-sparkle-main" style="animation-delay: 4s;"/>
+                                </svg>
+                            </div>
+                            <span class="login-text-animated">Mit Google anmelden</span>
+                            <div class="button-shine"></div>
+                        </button>
+                    </div>
+                    
+                    <div class="login-footer">
+                        <p>Neu hier? <span class="highlight">Die Anmeldung ist kostenlos!</span></p>
+                        <p class="mystical-text">Deine mystische Reise beginnt hier...</p>
+                    </div>
                 </div>
-                <h1 id="auth-title">Willkommen zurück</h1>
-                <p id="auth-subtitle">Melde dich in deinem mystischen Portal an</p>
             </div>
-
-            <form id="auth-form" class="auth-form">
-                <div class="input-group">
-                    <label for="email">E-Mail Adresse</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="password">Passwort</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-
-                <div id="signup-fields" class="signup-fields" style="display: none;">
-                    <div class="input-group">
-                        <label for="displayName">Anzeigename</label>
-                        <input type="text" id="displayName" name="displayName">
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="confirmPassword">Passwort bestätigen</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="zodiacSign">Dein Sternzeichen</label>
-                        <select id="zodiacSign" name="zodiacSign">
-                            <option value="">Wähle dein Sternzeichen</option>
-                            <option value="aries">Widder</option>
-                            <option value="taurus">Stier</option>
-                            <option value="gemini">Zwillinge</option>
-                            <option value="cancer">Krebs</option>
-                            <option value="leo">Löwe</option>
-                            <option value="virgo">Jungfrau</option>
-                            <option value="libra">Waage</option>
-                            <option value="scorpio">Skorpion</option>
-                            <option value="sagittarius">Schütze</option>
-                            <option value="capricorn">Steinbock</option>
-                            <option value="aquarius">Wassermann</option>
-                            <option value="pisces">Fische</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="auth-actions">
-                    <button type="submit" id="auth-submit" class="auth-button primary">
-                        Anmelden
-                    </button>
-                    
-                    <button type="button" id="forgot-password" class="auth-button secondary">
-                        Passwort vergessen?
-                    </button>
-                </div>
-
-                <div class="auth-switch">
-                    <span id="switch-text">Noch kein Konto?</span>
-                    <button type="button" id="auth-toggle" class="link-button">
-                        Registrieren
-                    </button>
-                </div>
-
-                <div id="auth-error" class="error-message" style="display: none;"></div>
-                <div id="auth-success" class="success-message" style="display: none;"></div>
-            </form>
-        </div>
+            
+            <!-- Floating Mystical Particles -->
+            <div class="mystical-particles">
+                <div class="particle particle-1"></div>
+                <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div>
+                <div class="particle particle-4"></div>
+                <div class="particle particle-5"></div>
+                <div class="particle particle-6"></div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -137,13 +182,14 @@
         // Firebase App (the core Firebase SDK) is always required
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
         
         // Initialize Firebase (this should run first)
         const firebaseConfig = {
             apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
             authDomain: "helionis.firebaseapp.com",
+            databaseURL: "https://helionis-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "helionis",
             storageBucket: "helionis.firebasestorage.app",
             messagingSenderId: "112789846576",
@@ -153,10 +199,14 @@
         
         window.firebaseApp = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth();
-        window.firebaseDb = getFirestore();
+        window.firebaseDatabase = getDatabase();
         window.firebaseAnalytics = getAnalytics();
     </script>
 
-    <script type="module" src='assets/js/auth.js'></script>
+    <script type="module" src='assets/js/google-auth.js'></script>
+    <script type="module" src='assets/js/dynamic-navigation.js'></script>
+    <script type="module" src='assets/js/login.js'></script>
+    <script type="module" src='assets/js/navigation.js'></script>
+    <script type="module" src='assets/js/main.js' defer></script>
 </body>
 </html>
