@@ -20,12 +20,18 @@
             <img src='assets/images/logo.svg' alt="Helionis Logo" loading="lazy" width="40" height="40">
             <span class='brand-name'>HELIONIS</span>
         </div>
+        <button class="menu-toggle" aria-label="Menü öffnen/schließen">
+            <span class="hamburger"></span>
+        </button>
         <nav>
             <a href='index.html'>Home</a>
             <a href='about.html'>Über uns</a>
             <a href='shop.html'>Shop</a>
             <a href='horoskop.html' class='active'>Horoskope</a>
             <a href='news.html'>News</a>
+            <a href='login.html' class='dynamic-auth-link' id='auth-nav-link'>
+                <span id='auth-nav-text'>Login</span>
+            </a>
         </nav>
     </header>
 
@@ -211,8 +217,10 @@
         window.firebaseAnalytics = getAnalytics();
     </script>
 
-    <script type="module" src='assets/js/navigation.js'></script>
+    <script type="module" src='assets/js/google-auth.js'></script>
+    <script type="module" src='assets/js/dynamic-navigation.js'></script>
     <script type="module" src='assets/js/main.js' defer></script>
     <script type="module" src='assets/js/horoscope.js' defer></script>
+    <script type="module" src='assets/js/mobile-nav.js'></script>
 </body>
 </html>

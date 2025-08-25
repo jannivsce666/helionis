@@ -1,113 +1,88 @@
-// Dynamic Navigation - Handles Login/Profile button state
-import './google-auth.js';
+// Dynamic Navigation: Single Login/Profil button (no Logout here)
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-class DynamicNavigation {
-    constructor() {
-        this.authNavLink = document.getElementById('auth-nav-link');
-        this.authNavText = document.getElementById('auth-nav-text');
-        this.currentUser = null;
-        
-        this.init();
-    }
-    
-    init() {
-        // Listen for auth state changes
-        document.addEventListener('authStateChanged', (event) => {
-            this.currentUser = event.detail.user;
-            this.updateNavigationState();
-        });
-        
-        // Handle click on auth nav link
-        if (this.authNavLink) {
-            this.authNavLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.handleAuthNavClick();
-            });
-        }
-        
-        // Check initial auth state
-        this.checkInitialAuthState();
-    }
-    
-    checkInitialAuthState() {
-        // Check if user is already logged in
-        if (window.firebaseAuth && window.firebaseAuth.currentUser) {
-            this.currentUser = window.firebaseAuth.currentUser;
-            this.updateNavigationState();
-        }
-    }
-    
-    updateNavigationState() {
-        if (!this.authNavLink || !this.authNavText) return;
-        
-        if (this.currentUser) {
-            // User is logged in - show as Profile button
-            this.authNavText.textContent = 'Profil';
-            this.authNavLink.classList.remove('login-link');
-            this.authNavLink.classList.add('profile-link');
-            this.authNavLink.href = 'profile.html';
-            
-            // Add user avatar if available
-            this.addUserAvatar();
-        } else {
-            // User is not logged in - show as Login button
-            this.authNavText.textContent = 'Login';
-            this.authNavLink.classList.remove('profile-link');
-            this.authNavLink.classList.add('login-link');
-            this.authNavLink.href = 'login.html';
-            
-            // Remove user avatar
-            this.removeUserAvatar();
-        }
-    }
-    
-    addUserAvatar() {
-        // Remove existing avatar if any
-        this.removeUserAvatar();
-        
-        if (this.currentUser && this.currentUser.photoURL) {
-            const avatar = document.createElement('img');
-            avatar.src = this.currentUser.photoURL;
-            avatar.alt = 'Profil Avatar';
-            avatar.className = 'nav-avatar';
-            avatar.style.cssText = `
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                margin-right: 0.5rem;
-                border: 2px solid #B87333;
-            `;
-            
-            this.authNavLink.insertBefore(avatar, this.authNavText);
-        }
-    }
-    
-    removeUserAvatar() {
-        const existingAvatar = this.authNavLink.querySelector('.nav-avatar');
-        if (existingAvatar) {
-            existingAvatar.remove();
-        }
-    }
-    
-    handleAuthNavClick() {
-        if (this.currentUser) {
-            // User is logged in, go to profile
-            window.location.href = 'profile.html';
-        } else {
-            // User is not logged in, go to login
-            window.location.href = 'login.html';
-        }
-    }
-}
+(function initDynamicNavigation(){
+  function getAuth(){
+    return window.firebaseAuth;
+  }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new DynamicNavigation();
-});
+  function ensureAuthLink(){
+    let link = document.getElementById('auth-nav-link');
+    if(!link){
+      const nav = document.querySelector('header nav');
+      if(!nav) return null;
+      link = document.createElement('a');
+      link.id = 'auth-nav-link';
+      link.className = 'dynamic-auth-link';
+      link.href = 'login.html';
+      const span = document.createElement('span');
+      span.id = 'auth-nav-text';
+      span.textContent = 'Login';
+      link.appendChild(span);
+      nav.appendChild(link);
+    }
+    return link;
+  }
 
-// Also initialize if firebase is already loaded
-if (window.firebaseAuth) {
-    new DynamicNavigation();
-}
+  function clearAvatar(link){
+    const avatar = link.querySelector('.nav-avatar');
+    if(avatar) avatar.remove();
+  }
 
-export default DynamicNavigation;
+  function addAvatar(link, user){
+    clearAvatar(link);
+    if(user && user.photoURL){
+      const img = document.createElement('img');
+      img.src = user.photoURL;
+      img.alt = 'Profil';
+      img.referrerPolicy = 'no-referrer';
+      img.className = 'nav-avatar';
+      link.prepend(img);
+    }
+  }
+
+  function updateLink(user){
+    const link = ensureAuthLink();
+    if(!link) return;
+    const textEl = document.getElementById('auth-nav-text') || link.querySelector('#auth-nav-text');
+    if(user){
+      link.href = 'profile.html';
+      link.classList.add('profile-link');
+      link.classList.remove('login-link');
+      if(textEl) textEl.textContent = 'Profil';
+      addAvatar(link, user);
+      if(window.location.pathname.endsWith('profile.html')){
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    } else {
+      link.href = 'login.html';
+      link.classList.add('login-link');
+      link.classList.remove('profile-link');
+      if(textEl) textEl.textContent = 'Login';
+      clearAvatar(link);
+      if(window.location.pathname.endsWith('login.html')){
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    }
+  }
+
+  function waitForFirebase(attempt=0){
+    if(getAuth()){
+      onAuthStateChanged(getAuth(), user => updateLink(user));
+      updateLink(getAuth().currentUser);
+      return;
+    }
+    if(attempt < 40){
+      setTimeout(()=>waitForFirebase(attempt+1), 100);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    ensureAuthLink();
+    waitForFirebase();
+  });
+})();
