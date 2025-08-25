@@ -1336,89 +1336,177 @@ footer {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-    .horoscope-hero h1 {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-    
-    .zodiac-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-    }
-    
-    .zodiac-card {
-        padding: 20px 15px;
-    }
-    
-    .zodiac-symbol {
-        font-size: 2.5rem;
-    }
-    
-    .zodiac-card h3 {
-        font-size: 1.1rem;
-    }
-    
-    .horoscope-container {
-        padding: 25px;
-    }
-    
-    .horoscope-header {
+    /* Header adjustments */
+    header {
         flex-direction: column;
-        gap: 15px;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .brand {
+        position: static;
+        left: auto;
+    }
+    
+    .brand-name {
+        font-size: 1.8rem;
+    }
+    
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    nav a {
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        margin: 0 0.1rem;
+    }
+    
+    /* Hero Section */
+    .hero {
+        flex-direction: column;
+        min-height: 70vh;
+        max-height: none;
+        padding: 2rem 1rem;
         text-align: center;
     }
     
-    .selected-sign {
-        justify-content: center;
+    .hero-content {
+        padding: 2rem 1.5rem;
+        margin-bottom: 2rem;
+        max-width: 90%;
     }
     
-    .sign-symbol {
-        font-size: 2.5rem;
+    .hero h1 {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
     }
     
-    .selected-sign h2 {
-        font-size: 1.5rem;
+    .cta-button {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.1rem;
+        letter-spacing: 1.5px;
     }
     
-    .horoscope-content p {
-        font-size: 1rem;
-        text-align: left;
+    .hero-image {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        opacity: 0.8;
+        margin-top: 1rem;
+    }
+    
+    .hero-image video,
+    .hero-image img {
+        width: 280px;
+        max-width: 90vw;
+        height: auto;
+    }
+    
+    /* Products Section */
+    .products {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 4rem 1rem;
+    }
+    
+    .product-card {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .product-card h3 {
+        font-size: 1.3rem;
+        margin-top: 1.5rem;
     }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
-    .zodiac-grid {
-        grid-template-columns: repeat(2, 1fr);
+    /* Header for very small screens */
+    header {
+        padding: 0.8rem;
     }
     
-    .zodiac-card {
-        padding: 15px 10px;
+    .brand-name {
+        font-size: 1.5rem;
     }
     
-    .zodiac-symbol {
-        font-size: 2rem;
+    nav a {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+        margin: 0.1rem;
     }
     
-    .zodiac-card h3 {
+    /* Hero optimized for small screens */
+    .hero {
+        padding: 1.5rem 0.8rem;
+        min-height: 60vh;
+    }
+    
+    .hero-content {
+        padding: 1.5rem 1rem;
+        border-radius: 15px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .cta-button {
+        padding: 1rem 2rem;
         font-size: 1rem;
+        letter-spacing: 1px;
+        width: 100%;
+        max-width: 250px;
     }
     
-    .zodiac-dates {
-        font-size: 0.8rem;
+    .hero-image video,
+    .hero-image img {
+        width: 250px;
+        max-width: 85vw;
     }
     
-    .horoscope-container {
-        padding: 20px;
+    /* Products for small screens */
+    .products {
+        padding: 3rem 0.8rem;
+        gap: 2.5rem;
     }
     
-    .inspiration-card {
-        padding: 20px;
+    .product-card h3 {
+        font-size: 1.1rem;
+        margin-top: 1rem;
     }
     
-    .inspiration-quote p {
-        font-size: 1rem;
+    .product-image {
+        transform: scale(0.9);
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 375px) {
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+    
+    .cta-button {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    nav a {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .hero-image video,
+    .hero-image img {
+        width: 220px;
+        max-width: 80vw;
     }
 }
