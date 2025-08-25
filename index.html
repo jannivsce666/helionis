@@ -182,6 +182,10 @@
         window.firebaseAuth = getAuth();
         window.firebaseDatabase = getDatabase();
         window.firebaseAnalytics = getAnalytics();
+        
+        // Signal that Firebase is ready
+        window.firebaseReady = true;
+        window.dispatchEvent(new Event('firebaseReady'));
     </script>
     
     <script type="module" src='assets/js/google-auth.js'></script>

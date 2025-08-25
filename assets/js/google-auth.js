@@ -58,6 +58,11 @@ class GoogleAuth {
             await this.saveUserToDatabase(user);
             
             console.log('Erfolgreich angemeldet:', user.displayName);
+            
+            // Redirect to profile page after successful login
+            console.log('Weiterleitung zur Profilseite nach erfolgreicher Anmeldung');
+            window.location.href = 'profile.html';
+            
         } catch (error) {
             console.error('Anmelde-Fehler:', error);
             alert('Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
@@ -244,6 +249,13 @@ class GoogleAuth {
         
         // Load user's cart
         this.loadUserCart();
+        
+        // Redirect to profile page if on login page or if this is a fresh login
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage === 'login.html' || currentPage === 'login') {
+            console.log('Weiterleitung zur Profilseite nach erfolgreicher Anmeldung');
+            window.location.href = 'profile.html';
+        }
         
         console.log('Benutzer-UI aktualisiert für:', user.displayName);
     }

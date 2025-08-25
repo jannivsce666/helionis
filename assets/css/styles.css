@@ -1062,6 +1062,354 @@ footer {
     font-size: 1rem;
 }
 
+/* =================================
+   HOROSCOPE SLIDESHOW STYLES
+   ================================= */
+
+/* Star Background */
+.star-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.6;
+}
+
+#constellationCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Slideshow Container */
+.horoscope-slideshow {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.slideshow-container {
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+}
+
+/* Navigation Controls */
+.slideshow-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+}
+
+.control-btn {
+    background: rgba(184, 115, 51, 0.2);
+    border: 2px solid #B87333;
+    color: #B87333;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    background: #B87333;
+    color: #0D0D0D;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(184, 115, 51, 0.5);
+}
+
+.control-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Slide Indicators */
+.slide-indicators {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(184, 115, 51, 0.3);
+    border: 1px solid #B87333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: #B87333;
+    box-shadow: 0 0 15px rgba(184, 115, 51, 0.5);
+}
+
+/* Auto-play Controls */
+.autoplay-controls {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.autoplay-btn {
+    background: none;
+    border: none;
+    color: #B87333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.autoplay-btn:hover {
+    transform: scale(1.2);
+}
+
+.autoplay-text {
+    color: rgba(237, 233, 228, 0.7);
+    font-size: 0.9rem;
+}
+
+/* Horoscope Slides */
+.horoscope-slides {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: rgba(13, 13, 13, 0.9);
+    border: 1px solid rgba(184, 115, 51, 0.3);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.horoscope-slide {
+    display: none;
+    padding: 3rem;
+    text-align: center;
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.horoscope-slide.active {
+    display: block;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Zodiac Symbol */
+.slide-symbol {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 2rem;
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.slide-symbol img {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 30px rgba(184, 115, 51, 0.6));
+    transition: filter 0.3s ease;
+}
+
+.slide-symbol::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border: 2px solid rgba(184, 115, 51, 0.3);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+/* Slide Content */
+.slide-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #B87333;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(184, 115, 51, 0.3);
+}
+
+.slide-dates {
+    color: rgba(237, 233, 228, 0.7);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+}
+
+.slide-horoscope {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #EDE9E4;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    text-align: justify;
+}
+
+.slide-keywords {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.keyword {
+    background: rgba(184, 115, 51, 0.2);
+    color: #B87333;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(184, 115, 51, 0.3);
+}
+
+/* Current Date Display */
+.current-date {
+    text-align: center;
+    margin-top: 2rem;
+    color: rgba(237, 233, 228, 0.7);
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+/* Cosmic Wisdom Section */
+.cosmic-wisdom {
+    padding: 4rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.cosmic-wisdom h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #B87333;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(184, 115, 51, 0.3);
+}
+
+.wisdom-card {
+    background: rgba(13, 13, 13, 0.9);
+    border: 1px solid rgba(184, 115, 51, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(20px);
+}
+
+.wisdom-quote p {
+    font-size: 1.3rem;
+    color: #EDE9E4;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.wisdom-author {
+    color: #B87333;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .slideshow-controls {
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .horoscope-slide {
+        padding: 2rem 1.5rem;
+        min-height: 400px;
+    }
+    
+    .slide-symbol {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+    }
+    
+    .slide-horoscope {
+        font-size: 1.1rem;
+    }
+    
+    .slide-keywords {
+        gap: 0.5rem;
+    }
+    
+    .autoplay-controls {
+        position: static;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .horoscope-slideshow {
+        padding: 1rem;
+    }
+    
+    .horoscope-slide {
+        padding: 1.5rem 1rem;
+    }
+    
+    .slide-title {
+        font-size: 1.8rem;
+    }
+    
+    .slide-horoscope {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+}
+
 /* Horoscope Page Styles */
 .horoscope-hero {
     background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
@@ -3160,7 +3508,7 @@ nav .dynamic-auth-link:hover .nav-avatar {
    ================================= */
 
 .menu-toggle {
-    display: none; /* Hidden by default on desktop */
+    display: block; /* Always visible */
     background: none;
     border: none;
     cursor: pointer;
@@ -3211,40 +3559,35 @@ nav .dynamic-auth-link:hover .nav-avatar {
 }
 
 
-@media (max-width: 1024px) {
-    .menu-toggle {
-        display: block; /* Show on tablet and mobile */
-    }
+/* Always show hamburger menu */
+nav {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off-screen */
+    width: 70%;
+    max-width: 300px;
+    height: 100vh;
+    background: rgba(13, 13, 13, 0.98);
+    backdrop-filter: blur(15px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    transition: right 0.4s ease-in-out;
+    padding-top: 4rem;
+    z-index: 1000;
+    border-left: 1px solid rgba(184, 115, 51, 0.2);
+}
 
-    nav {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Start off-screen */
-        width: 70%;
-        max-width: 300px;
-        height: 100vh;
-        background: rgba(13, 13, 13, 0.98);
-        backdrop-filter: blur(15px);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2rem;
-        transition: right 0.4s ease-in-out;
-        padding-top: 4rem;
-        z-index: 1000;
-        border-left: 1px solid rgba(184, 115, 51, 0.2);
-    }
+nav.active {
+    right: 0; /* Slide in */
+}
 
-    nav.active {
-        right: 0; /* Slide in */
-    }
-
-    nav a {
-        font-size: 1.2rem;
-        padding: 1rem 2rem;
-        width: 100%;
-        text-align: center;
-    }
+nav a {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    text-align: center;
 }
 
 @media (max-width: 768px) {

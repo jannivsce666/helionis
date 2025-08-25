@@ -36,134 +36,47 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section class="horoscope-hero">
-            <div class="hero-content">
-                <h1>Die Sterne sprechen zu dir</h1>
-                <p class="hero-subtitle">Lass dich von der kosmischen Weisheit leiten</p>
-                <div class="moon-phase" id="currentMoonPhase">
-                    <span class="moon-icon">🌙</span>
-                    <span class="moon-text">Lade Mondphase...</span>
+        <!-- Animated Star Background -->
+        <div class="star-background" id="starBackground">
+            <canvas id="constellationCanvas"></canvas>
+        </div>
+
+        <!-- Horoscope Slideshow -->
+        <section class="horoscope-slideshow">
+            <div class="slideshow-container">
+                <!-- Navigation Controls -->
+                <div class="slideshow-controls">
+                    <button class="control-btn prev-btn" id="prevBtn">‹</button>
+                    <div class="slide-indicators" id="slideIndicators"></div>
+                    <button class="control-btn next-btn" id="nextBtn">›</button>
+                </div>
+
+                <!-- Auto-play Controls -->
+                <div class="autoplay-controls">
+                    <button class="autoplay-btn" id="autoplayBtn">⏸️</button>
+                    <span class="autoplay-text">Auto-Slideshow</span>
+                </div>
+
+                <!-- Horoscope Slides -->
+                <div class="horoscope-slides" id="horoscopeSlides">
+                    <!-- Slides will be dynamically generated -->
+                </div>
+
+                <!-- Current Date Display -->
+                <div class="current-date">
+                    <span id="currentDate"></span>
                 </div>
             </div>
         </section>
 
-        <!-- Zodiac Selection -->
-        <section class="zodiac-selector">
-            <h2>Wähle dein Sternzeichen</h2>
-            <div class="zodiac-grid">
-                <div class="zodiac-card" data-sign="aries">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/aries.svg" alt="Widder Symbol" loading="lazy">
-                    </div>
-                    <h3>Widder</h3>
-                    <span class="zodiac-dates">21.03 - 19.04</span>
-                </div>
-                <div class="zodiac-card" data-sign="taurus">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/taurus.svg" alt="Stier Symbol" loading="lazy">
-                    </div>
-                    <h3>Stier</h3>
-                    <span class="zodiac-dates">20.04 - 20.05</span>
-                </div>
-                <div class="zodiac-card" data-sign="gemini">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/gemini.svg" alt="Zwillinge Symbol" loading="lazy">
-                    </div>
-                    <h3>Zwillinge</h3>
-                    <span class="zodiac-dates">21.05 - 20.06</span>
-                </div>
-                <div class="zodiac-card" data-sign="cancer">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/cancer.svg" alt="Krebs Symbol" loading="lazy">
-                    </div>
-                    <h3>Krebs</h3>
-                    <span class="zodiac-dates">21.06 - 22.07</span>
-                </div>
-                <div class="zodiac-card" data-sign="leo">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/leo.svg" alt="Löwe Symbol" loading="lazy">
-                    </div>
-                    <h3>Löwe</h3>
-                    <span class="zodiac-dates">23.07 - 22.08</span>
-                </div>
-                <div class="zodiac-card" data-sign="virgo">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/virgo.svg" alt="Jungfrau Symbol" loading="lazy">
-                    </div>
-                    <h3>Jungfrau</h3>
-                    <span class="zodiac-dates">23.08 - 22.09</span>
-                </div>
-                <div class="zodiac-card" data-sign="libra">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/libra.svg" alt="Waage Symbol" loading="lazy">
-                    </div>
-                    <h3>Waage</h3>
-                    <span class="zodiac-dates">23.09 - 22.10</span>
-                </div>
-                <div class="zodiac-card" data-sign="scorpio">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/scorpio.svg" alt="Skorpion Symbol" loading="lazy">
-                    </div>
-                    <h3>Skorpion</h3>
-                    <span class="zodiac-dates">23.10 - 21.11</span>
-                </div>
-                <div class="zodiac-card" data-sign="sagittarius">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/sagittarius.svg" alt="Schütze Symbol" loading="lazy">
-                    </div>
-                    <h3>Schütze</h3>
-                    <span class="zodiac-dates">22.11 - 21.12</span>
-                </div>
-                <div class="zodiac-card" data-sign="capricorn">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/capricorn.svg" alt="Steinbock Symbol" loading="lazy">
-                    </div>
-                    <h3>Steinbock</h3>
-                    <span class="zodiac-dates">22.12 - 19.01</span>
-                </div>
-                <div class="zodiac-card" data-sign="aquarius">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/aquarius.svg" alt="Wassermann Symbol" loading="lazy">
-                    </div>
-                    <h3>Wassermann</h3>
-                    <span class="zodiac-dates">20.01 - 18.02</span>
-                </div>
-                <div class="zodiac-card" data-sign="pisces">
-                    <div class="zodiac-symbol">
-                        <img src="assets/images/zodiac/pisces.svg" alt="Fische Symbol" loading="lazy">
-                    </div>
-                    <h3>Fische</h3>
-                    <span class="zodiac-dates">19.02 - 20.03</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Horoscope Display -->
-        <section class="horoscope-display" id="horoscopeDisplay" style="display: none;">
-            <div class="horoscope-container">
-                <div class="horoscope-header">
-                    <div class="selected-sign">
-                        <span class="sign-symbol" id="selectedSymbol"></span>
-                        <h2 id="selectedSignName"></h2>
-                    </div>
-                    <div class="horoscope-date" id="horoscopeDate"></div>
-                </div>
-                <div class="horoscope-content">
-                    <p id="horoscopeText">Lade Horoskop...</p>
-                </div>
-                <button class="back-to-selection" onclick="showZodiacSelector()">← Zurück zur Auswahl</button>
-            </div>
-        </section>
-
-        <!-- Daily Inspiration -->
-        <section class="daily-inspiration">
+        <!-- Cosmic Wisdom Section -->
+        <section class="cosmic-wisdom">
             <h2>Kosmische Weisheit des Tages</h2>
-            <div class="inspiration-card">
-                <div class="inspiration-quote">
-                    <p>"Die Sterne lenken uns nicht, sie zeigen uns den Weg zu unserer eigenen Weisheit."</p>
+            <div class="wisdom-card">
+                <div class="wisdom-quote">
+                    <p id="dailyWisdom">"Die Sterne lenken uns nicht, sie zeigen uns den Weg zu unserer eigenen Weisheit."</p>
                 </div>
-                <div class="inspiration-author">— Helionis Astrologie</div>
+                <div class="wisdom-author">— Helionis Astrologie</div>
             </div>
         </section>
     </main>
@@ -218,6 +131,11 @@
     </script>
 
     <script type="module" src='assets/js/google-auth.js'></script>
+    <script type="module" src="assets/js/dynamic-navigation.js"></script>
+    <script type="module" src="assets/js/horoskop-slideshow.js"></script>
+    <script type="module" src='assets/js/mobile-nav.js'></script>
+</body>
+</html>
     <script type="module" src='assets/js/dynamic-navigation.js'></script>
     <script type="module" src='assets/js/main.js' defer></script>
     <script type="module" src='assets/js/horoscope.js' defer></script>

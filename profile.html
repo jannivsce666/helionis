@@ -23,8 +23,9 @@
             <a href='shop.html'>Shop</a>
             <a href='horoskop.html'>Horoskope</a>
             <a href='news.html'>News</a>
-            <a href='profile.html' class='active'>Profil</a>
-            <button id="logout-btn" class="logout-button">Abmelden</button>
+            <a href='login.html' class='dynamic-auth-link active' id='auth-nav-link'>
+                <span id='auth-nav-text'>Login</span>
+            </a>
         </nav>
     </header>
 
@@ -84,7 +85,10 @@
 
         <div class="profile-content">
             <div class="profile-section">
-                <h2>Persönliche Daten</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>Persönliche Daten</h2>
+                    <button id="logout-btn" class="logout-button">Abmelden</button>
+                </div>
                 <form id="profile-form" class="profile-form">
                     <div class="form-grid">
                         <div class="input-group">
@@ -246,8 +250,11 @@
 
     <script type="module" src='assets/js/google-auth.js'></script>
     <script type="module" src='assets/js/dynamic-navigation.js'></script>
+    <script type="module" src='assets/js/profile-guard.js'></script>
     <script type="module" src='assets/js/shopping-cart.js'></script>
     <script type="module" src='assets/js/profile.js'></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
+</body>
+</html>
 </body>
 </html>
