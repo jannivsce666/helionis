@@ -1,4 +1,4 @@
-# Empyreal - Mystische Esoterik Website
+# Helionis - Mystische Esoterik Website
 
 Eine elegante, mystische Website für esoterische Produkte mit modernem Design und spiritueller Ausstrahlung.
 
@@ -118,7 +118,7 @@ Bilder sollten im `assets/images/` Ordner sein:
 
 ## 📄 Lizenz
 
-Dieses Projekt ist für Empyreal entwickelt worden.
+Dieses Projekt ist für Helionis entwickelt worden.
 
 ## 🤝 Contribution
 
