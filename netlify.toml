@@ -1,0 +1,69 @@
+[build]
+  # Build-Ordner (da es eine statische Website ist, wird der root verwendet)
+  publish = "."
+  
+  # Build-Kommando (nicht nötig für statische HTML-Website)
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect-Regeln für SPA (Single Page Application) Verhalten
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
+
+# Header-Optimierungen für bessere Performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache-Optimierung für Assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache-Optimierung für Videos
+[[headers]]
+  for = "/videos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Cache-Optimierung für Bilder
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# HTML-Dateien sollten nicht gecacht werden für Updates
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# CSS und JS mit kurzer Cache-Zeit für Updates
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
