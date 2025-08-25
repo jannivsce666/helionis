@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang='de'>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empyreal – Home</title>
+    <meta name="description" content="Mystische Pyramiden & Amulette – eigener Shop, handgefertigt in Herbrechtingen. Dunkles Design, Kupfer-Akzente, Lumineszenz.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Empyreal – Eigener Shop">
+    <meta property="og:description" content="Mystische Pyramiden & Amulette – eigener Shop, handgefertigt in Herbrechtingen.">
+    <meta property="og:image" content="assets/images/pyramid.png">
+    <meta property="og:url" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='assets/css/styles.css'>
+</head>
+<body>
+    <header>
+        <div class='brand'>
+            <img src='assets/images/logo.svg' alt="Empyreal Logo" loading="lazy" width="40" height="40">
+            <span class='brand-name'>EMPYREAL</span>
+        </div>
+        <nav>
+            <a href='index.html' class='active'>Home</a>
+            <a href='about.html'>Über uns</a>
+            <a href='shop.html'>Shop</a>
+            <a href='horoskop.html'>Horoskope</a>
+            <a href='news.html'>News</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Finde deine innere Ausrichtung</h1>
+                <a href="shop.html" class="cta-button">Kollektion entdecken</a>
+            </div>
+            <div class="hero-image">
+                <video autoplay muted loop playsinline width="350" height="300">
+                    <source src="videos/start.mp4" type="video/mp4">
+                    <img src='assets/images/hero_mock.png' alt="Mystische Pyramide – Spirituelle Energie" loading="lazy" width="350" height="300" sizes="(max-width: 600px) 250px, 350px">
+                </video>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products">
+            <div class="product-card pyramid-card">
+                <div class="product-image">
+                    <img src='assets/images/pyramid.png' alt="Pyramide des Gleichgewichts – Lumineszenz & Kupfer" loading="lazy" width="180" height="180" class="product-static-image">
+                    <video muted loop playsinline width="180" height="180" class="product-hover-video">
+                        <source src="videos/start.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <h3>PYRAMIDE DES GLEICHGEWICHTS</h3>
+            </div>
+            <div class="product-card cube-card">
+                <div class="product-image">
+                    <img src='assets/images/cube.png' alt="Balance Würfel – Kristallwürfel für Meditation" loading="lazy" width="180" height="180" class="product-static-image">
+                    <video muted loop playsinline width="180" height="180" class="product-hover-video">
+                        <source src="videos/cube.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <h3>BALANCE WÜRFEL</h3>
+            </div>
+            <div class="product-card amulet-card">
+                <div class="product-image">
+                    <img src='assets/images/amulet.png' alt="Spiralen Amulett – Schutz vor negativen Energien" loading="lazy" width="180" height="180" class="product-static-image">
+                    <video muted loop playsinline width="180" height="180" class="product-hover-video">
+                        <source src="videos/amulet.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <h3>SPIRALEN AMULETT</h3>
+            </div>
+        </section>
+
+        <!-- JSON-LD Product Schema -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": [
+            {
+              "@type": "Product",
+              "position": 1,
+              "name": "Pyramide des Gleichgewichts",
+              "image": ["assets/images/pyramid.png"],
+              "description": "Eine mächtige Pyramide, die innere Balance und Klarheit fördert. Handgefertigt mit energetischer Aufladung.",
+              "brand": { "@type": "Brand", "name": "Empyreal" },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "EUR",
+                "price": "89.99",
+                "availability": "https://schema.org/InStock"
+              }
+            },
+            {
+              "@type": "Product",
+              "position": 2,
+              "name": "Balance Würfel",
+              "image": ["assets/images/cube.png"],
+              "description": "Kristallwürfel für Meditation und energetische Reinigung.",
+              "brand": { "@type": "Brand", "name": "Empyreal" },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "EUR",
+                "price": "59.99",
+                "availability": "https://schema.org/InStock"
+              }
+            },
+            {
+              "@type": "Product",
+              "position": 3,
+              "name": "Spiralen Amulett",
+              "image": ["assets/images/amulet.png"],
+              "description": "Schützt vor negativen Energien und verstärkt die Intuition.",
+              "brand": { "@type": "Brand", "name": "Empyreal" },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "EUR",
+                "price": "39.99",
+                "availability": "https://schema.org/InStock"
+              }
+            }
+          ]
+        }
+        </script>
+    </main>
+
+    <footer>
+        <div class="footer-brand">
+            <img src='assets/images/logo.svg' alt="Empyreal Logo" loading="lazy" width="30" height="30">
+            <span>EMPYREAL</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">IMPRESSUM</a>
+            <a href="#">DATENSCHUTZ</a>
+            <a href="#">AGB</a>
+        </div>
+        <div class="footer-social">
+            <a href="#" aria-label="E-Mail Kontakt">📧</a>
+            <a href="#" aria-label="Telefon Kontakt">📱</a>
+        </div>
+    </footer>
+
+    <script type="module" src='assets/js/main.js' defer></script>
+</body>
+</html>

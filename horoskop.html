@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang='de'>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empyreal – Horoskope</title>
+    <meta name="description" content="Tägliche Horoskope und astrologische Vorhersagen – Finde deine kosmische Führung bei Empyreal.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Empyreal – Horoskope">
+    <meta property="og:description" content="Tägliche Horoskope und astrologische Vorhersagen – Finde deine kosmische Führung.">
+    <meta property="og:image" content="assets/images/pyramid.png">
+    <meta property="og:url" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='assets/css/styles.css'>
+</head>
+<body>
+    <header>
+        <div class='brand'>
+            <img src='assets/images/logo.svg' alt="Empyreal Logo" loading="lazy" width="40" height="40">
+            <span class='brand-name'>EMPYREAL</span>
+        </div>
+        <nav>
+            <a href='index.html'>Home</a>
+            <a href='about.html'>Über uns</a>
+            <a href='shop.html'>Shop</a>
+            <a href='horoskop.html' class='active'>Horoskope</a>
+            <a href='news.html'>News</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="horoscope-hero">
+            <div class="hero-content">
+                <h1>Die Sterne sprechen zu dir</h1>
+                <p class="hero-subtitle">Lass dich von der kosmischen Weisheit leiten</p>
+                <div class="moon-phase" id="currentMoonPhase">
+                    <span class="moon-icon">🌙</span>
+                    <span class="moon-text">Lade Mondphase...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zodiac Selection -->
+        <section class="zodiac-selector">
+            <h2>Wähle dein Sternzeichen</h2>
+            <div class="zodiac-grid">
+                <div class="zodiac-card" data-sign="aries">
+                    <div class="zodiac-symbol">♈</div>
+                    <h3>Widder</h3>
+                    <span class="zodiac-dates">21.03 - 19.04</span>
+                </div>
+                <div class="zodiac-card" data-sign="taurus">
+                    <div class="zodiac-symbol">♉</div>
+                    <h3>Stier</h3>
+                    <span class="zodiac-dates">20.04 - 20.05</span>
+                </div>
+                <div class="zodiac-card" data-sign="gemini">
+                    <div class="zodiac-symbol">♊</div>
+                    <h3>Zwillinge</h3>
+                    <span class="zodiac-dates">21.05 - 20.06</span>
+                </div>
+                <div class="zodiac-card" data-sign="cancer">
+                    <div class="zodiac-symbol">♋</div>
+                    <h3>Krebs</h3>
+                    <span class="zodiac-dates">21.06 - 22.07</span>
+                </div>
+                <div class="zodiac-card" data-sign="leo">
+                    <div class="zodiac-symbol">♌</div>
+                    <h3>Löwe</h3>
+                    <span class="zodiac-dates">23.07 - 22.08</span>
+                </div>
+                <div class="zodiac-card" data-sign="virgo">
+                    <div class="zodiac-symbol">♍</div>
+                    <h3>Jungfrau</h3>
+                    <span class="zodiac-dates">23.08 - 22.09</span>
+                </div>
+                <div class="zodiac-card" data-sign="libra">
+                    <div class="zodiac-symbol">♎</div>
+                    <h3>Waage</h3>
+                    <span class="zodiac-dates">23.09 - 22.10</span>
+                </div>
+                <div class="zodiac-card" data-sign="scorpio">
+                    <div class="zodiac-symbol">♏</div>
+                    <h3>Skorpion</h3>
+                    <span class="zodiac-dates">23.10 - 21.11</span>
+                </div>
+                <div class="zodiac-card" data-sign="sagittarius">
+                    <div class="zodiac-symbol">♐</div>
+                    <h3>Schütze</h3>
+                    <span class="zodiac-dates">22.11 - 21.12</span>
+                </div>
+                <div class="zodiac-card" data-sign="capricorn">
+                    <div class="zodiac-symbol">♑</div>
+                    <h3>Steinbock</h3>
+                    <span class="zodiac-dates">22.12 - 19.01</span>
+                </div>
+                <div class="zodiac-card" data-sign="aquarius">
+                    <div class="zodiac-symbol">♒</div>
+                    <h3>Wassermann</h3>
+                    <span class="zodiac-dates">20.01 - 18.02</span>
+                </div>
+                <div class="zodiac-card" data-sign="pisces">
+                    <div class="zodiac-symbol">♓</div>
+                    <h3>Fische</h3>
+                    <span class="zodiac-dates">19.02 - 20.03</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Horoscope Display -->
+        <section class="horoscope-display" id="horoscopeDisplay" style="display: none;">
+            <div class="horoscope-container">
+                <div class="horoscope-header">
+                    <div class="selected-sign">
+                        <span class="sign-symbol" id="selectedSymbol"></span>
+                        <h2 id="selectedSignName"></h2>
+                    </div>
+                    <div class="horoscope-date" id="horoscopeDate"></div>
+                </div>
+                <div class="horoscope-content">
+                    <p id="horoscopeText">Lade Horoskop...</p>
+                </div>
+                <button class="back-to-selection" onclick="showZodiacSelector()">← Zurück zur Auswahl</button>
+            </div>
+        </section>
+
+        <!-- Daily Inspiration -->
+        <section class="daily-inspiration">
+            <h2>Kosmische Weisheit des Tages</h2>
+            <div class="inspiration-card">
+                <div class="inspiration-quote">
+                    <p>"Die Sterne lenken uns nicht, sie zeigen uns den Weg zu unserer eigenen Weisheit."</p>
+                </div>
+                <div class="inspiration-author">— Empyreal Astrologie</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-brand">
+            <img src='assets/images/logo.svg' alt="Empyreal Logo" loading="lazy" width="30" height="30">
+            <span>EMPYREAL</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">IMPRESSUM</a>
+            <a href="#">DATENSCHUTZ</a>
+            <a href="#">AGB</a>
+        </div>
+        <div class="footer-social">
+            <a href="#" aria-label="E-Mail Kontakt">📧</a>
+            <a href="#" aria-label="Telefon Kontakt">📱</a>
+        </div>
+    </footer>
+
+    <script type="module" src='assets/js/main.js' defer></script>
+    <script type="module" src='assets/js/horoscope.js' defer></script>
+</body>
+</html>
