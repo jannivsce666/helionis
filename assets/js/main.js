@@ -481,18 +481,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Product hover video functionality
+// Product hover video functionality - ENHANCED
 function initProductHoverVideos() {
     try {
+        // Wait for DOM to be fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initProductHoverVideos);
+            return;
+        }
+
         // Pyramid video hover
         const pyramidCard = document.querySelector('.pyramid-card');
         const pyramidVideo = pyramidCard?.querySelector('.product-hover-video');
         
         if (pyramidCard && pyramidVideo) {
-            pyramidCard.addEventListener('mouseenter', () => {
+            // Preload video
+            pyramidVideo.load();
+            
+            pyramidCard.addEventListener('mouseenter', async () => {
                 try {
                     pyramidVideo.currentTime = 0;
-                    pyramidVideo.play();
+                    await pyramidVideo.play();
+                    console.log('Pyramid video playing');
                 } catch (error) {
                     console.warn('Pyramid video play failed:', error);
                 }
@@ -506,6 +516,8 @@ function initProductHoverVideos() {
                     console.warn('Pyramid video pause failed:', error);
                 }
             });
+        } else {
+            console.warn('Pyramid card or video not found');
         }
         
         // Cube video hover
@@ -513,10 +525,14 @@ function initProductHoverVideos() {
         const cubeVideo = cubeCard?.querySelector('.product-hover-video');
         
         if (cubeCard && cubeVideo) {
-            cubeCard.addEventListener('mouseenter', () => {
+            // Preload video
+            cubeVideo.load();
+            
+            cubeCard.addEventListener('mouseenter', async () => {
                 try {
                     cubeVideo.currentTime = 0;
-                    cubeVideo.play();
+                    await cubeVideo.play();
+                    console.log('Cube video playing');
                 } catch (error) {
                     console.warn('Cube video play failed:', error);
                 }
@@ -530,6 +546,8 @@ function initProductHoverVideos() {
                     console.warn('Cube video pause failed:', error);
                 }
             });
+        } else {
+            console.warn('Cube card or video not found');
         }
         
         // Amulet video hover
@@ -537,10 +555,14 @@ function initProductHoverVideos() {
         const amuletVideo = amuletCard?.querySelector('.product-hover-video');
         
         if (amuletCard && amuletVideo) {
-            amuletCard.addEventListener('mouseenter', () => {
+            // Preload video
+            amuletVideo.load();
+            
+            amuletCard.addEventListener('mouseenter', async () => {
                 try {
                     amuletVideo.currentTime = 0;
-                    amuletVideo.play();
+                    await amuletVideo.play();
+                    console.log('Amulet video playing');
                 } catch (error) {
                     console.warn('Amulet video play failed:', error);
                 }
@@ -554,7 +576,11 @@ function initProductHoverVideos() {
                     console.warn('Amulet video pause failed:', error);
                 }
             });
+        } else {
+            console.warn('Amulet card or video not found');
         }
+        
+        console.log('Product hover videos initialized successfully');
     } catch (error) {
         console.warn('Product hover videos initialization failed:', error);
     }
