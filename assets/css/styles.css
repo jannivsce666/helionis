@@ -189,6 +189,8 @@ p {
     max-width: 100%;
     max-height: 50vh;
     object-fit: contain;
+    /* Add loading optimization */
+    loading: lazy;
 }
 
 .hero-image video {
@@ -202,6 +204,8 @@ p {
     filter: drop-shadow(0 0 20px rgba(0, 150, 200, 0.3));
     transform: scale(1.2);
     overflow: hidden;
+    /* Mobile optimizations */
+    preload: metadata;
 }
 
 /* Products Section */
@@ -254,6 +258,8 @@ p {
     z-index: 2;
     position: relative;
     filter: drop-shadow(0 0 20px rgba(0, 150, 200, 0.2));
+    /* Mobile optimization */
+    loading: lazy;
 }
 
 /* Product hover video effects */
@@ -270,30 +276,35 @@ p {
     filter: drop-shadow(0 0 20px rgba(0, 150, 200, 0.3));
     transform: scale(1.1);
     overflow: hidden;
+    /* Mobile optimizations */
+    preload: none; /* Don't preload on mobile */
 }
 
 .product-static-image {
     transition: opacity 0.3s ease;
 }
 
-.pyramid-card:hover .product-hover-video {
-    opacity: 1;
-}
+/* Only enable video hover on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .pyramid-card:hover .product-hover-video {
+        opacity: 1;
+    }
 
-.pyramid-card:hover .product-static-image {
-    opacity: 0;
-}
+    .pyramid-card:hover .product-static-image {
+        opacity: 0;
+    }
 
-.cube-card:hover .product-hover-video {
-    opacity: 1;
-}
+    .cube-card:hover .product-hover-video {
+        opacity: 1;
+    }
 
-.cube-card:hover .product-static-image {
-    opacity: 0;
-}
+    .cube-card:hover .product-static-image {
+        opacity: 0;
+    }
 
-.amulet-card:hover .product-hover-video {
-    opacity: 1;
+    .amulet-card:hover .product-hover-video {
+        opacity: 1;
+    }
 }
 
 .amulet-card:hover .product-static-image {
@@ -3649,6 +3660,20 @@ nav .dynamic-auth-link:hover .nav-avatar {
         max-width: 350px;
     }
 
+    /* Mobile optimizations - disable heavy media on mobile */
+    .product-hover-video {
+        display: none !important; /* Hide videos completely on mobile */
+    }
+    
+    .hero-image video {
+        display: none; /* Hide hero video on mobile */
+    }
+    
+    .hero-image img {
+        display: block; /* Ensure hero image is visible */
+        opacity: 1;
+    }
+
     .products {
         grid-template-columns: 1fr;
         padding: 4rem 1.5rem;
@@ -3674,5 +3699,68 @@ nav .dynamic-auth-link:hover .nav-avatar {
     nav {
         width: 100%;
         max-width: none;
+    }
+    
+    /* Additional mobile optimizations for small screens */
+    .hero-image img {
+        width: 200px;
+        max-width: 75vw;
+    }
+    
+    .product-image img {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+    /* Reduce expensive effects on mobile */
+    .hero-image {
+        filter: none; /* Remove expensive filters */
+        transform: translate(-50%, -50%) scale(0.9); /* Smaller on mobile */
+    }
+    
+    .product-image img {
+        filter: none; /* Remove drop-shadow on mobile */
+        transform: none;
+    }
+    
+    /* Reduce backdrop-filter usage */
+    .hero-content {
+        backdrop-filter: none;
+        background: rgba(13, 13, 13, 0.8);
+    }
+    
+    /* Simplify animations */
+    * {
+        animation-duration: 0.1s !important;
+        transition-duration: 0.1s !important;
+    }
+}
+
+/* Slow connection optimizations */
+@media (prefers-reduced-data: reduce) {
+    .product-hover-video,
+    .hero-image video {
+        display: none !important;
+    }
+    
+    .hero-image img,
+    .product-image img {
+        filter: none;
+        backdrop-filter: none;
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
