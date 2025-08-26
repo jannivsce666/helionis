@@ -1,5 +1,55 @@
 {
-  "date": "",
-  "generated_at": "",
-  "signs": {}
+  "date": "2025-08-26",
+  "generated_at": "2025-08-26T10:35:16.997Z",
+  "source": "fallback",
+  "signs": {
+    "widder": {
+      "name": "Widder",
+      "text": "Die Sterne zeigen neue Möglichkeiten auf. Vertraue deiner Intuition."
+    },
+    "stier": {
+      "name": "Stier",
+      "text": "Stabilität und Beständigkeit prägen deinen Tag. Bleibe geerdet."
+    },
+    "zwillinge": {
+      "name": "Zwillinge",
+      "text": "Kommunikation öffnet heute neue Türen. Sei offen für Gespräche."
+    },
+    "krebs": {
+      "name": "Krebs",
+      "text": "Emotionale Tiefe bringt Klarheit. Höre auf dein Herz."
+    },
+    "loewe": {
+      "name": "Löwe",
+      "text": "Deine natürliche Ausstrahlung steht heute im Mittelpunkt."
+    },
+    "jungfrau": {
+      "name": "Jungfrau",
+      "text": "Präzision und Aufmerksamkeit führen zum Erfolg."
+    },
+    "waage": {
+      "name": "Waage",
+      "text": "Balance und Harmonie sind heute deine Stärken."
+    },
+    "skorpion": {
+      "name": "Skorpion",
+      "text": "Transformation liegt in der Luft. Umarme Veränderungen."
+    },
+    "schuetze": {
+      "name": "Schütze",
+      "text": "Neue Horizonte warten darauf, entdeckt zu werden."
+    },
+    "steinbock": {
+      "name": "Steinbock",
+      "text": "Ausdauer und Zielstrebigkeit zahlen sich aus."
+    },
+    "wassermann": {
+      "name": "Wassermann",
+      "text": "Innovation und Originalität bringen Fortschritt."
+    },
+    "fische": {
+      "name": "Fische",
+      "text": "Intuition und Kreativität fließen besonders stark."
+    }
+  }
 }
