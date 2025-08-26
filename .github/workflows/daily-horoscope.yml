@@ -29,6 +29,8 @@ jobs:
           node scripts/generate-horoscope.js
 
       - name: Commit & push if changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.email "horoscope-bot@users.noreply.github.com"
           git config --global user.name "horoscope-bot"
@@ -39,5 +41,5 @@ jobs:
             echo "Changes detected, committing..."
             git add assets/data/horoscope.json
             git commit -m "chore: daily horoscope $(date -u +%F)"
-            git push
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
           fi
