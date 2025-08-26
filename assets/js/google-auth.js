@@ -19,9 +19,18 @@ class GoogleAuth {
         this.database = window.firebaseDatabase;
         this.provider = new GoogleAuthProvider();
         this.currentUser = null;
-        
+        // Promise that resolves after first auth state determination
+        this._authReadyResolved = false;
+        this.authReady = new Promise(resolve => { this._resolveAuthReady = resolve; });
         this.initializeAuth();
         this.setupEventListeners();
+    }
+
+    onAuthReady(cb){
+        if(typeof cb === 'function') {
+            this.authReady.then(cb);
+        }
+        return this.authReady;
     }
 
     initializeAuth() {
@@ -32,6 +41,10 @@ class GoogleAuth {
             } else {
                 this.currentUser = null;
                 this.handleSignOut();
+            }
+            if(!this._authReadyResolved){
+                this._authReadyResolved = true;
+                this._resolveAuthReady();
             }
         });
     }
@@ -320,7 +333,7 @@ class GoogleAuth {
     }
 
     isAuthenticated() {
-        return !!this.currentUser;
+        return !!(this.currentUser || (this.auth && this.auth.currentUser));
     }
 
     getCurrentUser() {

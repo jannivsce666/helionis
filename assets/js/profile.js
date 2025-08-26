@@ -1,32 +1,37 @@
 class ProfileManager {
     constructor() {
-        this.auth = window.googleAuth;
+        this.auth = null;
         this.database = window.firebaseDatabase;
         this.currentUser = null;
         this.initializeProfile();
     }
 
     async initializeProfile() {
-        // Wait for auth to be ready
-        if (!window.googleAuth) {
-            setTimeout(() => this.initializeProfile(), 500);
+        // Wait until googleAuth initialized and auth state resolved
+        if(!window.googleAuth){
+            setTimeout(()=>this.initializeProfile(), 150);
             return;
         }
-
-        // Check if user is authenticated
+        this.auth = window.googleAuth;
+        await window.googleAuth.onAuthReady?.();
+        // After auth ready, check authentication
         if (!window.googleAuth.isAuthenticated()) {
-            this.redirectToLogin();
+            // Silent redirect without blocking alert (avoids flash & modal message)
+            window.location.replace('login.html');
             return;
         }
-
-        this.currentUser = window.googleAuth.getCurrentUser();
+        this.currentUser = window.googleAuth.getCurrentUser() || window.firebaseAuth?.currentUser;
+        if(!this.currentUser){
+            window.location.replace('login.html');
+            return;
+        }
         await this.loadUserProfile();
         this.setupEventListeners();
     }
 
     redirectToLogin() {
-        alert('Bitte melden Sie sich an, um Ihr Profil zu sehen.');
-        window.location.href = 'index.html';
+        // Legacy method retained for compatibility but no alert now
+        window.location.replace('login.html');
     }
 
     async loadUserProfile() {
