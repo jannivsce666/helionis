@@ -6,7 +6,7 @@ class MysticalCreature {
         this.creature = {
             x: 0,
             y: 0,
-            size: 120,
+            size: 140, // Größer für mehr Details
             rotation: 0,
             floatOffset: 0,
             eyeBlinkTimer: 0,
@@ -14,6 +14,12 @@ class MysticalCreature {
             haloRotation: 0
         };
         this.stars = [];
+        this.horoscope = {
+            date: null,
+            signs: [],
+            cycleIndex: 0,
+            timer: null
+        };
         this.init();
     }
 
@@ -23,6 +29,7 @@ class MysticalCreature {
         this.createStars();
         this.animate();
         this.setupInteraction();
+        this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
     }
 
     createCanvas() {
@@ -32,9 +39,9 @@ class MysticalCreature {
         this.canvas.width = 300;
         this.canvas.height = 350;
         this.canvas.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+            position: relative;
+            margin: 2rem auto;
+            display: block;
             z-index: 1000;
             pointer-events: auto;
             border-radius: 15px;
@@ -43,13 +50,71 @@ class MysticalCreature {
             border: 1px solid rgba(184, 115, 51, 0.2);
             cursor: pointer;
             transition: transform 0.3s ease;
+            box-shadow: 0 8px 32px rgba(184, 115, 51, 0.15);
         `;
         
         this.ctx = this.canvas.getContext('2d');
         
-        // Add to horoscope page only
+        // Add under horoscope content
         if (window.location.pathname.includes('horoskop.html')) {
-            document.body.appendChild(this.canvas);
+            const cosmicWisdom = document.querySelector('.cosmic-wisdom');
+            const parentContainer = cosmicWisdom ? cosmicWisdom.parentNode : 
+                                  document.querySelector('main') || 
+                                  document.body;
+            
+            // Create a container for the creature
+            const creatureContainer = document.createElement('div');
+            creatureContainer.style.cssText = `
+                text-align: center;
+                padding: 2rem 0;
+                margin-top: 3rem;
+            `;
+            
+            const title = document.createElement('h3');
+            title.textContent = '✨ Dein Kristall-Orakel ✨';
+            title.style.cssText = `
+                color: #B87333;
+                font-family: 'Playfair Display', serif;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+                text-align: center;
+                text-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
+            `;
+            
+            creatureContainer.appendChild(title);
+            creatureContainer.appendChild(this.canvas);
+            
+            // Neu: Platz für laufenden Horoskop-Text
+            const msg = document.createElement('div');
+            msg.id = 'daily-horoscope-rotation';
+            msg.style.cssText = `
+                margin-top: 0.75rem;
+                font-size: 0.95rem;
+                line-height: 1.3;
+                min-height: 2.4rem;
+                color: #e9d3bf;
+                font-family: 'Inter', sans-serif;
+                max-width: 420px;
+                padding: 0.6rem 1rem;
+                margin-left: auto;
+                margin-right: auto;
+                background: rgba(184,115,51,0.08);
+                border: 1px solid rgba(184,115,51,0.25);
+                border-radius: 12px;
+                backdrop-filter: blur(6px);
+                box-shadow: 0 4px 18px -4px rgba(0,0,0,0.4);
+                transition: opacity .4s ease;
+            `;
+            msg.textContent = 'Lade tägliche Horoskope…';
+            creatureContainer.appendChild(msg);
+            this.messageEl = msg;
+            
+            // Insert after cosmic wisdom section
+            if (cosmicWisdom) {
+                cosmicWisdom.insertAdjacentElement('afterend', creatureContainer);
+            } else {
+                parentContainer.appendChild(creatureContainer);
+            }
         }
     }
 
@@ -75,16 +140,30 @@ class MysticalCreature {
         this.ctx.save();
         this.stars.forEach(star => {
             const alpha = (Math.sin(star.twinkle) + 1) / 2;
-            this.ctx.globalAlpha = alpha * 0.8;
-            this.ctx.fillStyle = '#D4AF37';
+            this.ctx.globalAlpha = alpha * 0.6;
             
-            // Draw star shape
-            this.drawStar(star.x, star.y, star.size, star.size * 2, 4);
+            // Modern star particles - more geometric
+            const starGradient = this.ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 2);
+            starGradient.addColorStop(0, '#FFD700');
+            starGradient.addColorStop(0.5, '#B87333');
+            starGradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+            
+            this.ctx.fillStyle = starGradient;
+            this.ctx.beginPath();
+            this.ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Bright center
+            this.ctx.fillStyle = '#FFD700';
+            this.ctx.beginPath();
+            this.ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
+            this.ctx.fill();
+            
             star.twinkle += star.speed;
             
-            // Slowly move stars
-            star.y += Math.sin(star.twinkle) * 0.5;
-            star.x += Math.cos(star.twinkle * 0.5) * 0.3;
+            // Gentle floating motion
+            star.y += Math.sin(star.twinkle) * 0.3;
+            star.x += Math.cos(star.twinkle * 0.7) * 0.2;
             
             // Wrap around edges
             if (star.x > this.canvas.width) star.x = 0;
@@ -124,272 +203,166 @@ class MysticalCreature {
         const { x, y, size, rotation, floatOffset, isBlinking, haloRotation } = this.creature;
         
         this.ctx.save();
-        this.ctx.translate(x, y + Math.sin(floatOffset) * 8);
-        this.ctx.rotate(Math.sin(rotation) * 0.1);
+        this.ctx.translate(x, y + Math.sin(floatOffset) * 5);
 
-        // Draw halo
-        this.drawHalo(haloRotation);
+        // Draw floating crystal orb companion
+        this.drawCrystalOrb(size, haloRotation);
 
-        // Draw body (cosmic purple with stars)
-        this.drawBody(size);
+        // Draw energy wisps around it
+        this.drawEnergyWisps(size, floatOffset);
 
-        // Draw horns
-        this.drawHorns(size);
-
-        // Draw wings
-        this.drawWings(size, floatOffset);
-
-        // Draw eyes
-        this.drawEyes(size, isBlinking);
-
-        // Draw mouth
-        this.drawMouth(size);
-
-        // Draw tail
-        this.drawTail(size, floatOffset);
+        // Draw mystical runes
+        this.drawFloatingRunes(size, rotation);
 
         this.ctx.restore();
     }
 
-    drawHalo(rotation) {
+    drawCrystalOrb(size, rotation) {
+        // Main crystal orb - modern geometric design
         this.ctx.save();
-        this.ctx.rotate(rotation);
+        this.ctx.rotate(rotation * 0.5);
         
-        // Golden halo
-        this.ctx.strokeStyle = '#D4AF37';
-        this.ctx.lineWidth = 3;
-        this.ctx.setLineDash([5, 5]);
+        // Outer crystal shell with gradient
+        const outerGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, size/2);
+        outerGradient.addColorStop(0, 'rgba(184, 115, 51, 0.1)');
+        outerGradient.addColorStop(0.7, 'rgba(184, 115, 51, 0.3)');
+        outerGradient.addColorStop(1, 'rgba(184, 115, 51, 0.6)');
+        
+        this.ctx.fillStyle = outerGradient;
         this.ctx.beginPath();
-        this.ctx.arc(0, -45, 35, 0, Math.PI * 2);
+        this.ctx.arc(0, 0, size/2, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // Inner crystal core - bright and mystical
+        const innerGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, size/3);
+        innerGradient.addColorStop(0, '#FFD700');
+        innerGradient.addColorStop(0.5, '#B87333');
+        innerGradient.addColorStop(1, '#8B4513');
+        
+        this.ctx.fillStyle = innerGradient;
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, size/3, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // Crystal facets - geometric pattern
+        this.ctx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
+        this.ctx.lineWidth = 2;
+        this.ctx.setLineDash([]);
+        
+        // Draw crystal facet lines
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const x1 = Math.cos(angle) * (size/4);
+            const y1 = Math.sin(angle) * (size/4);
+            const x2 = Math.cos(angle) * (size/2.5);
+            const y2 = Math.sin(angle) * (size/2.5);
+            
+            this.ctx.beginPath();
+            this.ctx.moveTo(x1, y1);
+            this.ctx.lineTo(x2, y2);
+            this.ctx.stroke();
+        }
+        
+        // Central mystical symbol - modern sacred geometry
+        this.ctx.strokeStyle = '#FFD700';
+        this.ctx.lineWidth = 1.5;
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, size/6, 0, Math.PI * 2);
         this.ctx.stroke();
         
-        // Halo sparkles
+        // Inner triangle
+        this.ctx.beginPath();
+        for (let i = 0; i < 3; i++) {
+            const angle = (i / 3) * Math.PI * 2 - Math.PI/2;
+            const x = Math.cos(angle) * (size/8);
+            const y = Math.sin(angle) * (size/8);
+            if (i === 0) this.ctx.moveTo(x, y);
+            else this.ctx.lineTo(x, y);
+        }
+        this.ctx.closePath();
+        this.ctx.stroke();
+        
+        this.ctx.restore();
+    }
+
+    drawEnergyWisps(size, floatOffset) {
+        // Floating energy wisps around the orb
         for (let i = 0; i < 6; i++) {
-            const angle = (i / 6) * Math.PI * 2;
-            const sparkleX = Math.cos(angle) * 40;
-            const sparkleY = Math.sin(angle) * 40 - 45;
+            const angle = (i / 6) * Math.PI * 2 + floatOffset;
+            const distance = size/1.5 + Math.sin(floatOffset * 2 + i) * 15;
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
             
-            this.ctx.fillStyle = '#D4AF37';
-            this.drawStar(sparkleX, sparkleY, 2, 4, 4);
-        }
-        
-        this.ctx.restore();
-    }
-
-    drawBody(size) {
-        // Main body - cosmic purple
-        const gradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, size/2);
-        gradient.addColorStop(0, '#4A148C');
-        gradient.addColorStop(0.6, '#7B1FA2');
-        gradient.addColorStop(1, '#2D0845');
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.beginPath();
-        this.ctx.arc(0, 0, size/2, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Add cosmic stars on body
-        this.ctx.fillStyle = '#D4AF37';
-        for (let i = 0; i < 12; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * (size/3);
-            const starX = Math.cos(angle) * distance;
-            const starY = Math.sin(angle) * distance;
+            // Wisp glow
+            const wispGradient = this.ctx.createRadialGradient(x, y, 0, x, y, 8);
+            wispGradient.addColorStop(0, 'rgba(255, 215, 0, 0.8)');
+            wispGradient.addColorStop(0.5, 'rgba(184, 115, 51, 0.5)');
+            wispGradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
             
-            this.drawStar(starX, starY, 1, 2, 4);
-        }
-
-        // Body outline
-        this.ctx.strokeStyle = '#B87333';
-        this.ctx.lineWidth = 2;
-        this.ctx.beginPath();
-        this.ctx.arc(0, 0, size/2, 0, Math.PI * 2);
-        this.ctx.stroke();
-    }
-
-    drawHorns(size) {
-        // Left horn
-        this.ctx.fillStyle = '#2D0845';
-        this.ctx.beginPath();
-        this.ctx.moveTo(-15, -size/2 + 5);
-        this.ctx.quadraticCurveTo(-25, -size/2 - 20, -20, -size/2 - 35);
-        this.ctx.quadraticCurveTo(-15, -size/2 - 30, -10, -size/2 + 5);
-        this.ctx.closePath();
-        this.ctx.fill();
-        this.ctx.stroke();
-
-        // Right horn
-        this.ctx.beginPath();
-        this.ctx.moveTo(15, -size/2 + 5);
-        this.ctx.quadraticCurveTo(25, -size/2 - 20, 20, -size/2 - 35);
-        this.ctx.quadraticCurveTo(15, -size/2 - 30, 10, -size/2 + 5);
-        this.ctx.closePath();
-        this.ctx.fill();
-        this.ctx.stroke();
-
-        // Horn sparkles
-        this.ctx.fillStyle = '#D4AF37';
-        this.drawStar(-18, -size/2 - 25, 1, 2, 4);
-        this.drawStar(18, -size/2 - 25, 1, 2, 4);
-    }
-
-    drawWings(size, floatOffset) {
-        const wingFlap = Math.sin(floatOffset * 2) * 0.3;
-        
-        this.ctx.save();
-        
-        // Left wing
-        this.ctx.translate(-size/3, -10);
-        this.ctx.rotate(-0.5 + wingFlap);
-        this.drawWing(size);
-        
-        this.ctx.restore();
-        this.ctx.save();
-        
-        // Right wing
-        this.ctx.translate(size/3, -10);
-        this.ctx.rotate(0.5 - wingFlap);
-        this.ctx.scale(-1, 1); // Flip horizontally
-        this.drawWing(size);
-        
-        this.ctx.restore();
-    }
-
-    drawWing(size) {
-        // Wing shape - cosmic style
-        const gradient = this.ctx.createLinearGradient(0, 0, 40, 30);
-        gradient.addColorStop(0, '#4A148C');
-        gradient.addColorStop(0.5, '#7B1FA2');
-        gradient.addColorStop(1, '#2D0845');
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, 0);
-        this.ctx.quadraticCurveTo(25, -15, 40, -5);
-        this.ctx.quadraticCurveTo(45, 10, 35, 25);
-        this.ctx.quadraticCurveTo(20, 30, 5, 20);
-        this.ctx.quadraticCurveTo(-5, 10, 0, 0);
-        this.ctx.closePath();
-        this.ctx.fill();
-        
-        this.ctx.strokeStyle = '#B87333';
-        this.ctx.lineWidth = 1.5;
-        this.ctx.stroke();
-
-        // Wing stars
-        this.ctx.fillStyle = '#D4AF37';
-        this.drawStar(15, 5, 1, 2, 4);
-        this.drawStar(25, 15, 0.8, 1.5, 4);
-    }
-
-    drawEyes(size, isBlinking) {
-        // Eye whites
-        this.ctx.fillStyle = '#FFFFFF';
-        
-        // Left eye
-        if (!isBlinking) {
+            this.ctx.fillStyle = wispGradient;
             this.ctx.beginPath();
-            this.ctx.arc(-12, -8, 8, 0, Math.PI * 2);
+            this.ctx.arc(x, y, 8, 0, Math.PI * 2);
             this.ctx.fill();
             
-            // Right eye
+            // Wisp core
+            this.ctx.fillStyle = '#FFD700';
             this.ctx.beginPath();
-            this.ctx.arc(12, -8, 8, 0, Math.PI * 2);
+            this.ctx.arc(x, y, 3, 0, Math.PI * 2);
             this.ctx.fill();
             
-            // Eye pupils
-            this.ctx.fillStyle = '#B87333';
-            this.ctx.beginPath();
-            this.ctx.arc(-12, -8, 4, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            this.ctx.beginPath();
-            this.ctx.arc(12, -8, 4, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Eye shine
-            this.ctx.fillStyle = '#FFFFFF';
-            this.ctx.beginPath();
-            this.ctx.arc(-10, -10, 1.5, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            this.ctx.beginPath();
-            this.ctx.arc(14, -10, 1.5, 0, Math.PI * 2);
-            this.ctx.fill();
-        } else {
-            // Closed eyes
-            this.ctx.strokeStyle = '#B87333';
+            // Wisp tail
+            this.ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
             this.ctx.lineWidth = 2;
+            this.ctx.lineCap = 'round';
             this.ctx.beginPath();
-            this.ctx.moveTo(-18, -8);
-            this.ctx.lineTo(-6, -8);
-            this.ctx.stroke();
-            
-            this.ctx.beginPath();
-            this.ctx.moveTo(6, -8);
-            this.ctx.lineTo(18, -8);
+            this.ctx.moveTo(x, y);
+            const tailX = x - Math.cos(angle) * 12;
+            const tailY = y - Math.sin(angle) * 12;
+            this.ctx.lineTo(tailX, tailY);
             this.ctx.stroke();
         }
     }
 
-    drawMouth(size) {
-        // Cute smile
-        this.ctx.strokeStyle = '#B87333';
-        this.ctx.lineWidth = 2;
-        this.ctx.beginPath();
-        this.ctx.arc(0, 5, 8, 0.2, Math.PI - 0.2);
-        this.ctx.stroke();
-    }
-
-    drawTail(size, floatOffset) {
-        const tailSway = Math.sin(floatOffset * 1.5) * 0.4;
+    drawFloatingRunes(size, rotation) {
+        // Mystical runes floating around the orb
+        const runes = ['◊', '◇', '◈', '◉'];
         
-        this.ctx.save();
-        this.ctx.translate(0, size/2 - 10);
-        this.ctx.rotate(tailSway);
-        
-        // Tail gradient
-        const gradient = this.ctx.createLinearGradient(0, 0, 0, 40);
-        gradient.addColorStop(0, '#4A148C');
-        gradient.addColorStop(1, '#2D0845');
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, 0);
-        this.ctx.quadraticCurveTo(-8, 15, -4, 30);
-        this.ctx.quadraticCurveTo(0, 35, 4, 30);
-        this.ctx.quadraticCurveTo(8, 15, 0, 0);
-        this.ctx.closePath();
-        this.ctx.fill();
-        
-        this.ctx.strokeStyle = '#B87333';
-        this.ctx.lineWidth = 1.5;
-        this.ctx.stroke();
-        
-        // Tail tip sparkle
-        this.ctx.fillStyle = '#D4AF37';
-        this.drawStar(0, 32, 2, 4, 4);
-        
-        this.ctx.restore();
+        for (let i = 0; i < 4; i++) {
+            this.ctx.save();
+            
+            const angle = (i / 4) * Math.PI * 2 + rotation;
+            const distance = size/1.2;
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+            
+            this.ctx.translate(x, y);
+            this.ctx.rotate(rotation * (i % 2 === 0 ? 1 : -1));
+            
+            // Rune glow
+            this.ctx.shadowColor = '#B87333';
+            this.ctx.shadowBlur = 10;
+            
+            this.ctx.fillStyle = '#FFD700';
+            this.ctx.font = 'bold 16px serif';
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillText(runes[i], 0, 0);
+            
+            this.ctx.shadowBlur = 0;
+            this.ctx.restore();
+        }
     }
 
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Update creature animations
-        this.creature.floatOffset += 0.03;
-        this.creature.rotation += 0.01;
-        this.creature.haloRotation += 0.02;
+        this.creature.floatOffset += 0.02;
+        this.creature.rotation += 0.008;
+        this.creature.haloRotation += 0.015;
         
-        // Blinking logic
-        this.creature.eyeBlinkTimer++;
-        if (this.creature.eyeBlinkTimer > 180) { // Blink every ~3 seconds
-            this.creature.isBlinking = true;
-            if (this.creature.eyeBlinkTimer > 190) {
-                this.creature.isBlinking = false;
-                this.creature.eyeBlinkTimer = 0;
-            }
-        }
+        // Blinking logic - removed for crystal orb
+        // Crystal orb doesn't blink, it pulses with energy
         
         // Draw everything
         this.drawStars();
@@ -414,23 +387,73 @@ class MysticalCreature {
     }
 
     createClickSparkles() {
-        // Add temporary sparkles on click
-        for (let i = 0; i < 5; i++) {
+        // Add magical energy burst on click
+        for (let i = 0; i < 8; i++) {
             setTimeout(() => {
                 this.stars.push({
-                    x: this.creature.x + (Math.random() - 0.5) * 100,
-                    y: this.creature.y + (Math.random() - 0.5) * 100,
-                    size: Math.random() * 4 + 2,
+                    x: this.creature.x + (Math.random() - 0.5) * 80,
+                    y: this.creature.y + (Math.random() - 0.5) * 80,
+                    size: Math.random() * 3 + 1,
                     twinkle: Math.random() * Math.PI * 2,
-                    speed: Math.random() * 0.1 + 0.05
+                    speed: Math.random() * 0.08 + 0.03
                 });
-            }, i * 100);
+            }, i * 80);
         }
         
         // Remove extra stars after animation
         setTimeout(() => {
             this.stars = this.stars.slice(0, 8);
-        }, 2000);
+        }, 3000);
+    }
+
+    fetchHoroscopeData() {
+        // JSON wird von GitHub Action täglich generiert: assets/data/horoscope.json
+        const url = `assets/data/horoscope.json?ts=${Date.now()}`; // Cache Bust
+        fetch(url, { cache: 'no-store' })
+            .then(r => {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.json();
+            })
+            .then(data => {
+                if (!data || !data.signs) throw new Error('Struktur ungültig');
+                this.horoscope.date = data.date || '';
+                // signs: { widder:{name,text}, ... }
+                this.horoscope.signs = Object.entries(data.signs).map(([key, val]) => ({ key, name: val.name, text: val.text }));
+                if (this.horoscope.signs.length === 0) throw new Error('Keine Zeichen');
+                this.startHoroscopeRotation();
+            })
+            .catch(err => {
+                console.warn('Horoskop Laden fehlgeschlagen:', err.message);
+                if (this.messageEl) this.messageEl.textContent = 'Heute kein Horoskop verfügbar.';
+            });
+    }
+
+    startHoroscopeRotation() {
+        if (!this.messageEl) return;
+        // Sofort erste Ausgabe
+        this.updateHoroscopeMessage();
+        // Alle 8s rotieren
+        if (this.horoscope.timer) clearInterval(this.horoscope.timer);
+        this.horoscope.timer = setInterval(() => this.updateHoroscopeMessage(), 8000);
+    }
+
+    updateHoroscopeMessage() {
+        if (!this.horoscope.signs.length || !this.messageEl) return;
+        const i = this.horoscope.cycleIndex % this.horoscope.signs.length;
+        const entry = this.horoscope.signs[i];
+        this.messageEl.style.opacity = 0;
+        setTimeout(() => {
+            this.messageEl.innerHTML = `<strong>${entry.name}:</strong> ${this.escapeHTML(entry.text)}`;
+            if (this.horoscope.date) {
+                this.messageEl.dataset.date = this.horoscope.date;
+            }
+            this.messageEl.style.opacity = 1;
+        }, 300);
+        this.horoscope.cycleIndex++;
+    }
+
+    escapeHTML(str) {
+        return str.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[c]));
     }
 }
 

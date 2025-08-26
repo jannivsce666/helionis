@@ -3,17 +3,35 @@ class ProfileManager {
         this.auth = null;
         this.database = window.firebaseDatabase;
         this.currentUser = null;
+        this._initialized = false;
         this.initializeProfile();
+        window.addEventListener('googleUserReady', (e) => {
+            if(!this._initialized) {
+                this.currentUser = e.detail.user;
+                console.log('[Profile] googleUserReady event received, loading profile');
+                this.loadUserProfile();
+                this.setupEventListeners();
+                this._initialized = true;
+            }
+        });
     }
 
     async initializeProfile() {
-        // Wait until googleAuth initialized and auth state resolved
+        // Wait for Firebase to be ready
+        await this.waitForFirebase();
+        // If googleAuth not yet created, wait for its event
         if(!window.googleAuth){
-            setTimeout(()=>this.initializeProfile(), 150);
-            return;
+            console.log('[Profile] googleAuth not ready yet, waiting for event');
+            return; // event listener in constructor will handle later
         }
         this.auth = window.googleAuth;
+        
+        // Wait for auth to be ready before checking state
         await window.googleAuth.onAuthReady?.();
+        
+        // Give a bit more time for auth state to stabilize
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         // After auth ready, check authentication
         if (!window.googleAuth.isAuthenticated()) {
             // Silent redirect without blocking alert (avoids flash & modal message)
@@ -29,6 +47,23 @@ class ProfileManager {
         this.setupEventListeners();
     }
 
+    async waitForFirebase() {
+        return new Promise((resolve) => {
+            if (window.firebaseReady && window.firebaseAuth) {
+                resolve();
+            } else {
+                const checkFirebase = () => {
+                    if (window.firebaseReady && window.firebaseAuth) {
+                        resolve();
+                    } else {
+                        setTimeout(checkFirebase, 100);
+                    }
+                };
+                checkFirebase();
+            }
+        });
+    }
+
     redirectToLogin() {
         // Legacy method retained for compatibility but no alert now
         window.location.replace('login.html');
@@ -38,39 +73,187 @@ class ProfileManager {
         if (!this.currentUser) return;
 
         try {
+            console.log('Loading profile for user:', this.currentUser);
+            
+            // First, immediately display Google data from Firebase User
+            this.displayGoogleUserInfo();
+            
+            // Then try to load additional Firebase database data
             const userData = await window.googleAuth.getUserData();
             
             if (userData) {
-                this.displayUserInfo(userData);
+                console.log('Additional user data loaded:', userData);
                 this.displayOrderHistory(userData.orders || {});
                 this.displayUserStats(userData);
+                // Update form with any saved profile data
+                this.loadProfileForm(userData.profile || {});
+            } else {
+                console.log('No additional user data found, using Google data only');
             }
         } catch (error) {
             console.error('Fehler beim Laden des Profils:', error);
+            // Even on error, show Google data
+            this.displayGoogleUserInfo();
         }
     }
 
-    displayUserInfo(userData) {
-        // Update profile header
+    displayGoogleUserInfo() {
+        if (!this.currentUser) return;
+        
+        console.log('Displaying Google user info:', this.currentUser);
+        
+        // Update profile header with direct Firebase User data
         const profileName = document.getElementById('profile-name');
         const profileEmail = document.getElementById('profile-email');
         const profileMemberSince = document.getElementById('profile-member-since');
 
+        // Set name from Google profile
         if (profileName) {
-            profileName.textContent = userData.displayName || 'Mystiker';
+            const displayName = this.currentUser.displayName || 'Mystiker';
+            profileName.textContent = displayName;
+            console.log('Set profile name to:', displayName);
         }
 
+        // Set email from Google profile
         if (profileEmail) {
-            profileEmail.textContent = userData.email || '';
+            const email = this.currentUser.email || '';
+            profileEmail.textContent = email;
+            console.log('Set profile email to:', email);
         }
 
+        // Set member since date
         if (profileMemberSince) {
-            const memberSince = new Date(userData.createdAt).toLocaleDateString('de-DE');
-            profileMemberSince.textContent = `Mitglied seit ${memberSince}`;
+            if (this.currentUser.metadata?.creationTime) {
+                const memberSince = new Date(this.currentUser.metadata.creationTime).toLocaleDateString('de-DE');
+                profileMemberSince.textContent = `Mitglied seit ${memberSince}`;
+                console.log('Set member since to:', memberSince);
+            }
         }
 
-        // Load profile form data
-        this.loadProfileForm(userData.profile || {});
+        // Update profile picture from Google
+        if (this.currentUser.photoURL) {
+            this.updateProfilePicture(this.currentUser.photoURL);
+            console.log('Set profile picture to:', this.currentUser.photoURL);
+        }
+
+        // Update form fields with Google data
+        this.updateFormWithGoogleData();
+    }
+
+    updateFormWithGoogleData() {
+        if (!this.currentUser) return;
+        
+        // Update form fields with Google display name and email
+        const editDisplayName = document.getElementById('edit-displayName');
+        const editEmail = document.getElementById('edit-email');
+        
+        if (editDisplayName && this.currentUser.displayName) {
+            editDisplayName.value = this.currentUser.displayName;
+        }
+        
+        if (editEmail && this.currentUser.email) {
+            editEmail.value = this.currentUser.email;
+        }
+    }
+
+    loadProfileForm(profileData) {
+        // Personal Information
+        const firstName = document.getElementById('first-name');
+        const lastName = document.getElementById('last-name');
+        const phone = document.getElementById('phone');
+
+        if (firstName) firstName.value = profileData.firstName || '';
+        if (lastName) lastName.value = profileData.lastName || '';
+        if (phone) phone.value = profileData.phone || '';
+
+        // Address
+        const street = document.getElementById('street');
+        const city = document.getElementById('city');
+        const zipCode = document.getElementById('zip-code');
+        const country = document.getElementById('country');
+
+        if (profileData.address) {
+            if (street) street.value = profileData.address.street || '';
+            if (city) city.value = profileData.address.city || '';
+            if (zipCode) zipCode.value = profileData.address.zipCode || '';
+            if (country) country.value = profileData.address.country || '';
+        }
+
+        // Preferences
+        const newsletter = document.getElementById('newsletter');
+        const notifications = document.getElementById('notifications');
+
+        if (profileData.preferences) {
+            if (newsletter) newsletter.checked = profileData.preferences.newsletter || false;
+            if (notifications) notifications.checked = profileData.preferences.notifications !== false;
+        }
+    }
+
+    updateProfilePicture(photoURL) {
+        const avatarCircle = document.querySelector('.avatar-circle');
+        const zodiacAvatar = document.getElementById('zodiac-avatar');
+        
+        console.log('Updating profile picture with URL:', photoURL);
+        
+        if (photoURL && avatarCircle) {
+            // Remove existing zodiac avatar
+            if (zodiacAvatar) {
+                zodiacAvatar.style.display = 'none';
+            }
+            
+            // Remove any existing profile image
+            const existingImg = avatarCircle.querySelector('.profile-image');
+            if (existingImg) {
+                existingImg.remove();
+            }
+            
+            // Create new profile image
+            const profileImg = document.createElement('img');
+            profileImg.className = 'profile-image';
+            profileImg.style.cssText = `
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #B87333;
+                display: block;
+            `;
+            profileImg.src = photoURL;
+            profileImg.alt = 'Profilbild';
+            
+            // Add error handler
+            profileImg.onerror = () => {
+                console.log('Profile image failed to load, showing zodiac avatar');
+                profileImg.style.display = 'none';
+                if (zodiacAvatar) {
+                    zodiacAvatar.style.display = 'block';
+                }
+            };
+            
+            profileImg.onload = () => {
+                console.log('Profile image loaded successfully');
+            };
+            
+            avatarCircle.appendChild(profileImg);
+        } else if (zodiacAvatar) {
+            // Show zodiac avatar if no Google photo
+            zodiacAvatar.style.display = 'block';
+            console.log('No photo URL, showing zodiac avatar');
+        }
+    }
+
+    updateFormWithGoogleData(userData) {
+        // Update form fields with Google display name
+        const editDisplayName = document.getElementById('edit-displayName');
+        const editEmail = document.getElementById('edit-email');
+        
+        if (editDisplayName && userData.displayName) {
+            editDisplayName.value = userData.displayName;
+        }
+        
+        if (editEmail && userData.email) {
+            editEmail.value = userData.email;
+        }
     }
 
     loadProfileForm(profileData) {

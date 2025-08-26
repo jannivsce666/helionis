@@ -2,7 +2,9 @@ import {
     signInWithPopup, 
     GoogleAuthProvider, 
     signOut, 
-    onAuthStateChanged 
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 import { 
     ref, 
@@ -34,13 +36,24 @@ class GoogleAuth {
     }
 
     initializeAuth() {
+        // Ensure persistence so session survives reloads
+        try {
+            setPersistence(this.auth, browserLocalPersistence).then(() => {
+                console.log('[GoogleAuth] Persistence set to browserLocalPersistence');
+            }).catch(err => console.warn('[GoogleAuth] Could not set persistence:', err));
+        } catch(e) {
+            console.warn('[GoogleAuth] Persistence setup error', e);
+        }
         onAuthStateChanged(this.auth, (user) => {
+            console.log('[GoogleAuth] onAuthStateChanged fired. user =', user ? user.email : 'null');
             if (user) {
                 this.currentUser = user;
                 this.handleSignIn(user);
+                window.dispatchEvent(new CustomEvent('googleUserReady', { detail: { user } }));
             } else {
                 this.currentUser = null;
                 this.handleSignOut();
+                window.dispatchEvent(new CustomEvent('googleUserSignedOut'));
             }
             if(!this._authReadyResolved){
                 this._authReadyResolved = true;
@@ -333,7 +346,9 @@ class GoogleAuth {
     }
 
     isAuthenticated() {
-        return !!(this.currentUser || (this.auth && this.auth.currentUser));
+        const state = !!(this.currentUser || (this.auth && this.auth.currentUser));
+        console.log('[GoogleAuth] isAuthenticated ->', state);
+        return state;
     }
 
     getCurrentUser() {
