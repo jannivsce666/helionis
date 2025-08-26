@@ -46,20 +46,98 @@ class MysticalCreature {
         this.canvas = document.getElementById('mysticalCreatureCanvas');
         if (!this.canvas) {
             console.error('Mystical creature canvas not found!');
+            this.showFallbackOrb();
             return;
         }
         
         this.ctx = this.canvas.getContext('2d');
+        if (!this.ctx) {
+            console.error('Could not get 2D context!');
+            this.showFallbackOrb();
+            return;
+        }
         
         // Set canvas dimensions
         this.canvas.width = 300;
         this.canvas.height = 300;
+        
+        // Add visible border for debugging
+        this.canvas.style.border = '2px solid rgba(184, 115, 51, 0.3)';
+        this.canvas.style.borderRadius = '15px';
+        this.canvas.style.background = 'rgba(13, 13, 13, 0.5)';
         
         // Check for mobile device
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
         
         // Adjust animation speed for mobile
         this.animationSpeed = this.isMobile ? 0.7 : 1.0;
+        
+        console.log('Canvas initialized successfully', this.canvas.width, 'x', this.canvas.height);
+    }
+    
+    showFallbackOrb() {
+        // Create a visible CSS-based orb as fallback
+        const container = document.getElementById('creatureContainer');
+        if (container) {
+            container.innerHTML = `
+                <div class="fallback-orb">
+                    <div class="orb-core"></div>
+                    <div class="orb-glow"></div>
+                    <div class="orb-sparkles">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="creature-text">
+                    <p id="mysticalText">🔮 Das Kristall-Orakel erwacht...</p>
+                </div>
+                <style>
+                .fallback-orb {
+                    position: relative;
+                    width: 200px;
+                    height: 200px;
+                    margin: 2rem auto;
+                }
+                .orb-core {
+                    width: 100%;
+                    height: 100%;
+                    background: radial-gradient(circle at 30% 30%, #FFD700, #B87333, #8B4513);
+                    border-radius: 50%;
+                    animation: orbPulse 3s ease-in-out infinite;
+                    box-shadow: 0 0 40px rgba(184, 115, 51, 0.6), inset 0 0 40px rgba(255, 215, 0, 0.3);
+                }
+                .orb-glow {
+                    position: absolute;
+                    top: -20px; left: -20px; right: -20px; bottom: -20px;
+                    background: radial-gradient(circle, rgba(184, 115, 51, 0.3), transparent 70%);
+                    border-radius: 50%;
+                    animation: orbGlow 4s ease-in-out infinite alternate;
+                }
+                .orb-sparkles span {
+                    position: absolute;
+                    width: 4px; height: 4px;
+                    background: #FFD700;
+                    border-radius: 50%;
+                    animation: sparkle 2s linear infinite;
+                }
+                .orb-sparkles span:nth-child(1) { top: 20%; left: 80%; animation-delay: 0s; }
+                .orb-sparkles span:nth-child(2) { top: 80%; left: 20%; animation-delay: 0.5s; }
+                .orb-sparkles span:nth-child(3) { top: 20%; left: 20%; animation-delay: 1s; }
+                .orb-sparkles span:nth-child(4) { top: 80%; left: 80%; animation-delay: 1.5s; }
+                @keyframes orbPulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                }
+                @keyframes orbGlow {
+                    0% { opacity: 0.6; }
+                    100% { opacity: 1; }
+                }
+                @keyframes sparkle {
+                    0%, 100% { opacity: 0; transform: scale(0); }
+                    50% { opacity: 1; transform: scale(1); }
+                }
+                </style>
+            `;
+        }
     }
 
     setupCreature() {
@@ -298,25 +376,33 @@ class MysticalCreature {
     }
 
     animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (!this.canvas || !this.ctx) {
+            console.warn('Canvas not available for animation');
+            return;
+        }
         
-        // Detect mobile devices and slow down animations
-        const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
-        const speedMultiplier = isMobile ? 0.3 : 1; // 70% slower on mobile
-        
-        // Update creature animations with mobile-aware speed
-        this.creature.floatOffset += 0.02 * speedMultiplier;
-        this.creature.rotation += 0.008 * speedMultiplier;
-        this.creature.haloRotation += 0.015 * speedMultiplier;
-        
-        // Blinking logic - removed for crystal orb
-        // Crystal orb doesn't blink, it pulses with energy
-        
-        // Draw everything
-        this.drawStars();
-        this.drawCreature();
-        
-        requestAnimationFrame(() => this.animate());
+        try {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            // Detect mobile devices and slow down animations
+            const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+            const speedMultiplier = isMobile ? 0.3 : 1; // 70% slower on mobile
+            
+            // Update creature animations with mobile-aware speed
+            this.creature.floatOffset += 0.02 * speedMultiplier;
+            this.creature.rotation += 0.008 * speedMultiplier;
+            this.creature.haloRotation += 0.015 * speedMultiplier;
+            
+            // Draw everything
+            this.drawStars();
+            this.drawCreature();
+            
+            requestAnimationFrame(() => this.animate());
+        } catch (error) {
+            console.error('Animation error:', error);
+            // Try to show fallback if animation fails
+            this.showFallbackOrb();
+        }
     }
 
     setupInteraction() {
@@ -407,8 +493,28 @@ class MysticalCreature {
 
 // Initialize the mystical creature when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.includes('horoskop.html')) {
-        new MysticalCreature();
+    console.log('DOM loaded, checking for horoskop page...');
+    if (window.location.pathname.includes('horoskop')) {
+        console.log('Horoskop page detected, initializing mystical creature...');
+        try {
+            const creature = new MysticalCreature();
+            console.log('Mystical creature initialized successfully');
+            
+            // Add a visible indicator that the script is working
+            setTimeout(() => {
+                const textEl = document.getElementById('mysticalText');
+                if (textEl && textEl.textContent.includes('kosmische Energie')) {
+                    textEl.textContent = '🔮 Das Kristall-Orakel ist erwacht! ✨';
+                    setTimeout(() => {
+                        textEl.textContent = 'Die Kristallkugel zeigt deine kosmische Energie...';
+                    }, 2000);
+                }
+            }, 1000);
+        } catch (error) {
+            console.error('Failed to initialize mystical creature:', error);
+        }
+    } else {
+        console.log('Not on horoskop page, path:', window.location.pathname);
     }
 });
 
