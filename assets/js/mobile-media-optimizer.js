@@ -32,15 +32,26 @@ class MobileMediaOptimizer {
     }
 
     optimizeForMobile() {
-        // Remove videos on mobile to save bandwidth
+        // Remove videos on mobile to save bandwidth and prevent issues
         const videos = document.querySelectorAll('.product-hover-video, .hero-image video');
         videos.forEach(video => {
-            if (this.isSlowConnection) {
+            if (this.isMobile || this.isSlowConnection) {
                 video.style.display = 'none';
+                video.pause();
+                video.removeAttribute('src'); // Stop loading
             } else {
                 // Keep videos but don't autoplay
                 video.removeAttribute('autoplay');
                 video.preload = 'none';
+            }
+        });
+
+        // Ensure static images are always visible on mobile
+        const staticImages = document.querySelectorAll('.product-static-image');
+        staticImages.forEach(img => {
+            if (this.isMobile) {
+                img.style.opacity = '1';
+                img.style.display = 'block';
             }
         });
 

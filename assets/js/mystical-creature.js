@@ -356,10 +356,14 @@ class MysticalCreature {
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Update creature animations
-        this.creature.floatOffset += 0.02;
-        this.creature.rotation += 0.008;
-        this.creature.haloRotation += 0.015;
+        // Detect mobile devices and slow down animations
+        const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+        const speedMultiplier = isMobile ? 0.3 : 1; // 70% slower on mobile
+        
+        // Update creature animations with mobile-aware speed
+        this.creature.floatOffset += 0.02 * speedMultiplier;
+        this.creature.rotation += 0.008 * speedMultiplier;
+        this.creature.haloRotation += 0.015 * speedMultiplier;
         
         // Blinking logic - removed for crystal orb
         // Crystal orb doesn't blink, it pulses with energy

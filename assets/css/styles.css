@@ -296,10 +296,25 @@ p {
     .amulet-card:hover .product-hover-video {
         opacity: 1;
     }
+    
+    .amulet-card:hover .product-static-image {
+        opacity: 0;
+    }
 }
 
-.amulet-card:hover .product-static-image {
-    opacity: 0;
+/* Mobile: Always show static images, hide videos completely */
+@media (max-width: 768px) {
+    .product-hover-video {
+        display: none !important;
+    }
+    
+    .product-static-image {
+        opacity: 1 !important;
+    }
+    
+    .product-card {
+        transform: none !important;
+    }
 }
 
 .product-card h3 {
@@ -1395,12 +1410,17 @@ footer {
         margin-bottom: 1rem;
     }
     
-    /* Mystical Creature Mobile */
+    /* Mystical Creature Mobile - Slower animations */
     #mystical-creature-canvas {
         width: 200px !important;
         height: 230px !important;
         bottom: 10px !important;
         right: 10px !important;
+    }
+    
+    /* Reduce mystical creature animation speed on mobile */
+    .mystical-creature-mobile {
+        animation-duration: 8s !important; /* Slower than desktop */
     }
 }
 
@@ -1422,12 +1442,17 @@ footer {
         line-height: 1.6;
     }
     
-    /* Mystical Creature Small Mobile */
+    /* Mystical Creature Small Mobile - Even slower */
     #mystical-creature-canvas {
         width: 150px !important;
         height: 175px !important;
         bottom: 5px !important;
         right: 5px !important;
+    }
+    
+    /* Further reduce animation speed on small mobile */
+    .mystical-creature-mobile {
+        animation-duration: 12s !important; /* Much slower */
     }
 }
 
@@ -3010,6 +3035,25 @@ header nav { display:flex; }
     .google-login-btn-animated {
         padding: 1rem 1.5rem;
         font-size: 1rem;
+        /* Disable complex animations on mobile */
+        background: linear-gradient(135deg, 
+            rgba(184, 115, 51, 0.15) 0%, 
+            rgba(184, 115, 51, 0.1) 100%);
+        transition: background-color 0.2s ease; /* Simple transition only */
+    }
+    
+    .google-login-btn-animated:hover {
+        transform: none; /* No transform on mobile */
+        box-shadow: none; /* No shadow on mobile */
+    }
+    
+    .google-login-btn-animated:active {
+        background-color: rgba(184, 115, 51, 0.2);
+        transform: none;
+    }
+    
+    .button-background {
+        display: none; /* Hide animated background on mobile */
     }
     
     .mystical-symbols .symbol {
