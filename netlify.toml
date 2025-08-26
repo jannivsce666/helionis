@@ -6,7 +6,7 @@
   command = ""
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # Redirect-Regeln für SPA (Single Page Application) Verhalten
 [[redirects]]
@@ -67,3 +67,10 @@
   for = "*.js"
   [headers.values]
     Cache-Control = "public, max-age=86400"
+
+# Spezielle Einstellungen für Horoskop-JSON (kurzer Cache für tägliche Updates)
+[[headers]]
+  for = "/assets/data/*.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+    Access-Control-Allow-Origin = "*"
