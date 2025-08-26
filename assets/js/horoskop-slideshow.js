@@ -152,7 +152,7 @@ class HoroscopeSlideshow {
             slide.className = 'horoscope-slide';
             slide.innerHTML = `
                 <div class="slide-symbol">
-                    <img src="assets/images/mystical-sprites.svg#${zodiac.sign}" alt="${zodiac.name} Symbol" style="width: 100%; height: 100%;">
+                    <svg viewBox="0 0 64 64" class="zodiac-icon"><use href="assets/images/mystical-sprites.svg#${zodiac.sign}"></use></svg>
                 </div>
                 <h2 class="slide-title">${zodiac.name} ${zodiac.symbol}</h2>
                 <p class="slide-dates">${zodiac.dates}</p>
