@@ -1395,6 +1395,14 @@ footer {
         justify-content: center;
         margin-bottom: 1rem;
     }
+    
+    /* Mystical Creature Mobile */
+    #mystical-creature-canvas {
+        width: 200px !important;
+        height: 230px !important;
+        bottom: 10px !important;
+        right: 10px !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1413,6 +1421,14 @@ footer {
     .slide-horoscope {
         font-size: 1rem;
         line-height: 1.6;
+    }
+    
+    /* Mystical Creature Small Mobile */
+    #mystical-creature-canvas {
+        width: 150px !important;
+        height: 175px !important;
+        bottom: 5px !important;
+        right: 5px !important;
     }
 }
 
