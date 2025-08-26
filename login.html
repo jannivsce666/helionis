@@ -41,8 +41,23 @@
                         <div class="symbol symbol-4">✧</div>
                     </div>
                     
-                    <h1 class="login-title">Willkommen zurück</h1>
-                    <p class="login-subtitle">Betrete das mystische Reich von Helionis</p>
+                    <!-- Login/Register Tab Navigation -->
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" data-tab="login">ANMELDEN</button>
+                        <button class="auth-tab" data-tab="register">REGISTRIEREN</button>
+                    </div>
+                    
+                    <!-- Login Tab Content -->
+                    <div class="auth-content active" id="login-content">
+                        <h1 class="login-title">Willkommen zurück</h1>
+                        <p class="login-subtitle">Betrete das mystische Reich von Helionis</p>
+                    </div>
+                    
+                    <!-- Register Tab Content -->
+                    <div class="auth-content" id="register-content">
+                        <h1 class="login-title">Werde Teil der Mystik</h1>
+                        <p class="login-subtitle">Erstelle dein Helionis Konto</p>
+                    </div>
                     
                     <!-- Animated Google Login Button -->
                     <div class="google-login-container">
@@ -132,7 +147,7 @@
                                     <path d="M110,60 L100,65 L90,60 L100,55 Z" fill="#667eea" opacity="0.7" class="google-sparkle-main" style="animation-delay: 4s;"/>
                                 </svg>
                             </div>
-                            <span class="login-text-animated">Mit Google anmelden</span>
+                            <span class="login-text-animated google-text">Mit Google anmelden</span>
                             <div class="button-shine"></div>
                         </button>
                     </div>

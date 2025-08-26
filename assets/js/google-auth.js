@@ -47,6 +47,42 @@ class GoogleAuth {
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => this.signOut());
         }
+        
+        // Setup auth tabs functionality
+        this.setupAuthTabs();
+    }
+    
+    setupAuthTabs() {
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authContents = document.querySelectorAll('.auth-content');
+        
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                authTabs.forEach(t => t.classList.remove('active'));
+                authContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const targetContent = document.getElementById(`${targetTab}-content`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+                
+                // Update button text based on active tab
+                const googleBtn = document.getElementById('google-login-btn');
+                if (googleBtn) {
+                    const btnText = googleBtn.querySelector('.google-text');
+                    if (btnText) {
+                        btnText.textContent = targetTab === 'login' ? 'Mit Google anmelden' : 'Mit Google registrieren';
+                    }
+                }
+            });
+        });
     }
 
     async signInWithGoogle() {
