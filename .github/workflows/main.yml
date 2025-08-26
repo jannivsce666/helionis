@@ -1,0 +1,32 @@
+name: Daily horoscope
+on:
+  schedule:
+    - cron: '0 4 * * *'   # 04:00 UTC ≈ 06:00 (Berlin Sommer)
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate horoscope
+        run: node scripts/generate-horoscope.js
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+          else
+            git config user.name "horoscope-bot"
+            git config user.email "horoscope-bot@users.noreply.github.com"
+            git add assets/data/horoscope.json
+            git commit -m "chore: daily horoscope $(date -u +%F)"
+            git push
+          fi
