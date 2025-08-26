@@ -29,93 +29,37 @@ class MysticalCreature {
         this.createStars();
         this.animate();
         this.setupInteraction();
+        this.setupMessageElement();
         this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
     }
 
+    setupMessageElement() {
+        // Find the mystical text element
+        this.messageEl = document.getElementById('mysticalText');
+        if (!this.messageEl) {
+            console.warn('Mystical text element not found');
+        }
+    }
+
     createCanvas() {
-        // Create canvas element
-        this.canvas = document.createElement('canvas');
-        this.canvas.id = 'mystical-creature-canvas';
-        this.canvas.width = 300;
-        this.canvas.height = 350;
-        this.canvas.style.cssText = `
-            position: relative;
-            margin: 2rem auto;
-            display: block;
-            z-index: 1000;
-            pointer-events: auto;
-            border-radius: 15px;
-            background: rgba(13, 13, 13, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(184, 115, 51, 0.2);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            box-shadow: 0 8px 32px rgba(184, 115, 51, 0.15);
-        `;
+        // Find existing canvas element
+        this.canvas = document.getElementById('mysticalCreatureCanvas');
+        if (!this.canvas) {
+            console.error('Mystical creature canvas not found!');
+            return;
+        }
         
         this.ctx = this.canvas.getContext('2d');
         
-        // Add under horoscope content
-        if (window.location.pathname.includes('horoskop.html')) {
-            const cosmicWisdom = document.querySelector('.cosmic-wisdom');
-            const parentContainer = cosmicWisdom ? cosmicWisdom.parentNode : 
-                                  document.querySelector('main') || 
-                                  document.body;
-            
-            // Create a container for the creature
-            const creatureContainer = document.createElement('div');
-            creatureContainer.style.cssText = `
-                text-align: center;
-                padding: 2rem 0;
-                margin-top: 3rem;
-            `;
-            
-            const title = document.createElement('h3');
-            title.textContent = '✨ Dein Kristall-Orakel ✨';
-            title.style.cssText = `
-                color: #B87333;
-                font-family: 'Playfair Display', serif;
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-                text-align: center;
-                text-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
-            `;
-            
-            creatureContainer.appendChild(title);
-            creatureContainer.appendChild(this.canvas);
-            
-            // Neu: Platz für laufenden Horoskop-Text
-            const msg = document.createElement('div');
-            msg.id = 'daily-horoscope-rotation';
-            msg.style.cssText = `
-                margin-top: 0.75rem;
-                font-size: 0.95rem;
-                line-height: 1.3;
-                min-height: 2.4rem;
-                color: #e9d3bf;
-                font-family: 'Inter', sans-serif;
-                max-width: 420px;
-                padding: 0.6rem 1rem;
-                margin-left: auto;
-                margin-right: auto;
-                background: rgba(184,115,51,0.08);
-                border: 1px solid rgba(184,115,51,0.25);
-                border-radius: 12px;
-                backdrop-filter: blur(6px);
-                box-shadow: 0 4px 18px -4px rgba(0,0,0,0.4);
-                transition: opacity .4s ease;
-            `;
-            msg.textContent = 'Lade tägliche Horoskope…';
-            creatureContainer.appendChild(msg);
-            this.messageEl = msg;
-            
-            // Insert after cosmic wisdom section
-            if (cosmicWisdom) {
-                cosmicWisdom.insertAdjacentElement('afterend', creatureContainer);
-            } else {
-                parentContainer.appendChild(creatureContainer);
-            }
-        }
+        // Set canvas dimensions
+        this.canvas.width = 300;
+        this.canvas.height = 300;
+        
+        // Check for mobile device
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
+        
+        // Adjust animation speed for mobile
+        this.animationSpeed = this.isMobile ? 0.7 : 1.0;
     }
 
     setupCreature() {

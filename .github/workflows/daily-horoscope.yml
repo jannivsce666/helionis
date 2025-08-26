@@ -8,6 +8,9 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Berechtigung zum Push
+      
     steps:
       - uses: actions/checkout@v4
 
@@ -27,11 +30,13 @@ jobs:
 
       - name: Commit & push if changed
         run: |
+          git config --global user.email "horoscope-bot@users.noreply.github.com"
+          git config --global user.name "horoscope-bot"
+          
           if git diff --quiet; then
-            echo "No changes"
+            echo "No changes detected"
           else
-            git config user.email "horoscope-bot@users.noreply.github.com"
-            git config user.name "horoscope-bot"
+            echo "Changes detected, committing..."
             git add assets/data/horoscope.json
             git commit -m "chore: daily horoscope $(date -u +%F)"
             git push

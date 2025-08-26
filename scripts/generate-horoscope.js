@@ -49,53 +49,99 @@ async function main() {
     process.exit(1);
   }
 
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      temperature: 0.8,
-      messages: [
-        { role: 'system', content: 'Du bist ein präziser JSON Generator.' },
-        { role: 'user', content: prompt }
-      ]
-    })
-  });
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        temperature: 0.8,
+        max_tokens: 2000,
+        messages: [
+          { role: 'system', content: 'Du bist ein präziser JSON Generator für deutsche Horoskope.' },
+          { role: 'user', content: prompt }
+        ]
+      })
+    });
 
-  if (!res.ok) {
-    console.error('API Fehler', res.status, await res.text());
-    process.exit(1);
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('API Fehler', res.status, errorText);
+      
+      // Bei Quota-Fehlern: Fallback verwenden
+      if (res.status === 429 || errorText.includes('quota')) {
+        console.log('OpenAI Quota erreicht - verwende Fallback Horoskope');
+        createFallbackHoroscope();
+        return;
+      }
+      process.exit(1);
+    }
+
+    const data = await res.json();
+    let raw = data.choices?.[0]?.message?.content || '';
+    let jsonText = raw.trim();
+    const first = jsonText.indexOf('{');
+    const last = jsonText.lastIndexOf('}');
+    if (first !== -1 && last !== -1) jsonText = jsonText.slice(first, last + 1);
+
+    let parsed;
+    try { parsed = JSON.parse(jsonText); } catch (e) {
+      console.error('Parsing fehlgeschlagen. Antwort:', raw);
+      console.log('Verwende Fallback Horoskope');
+      createFallbackHoroscope();
+      return;
+    }
+
+    for (const s of signs) {
+      if (!parsed[s.key]) parsed[s.key] = 'Die Sterne sind heute verschleiert.';
+    }
+
+    const output = {
+      date: today,
+      generated_at: new Date().toISOString(),
+      signs: Object.fromEntries(signs.map(s => [s.key, { name: s.name, text: parsed[s.key].trim() }]))
+    };
+
+    fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
+    fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2), 'utf8');
+    console.log('Horoskope gespeichert ->', OUT_PATH);
+    
+  } catch (error) {
+    console.error('Unerwarteter Fehler:', error.message);
+    console.log('Verwende Fallback Horoskope');
+    createFallbackHoroscope();
   }
+}
 
-  const data = await res.json();
-  let raw = data.choices?.[0]?.message?.content || '';
-  let jsonText = raw.trim();
-  const first = jsonText.indexOf('{');
-  const last = jsonText.lastIndexOf('}');
-  if (first !== -1 && last !== -1) jsonText = jsonText.slice(first, last + 1);
-
-  let parsed;
-  try { parsed = JSON.parse(jsonText); } catch (e) {
-    console.error('Parsing fehlgeschlagen. Antwort:', raw);
-    process.exit(1);
-  }
-
-  for (const s of signs) {
-    if (!parsed[s.key]) parsed[s.key] = 'Keine Daten heute.';
-  }
+function createFallbackHoroscope() {
+  const fallbackTexts = {
+    widder: 'Die Sterne zeigen neue Möglichkeiten auf. Vertraue deiner Intuition.',
+    stier: 'Stabilität und Beständigkeit prägen deinen Tag. Bleibe geerdet.',
+    zwillinge: 'Kommunikation öffnet heute neue Türen. Sei offen für Gespräche.',
+    krebs: 'Emotionale Tiefe bringt Klarheit. Höre auf dein Herz.',
+    loewe: 'Deine natürliche Ausstrahlung steht heute im Mittelpunkt.',
+    jungfrau: 'Präzision und Aufmerksamkeit führen zum Erfolg.',
+    waage: 'Balance und Harmonie sind heute deine Stärken.',
+    skorpion: 'Transformation liegt in der Luft. Umarme Veränderungen.',
+    schuetze: 'Neue Horizonte warten darauf, entdeckt zu werden.',
+    steinbock: 'Ausdauer und Zielstrebigkeit zahlen sich aus.',
+    wassermann: 'Innovation und Originalität bringen Fortschritt.',
+    fische: 'Intuition und Kreativität fließen besonders stark.'
+  };
 
   const output = {
     date: today,
     generated_at: new Date().toISOString(),
-    signs: Object.fromEntries(signs.map(s => [s.key, { name: s.name, text: parsed[s.key].trim() }]))
+    source: 'fallback',
+    signs: Object.fromEntries(signs.map(s => [s.key, { name: s.name, text: fallbackTexts[s.key] }]))
   };
 
   fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
   fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2), 'utf8');
-  console.log('Horoskope gespeichert ->', OUT_PATH);
+  console.log('Fallback Horoskope gespeichert ->', OUT_PATH);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

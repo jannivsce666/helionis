@@ -1330,6 +1330,53 @@ footer {
     letter-spacing: 1px;
 }
 
+/* Mystical Creature Section */
+.mystical-creature-section {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    position: relative;
+}
+
+.creature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+#mysticalCreatureCanvas {
+    background: transparent;
+    border-radius: 50%;
+    filter: drop-shadow(0 0 20px rgba(184, 115, 51, 0.3));
+    transition: all 0.3s ease;
+}
+
+#mysticalCreatureCanvas:hover {
+    filter: drop-shadow(0 0 30px rgba(184, 115, 51, 0.5));
+    transform: scale(1.05);
+}
+
+.creature-text {
+    max-width: 400px;
+    padding: 1rem;
+    background: rgba(13, 13, 13, 0.7);
+    border: 1px solid rgba(184, 115, 51, 0.2);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.creature-text p {
+    color: #EDE9E4;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+}
+
 /* Cosmic Wisdom Section */
 .cosmic-wisdom {
     padding: 4rem 2rem;
