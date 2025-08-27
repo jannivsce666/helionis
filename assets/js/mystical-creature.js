@@ -780,12 +780,12 @@ class MysticalCreature {
         const cardsContainer = document.createElement('div');
         cardsContainer.id = 'oracle-cards-container';
         
-        // Responsive Positionierung
+        // Responsive Positionierung für große Karte (300x300px)
         const isMobile = this.isMobile;
         cardsContainer.style.cssText = `
             position: absolute;
             top: 50%;
-            ${isMobile ? 'right: -100px;' : 'right: -140px;'}
+            ${isMobile ? 'right: -200px;' : 'right: -350px;'} 
             transform: translateY(-50%);
             display: none;
             opacity: 0;
@@ -806,25 +806,37 @@ class MysticalCreature {
         style.textContent = `
             @media (max-width: 768px) {
                 #oracle-cards-container {
-                    right: -90px !important;
-                    top: 60% !important;
+                    right: -150px !important;
+                    top: 50% !important;
                 }
                 .tarot-card {
-                    width: 80px !important;
-                    height: 120px !important;
+                    width: 200px !important;
+                    height: 200px !important;
                 }
                 .tarot-card div {
-                    font-size: 8px !important;
+                    font-size: 12px !important;
+                    padding: 15px !important;
                 }
                 .tarot-card div:first-child {
-                    font-size: 16px !important;
+                    font-size: 30px !important;
                 }
             }
             
             @media (max-width: 480px) {
                 #oracle-cards-container {
-                    right: -70px !important;
-                    top: 65% !important;
+                    right: -120px !important;
+                    top: 50% !important;
+                }
+                .tarot-card {
+                    width: 150px !important;
+                    height: 150px !important;
+                }
+                .tarot-card div {
+                    font-size: 10px !important;
+                    padding: 10px !important;
+                }
+                .tarot-card div:first-child {
+                    font-size: 20px !important;
                 }
             }
             
@@ -1047,9 +1059,10 @@ class MysticalCreature {
         const card = document.createElement('div');
         card.className = 'tarot-card';
         
+        // Karte genauso groß wie das Kristall-Orakel (300x300px)
         card.style.cssText = `
-            width: 110px;
-            height: 170px;
+            width: 300px;
+            height: 300px;
             background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
             border: 3px solid #B87333;
             border-radius: 15px;
@@ -1069,10 +1082,10 @@ class MysticalCreature {
         // Karten-Rückseite
         const cardBack = document.createElement('div');
         cardBack.innerHTML = `
-            <div style="text-align: center; color: #FFD700;">
-                <div style="font-size: 20px; margin-bottom: 8px;">🔮</div>
-                <div style="font-size: 11px; font-weight: bold;">${name}</div>
-                <div style="font-size: 9px; margin-top: 5px; opacity: 0.7;">Klicke für Deutung</div>
+            <div style="text-align: center; color: #FFD700; padding: 20px;">
+                <div style="font-size: 40px; margin-bottom: 20px;">🔮</div>
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${name}</div>
+                <div style="font-size: 14px; opacity: 0.7;">Klicke für Deutung</div>
             </div>
         `;
         
@@ -1218,11 +1231,11 @@ class MysticalCreature {
         
         setTimeout(() => {
             card.innerHTML = `
-                <div style="padding: 12px; text-align: center; height: 100%; display: flex; flex-direction: column;">
-                    <div style="color: #FFD700; font-weight: bold; font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #B87333; padding-bottom: 5px;">
+                <div style="padding: 20px; text-align: center; height: 100%; display: flex; flex-direction: column; box-sizing: border-box;">
+                    <div style="color: #FFD700; font-weight: bold; font-size: 20px; margin-bottom: 15px; border-bottom: 2px solid #B87333; padding-bottom: 10px;">
                         ${cardName}
                     </div>
-                    <div style="color: #B87333; font-size: 10px; line-height: 1.2; overflow-y: auto; flex: 1;">
+                    <div style="color: #EDE9E4; font-size: 14px; line-height: 1.4; flex: 1; display: flex; align-items: center; justify-content: center; text-align: left; overflow: hidden;">
                         ${reading}
                     </div>
                 </div>
