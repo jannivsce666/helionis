@@ -54,7 +54,6 @@ class MysticalCreature {
         this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
         this.setupVisibilityHandler(); // Pausiere bei inaktivem Tab
         this.initOracleSystem(); // Neues Orakel-System
-        this.loadDailyWisdom(); // Neue kosmische Weisheit laden
     }
 
     setupVisibilityHandler() {
@@ -665,20 +664,47 @@ class MysticalCreature {
     }
 
     createCardsContainer(container) {
+        // Erstelle einen separaten Bereich für die Karten außerhalb des creature-containers
+        const body = document.body;
+        const cardsSection = document.createElement('section');
+        cardsSection.id = 'oracle-cards-section';
+        cardsSection.className = 'oracle-cards-section';
+        cardsSection.style.cssText = `
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, 
+                rgba(13, 13, 13, 0.95) 0%, 
+                rgba(26, 26, 26, 0.9) 50%, 
+                rgba(13, 13, 13, 0.95) 100%);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.8s ease;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        `;
+
         const cardsContainer = document.createElement('div');
         cardsContainer.id = 'oracle-cards-container';
         cardsContainer.style.cssText = `
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 40px;
             display: flex;
-            gap: 20px;
+            gap: 30px;
             opacity: 0;
             transition: all 0.8s ease;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1000px;
         `;
-        container.appendChild(cardsContainer);
+
+        cardsSection.appendChild(cardsContainer);
+        
+        // Füge die Sektion nach dem main-Element hinzu
+        const main = document.querySelector('main');
+        if (main && main.parentNode) {
+            main.parentNode.insertBefore(cardsSection, main.nextSibling);
+        }
     }
 
     setupOracleInteraction() {
@@ -859,7 +885,11 @@ class MysticalCreature {
 
     createTarotCards() {
         const cardsContainer = document.getElementById('oracle-cards-container');
-        if (!cardsContainer) return;
+        const cardsSection = document.getElementById('oracle-cards-section');
+        if (!cardsContainer || !cardsSection) return;
+
+        // Zeige die Karten-Sektion
+        cardsSection.style.opacity = '1';
 
         const cardNames = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
         
@@ -1062,6 +1092,7 @@ class MysticalCreature {
         // UI zurücksetzen
         const bubble = this.oracle.speechBubble;
         const cards = document.getElementById('oracle-cards-container');
+        const cardsSection = document.getElementById('oracle-cards-section');
 
         if (bubble) {
             bubble.style.opacity = '0';
@@ -1072,76 +1103,10 @@ class MysticalCreature {
             cards.style.opacity = '0';
             cards.innerHTML = '';
         }
-    }
 
-    // ===== DAILY COSMIC WISDOM =====
-    
-    async loadDailyWisdom() {
-        const wisdomElement = document.getElementById('dailyWisdom');
-        if (!wisdomElement) {
-            console.warn('Daily wisdom element not found');
-            return;
+        if (cardsSection) {
+            cardsSection.style.opacity = '0';
         }
-
-        try {
-            // Add loading state
-            wisdomElement.style.opacity = '0.5';
-            wisdomElement.innerHTML = '🌟 Die kosmischen Energien sammeln sich...';
-
-            const response = await fetch('/api/daily-wisdom', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch daily wisdom');
-            }
-
-            const data = await response.json();
-            
-            // Animate wisdom reveal
-            setTimeout(() => {
-                wisdomElement.style.opacity = '0';
-                setTimeout(() => {
-                    wisdomElement.innerHTML = `"${data.wisdom}"`;
-                    wisdomElement.style.opacity = '1';
-                    
-                    // Add mystical glow effect
-                    wisdomElement.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.3)';
-                    
-                    // Update author with date if available
-                    const authorElement = document.querySelector('.wisdom-author');
-                    if (authorElement && data.date) {
-                        authorElement.innerHTML = `— Helionis Astrologie • ${this.formatDate(data.date)}`;
-                    }
-                }, 500);
-            }, 1000);
-
-        } catch (error) {
-            console.error('Failed to load daily wisdom:', error);
-            
-            // Fallback to default wisdom
-            setTimeout(() => {
-                wisdomElement.style.opacity = '0';
-                setTimeout(() => {
-                    wisdomElement.innerHTML = '"Die Sterne sind unsere stillen Lehrer - sie sprechen zu denen, die mit dem Herzen lauschen. Öffne dich für die kosmische Weisheit, die in jedem Moment zu dir fließt."';
-                    wisdomElement.style.opacity = '1';
-                }, 500);
-            }, 1000);
-        }
-    }
-
-    formatDate(dateString) {
-        const date = new Date(dateString);
-        const options = { 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric',
-            locale: 'de-DE' 
-        };
-        return date.toLocaleDateString('de-DE', options);
     }
 }
 
