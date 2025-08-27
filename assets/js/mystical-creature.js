@@ -135,26 +135,77 @@ class MysticalCreature {
         this.canvas.style.cursor = 'pointer'; // Zeigt an, dass es klickbar ist
         this.canvas.style.transition = 'all 0.3s ease'; // Für Hover-Effekte
         
-        // Check for mobile device
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
+        // Check for mobile device and window size
+        this.updateMobileState();
         
         // Check for reduced motion preference
         this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
+        // Add resize listener to update mobile state dynamically
+        this.setupResizeHandler();
+        
+        // Set initial animation parameters
+        this.updateAnimationParameters();
+        
+        console.log('Canvas initialized successfully', this.canvas.width, 'x', this.canvas.height);
+    }
+
+    updateMobileState() {
+        // Detect mobile device or small window
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
+        const isSmallWindow = window.innerWidth < 768; // Behandle kleine Fenster wie Mobile
+        
+        this.isMobile = isMobileDevice || isSmallWindow;
+        console.log('Mobile state updated:', this.isMobile, 'Device:', isMobileDevice, 'Small window:', isSmallWindow, 'Width:', window.innerWidth);
+    }
+
+    setupResizeHandler() {
+        // Debounced resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.updateMobileState();
+                this.updateAnimationParameters();
+                this.resizeCanvas(); // Canvas an neue Fenstergröße anpassen
+            }, 250); // 250ms debounce
+        });
+    }
+
+    resizeCanvas() {
+        // Canvas-Größe an Container anpassen, aber nur wenn nötig
+        const container = this.canvas.parentElement;
+        if (container) {
+            const rect = container.getBoundingClientRect();
+            const size = Math.min(300, rect.width * 0.8); // Maximal 300px, aber responsive
+            
+            if (this.canvas.width !== size || this.canvas.height !== size) {
+                this.canvas.width = size;
+                this.canvas.height = size;
+                
+                // Creature-Position neu berechnen
+                this.creature.x = size / 2;
+                this.creature.y = size / 2;
+                
+                console.log('Canvas resized to:', size, 'x', size);
+            }
+        }
+    }
+
+    updateAnimationParameters() {
         // Mobile performance optimizations
         if (this.isMobile) {
-            this.targetFPS = this.prefersReducedMotion ? 5 : 10; // Noch langsamere FPS auf Mobile, extrem langsam bei reduced motion
+            this.targetFPS = this.prefersReducedMotion ? 5 : 10; // Noch langsamere FPS auf Mobile/kleinen Fenstern
             this.frameInterval = 1000 / this.targetFPS;
-            console.log('Mobile device detected - reducing animation to', this.targetFPS, 'FPS');
+            console.log('Small window/Mobile detected - reducing animation to', this.targetFPS, 'FPS');
         } else {
             this.targetFPS = this.prefersReducedMotion ? 15 : 30;
             this.frameInterval = 1000 / this.targetFPS;
+            console.log('Desktop window detected - normal animation at', this.targetFPS, 'FPS');
         }
         
         // Adjust animation speed for mobile
         this.animationSpeed = this.isMobile ? (this.prefersReducedMotion ? 0.05 : 0.1) : (this.prefersReducedMotion ? 0.3 : 1.0);
-        
-        console.log('Canvas initialized successfully', this.canvas.width, 'x', this.canvas.height);
     }
     
     showFallbackOrb() {
@@ -436,8 +487,8 @@ class MysticalCreature {
         // Mystical runes floating around the orb
         const runes = ['◊', '◇', '◈', '◉'];
         
-        // Reduce or disable rotation on mobile
-        const runeRotation = this.isMobile ? rotation * 0.1 : rotation; // Kaum Rotation auf Mobile
+        // Reduce or disable rotation on mobile/small windows
+        const runeRotation = this.isMobile ? rotation * 0.01 : rotation; // Extrem wenig Rotation bei kleinen Fenstern
         
         for (let i = 0; i < 4; i++) {
             this.ctx.save();
@@ -482,13 +533,13 @@ class MysticalCreature {
             try {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                // Mobile-optimized speed multiplier - extrem langsam für Mobile
-                const speedMultiplier = this.isMobile ? 0.02 : 0.5; // Noch viel langsamere Geschwindigkeit auf Mobile
+                // Mobile-optimized speed multiplier - extrem langsam für Mobile/kleine Fenster
+                const speedMultiplier = this.isMobile ? 0.005 : 0.5; // Noch extremer langsame Geschwindigkeit bei kleinen Fenstern
                 
                 // Update creature animations with mobile-aware speed
                 this.creature.floatOffset += 0.02 * speedMultiplier * this.animationSpeed;
-                this.creature.rotation += (this.isMobile ? 0.001 : 0.008) * speedMultiplier * this.animationSpeed; // Kaum Rotation auf Mobile
-                this.creature.haloRotation += (this.isMobile ? 0.002 : 0.015) * speedMultiplier * this.animationSpeed; // Kaum Halo-Rotation auf Mobile
+                this.creature.rotation += (this.isMobile ? 0.0002 : 0.008) * speedMultiplier * this.animationSpeed; // Extrem wenig Rotation bei kleinen Fenstern
+                this.creature.haloRotation += (this.isMobile ? 0.0005 : 0.015) * speedMultiplier * this.animationSpeed; // Extrem wenig Halo-Rotation bei kleinen Fenstern
                 
                 // Draw everything
                 this.drawStars();
