@@ -64,6 +64,20 @@ class MysticalCreature {
         }
         
         console.log('Oracle system initialized successfully');
+        
+        // Test-Indikator: Zeige kurz die Sprechblase an um zu beweisen dass sie funktioniert
+        setTimeout(() => {
+            if (this.oracle.speechBubble) {
+                this.oracle.speechBubble.innerHTML = '✨ Oracle bereit! Klicke die Kristallkugel! ✨';
+                this.oracle.speechBubble.style.opacity = '1';
+                this.oracle.speechBubble.style.transform = 'translateX(-50%) scale(1)';
+                
+                setTimeout(() => {
+                    this.oracle.speechBubble.style.opacity = '0';
+                    this.oracle.speechBubble.style.transform = 'translateX(-50%) scale(0)';
+                }, 3000);
+            }
+        }, 2000);
     }
 
     setupVisibilityHandler() {
@@ -535,10 +549,14 @@ class MysticalCreature {
         };
         
         this.clickHandler = () => {
+            console.log('Kristallkugel geklickt! Oracle-Status:', this.oracle.isActive);
+            
             // Starte Orakel-Session beim Klick auf die Kristallkugel
             if (!this.oracle.isActive) {
+                console.log('Starte Oracle-Session...');
                 this.startOracleSession();
             } else {
+                console.log('Oracle bereits aktiv, erstelle Sparkles...');
                 // Add some sparkle effect on click wenn Orakel bereits aktiv - nur auf Desktop
                 if (!this.isMobile) {
                     this.createClickSparkles();
@@ -760,12 +778,14 @@ class MysticalCreature {
     }
 
     startOracleSession() {
+        console.log('Oracle-Session gestartet!');
         this.oracle.isActive = true;
         this.oracle.currentQuestion = 0;
         this.oracle.answers = [];
 
         // Erste Frage stellen
         setTimeout(() => {
+            console.log('Stelle erste Frage...');
             this.askQuestion();
         }, 500);
     }
