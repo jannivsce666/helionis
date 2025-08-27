@@ -67,19 +67,7 @@ class MysticalCreature {
         
         console.log('Oracle system initialized successfully');
         
-        // Test-Indikator: Zeige kurz die Sprechblase an um zu beweisen dass sie funktioniert
-        setTimeout(() => {
-            if (this.oracle.speechBubble) {
-                this.oracle.speechBubble.innerHTML = '✨ Oracle bereit! Klicke die Kristallkugel! ✨';
-                this.oracle.speechBubble.style.opacity = '1';
-                this.oracle.speechBubble.style.transform = 'translateX(-50%) scale(1)';
-                
-                setTimeout(() => {
-                    this.oracle.speechBubble.style.opacity = '0';
-                    this.oracle.speechBubble.style.transform = 'translateX(-50%) scale(0)';
-                }, 3000);
-            }
-        }, 2000);
+        // Keine automatische Test-Nachricht mehr - nur bei echtem Klick
     }
 
     setupVisibilityHandler() {
@@ -648,12 +636,6 @@ class MysticalCreature {
         
         this.canvas.addEventListener('click', this.clickHandler);
         console.log('✅ Click event listener added to canvas');
-        
-        // Test-Click nach 1 Sekunde für Debugging
-        setTimeout(() => {
-            console.log('🧪 Testing click event programmatically...');
-            this.canvas.click();
-        }, 3000);
     }
 
     createClickSparkles() {
