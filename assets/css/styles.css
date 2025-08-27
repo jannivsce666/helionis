@@ -1380,39 +1380,222 @@ footer {
 /* Cosmic Wisdom Section */
 .cosmic-wisdom {
     padding: 4rem 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+    background: linear-gradient(135deg, 
+        rgba(13, 13, 13, 0.95) 0%, 
+        rgba(26, 26, 26, 0.9) 50%, 
+        rgba(13, 13, 13, 0.95) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cosmic-wisdom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, 
+        rgba(184, 115, 51, 0.1) 0%, 
+        transparent 70%);
+    animation: cosmicPulse 8s ease-in-out infinite;
+}
+
+@keyframes cosmicPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
 }
 
 .cosmic-wisdom h2 {
+    text-align: center;
+    color: #FFD700;
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #B87333;
-    margin-bottom: 2rem;
-    text-shadow: 0 0 20px rgba(184, 115, 51, 0.3);
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    position: relative;
+    z-index: 2;
+}
+
+.cosmic-wisdom h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #B87333, #FFD700, #B87333, transparent);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 .wisdom-card {
-    background: rgba(13, 13, 13, 0.9);
-    border: 1px solid rgba(184, 115, 51, 0.3);
-    border-radius: 16px;
-    padding: 2rem;
-    backdrop-filter: blur(20px);
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid;
+    border-image: linear-gradient(45deg, #B87333, #FFD700, #B87333) 1;
+    border-radius: 20px;
+    padding: 3rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.wisdom-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(184, 115, 51, 0.1) 0%, 
+        transparent 50%, 
+        rgba(255, 215, 0, 0.1) 100%);
+    border-radius: inherit;
+    animation: cardGlow 6s ease-in-out infinite;
+}
+
+@keyframes cardGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+.wisdom-quote {
+    position: relative;
+    z-index: 3;
 }
 
 .wisdom-quote p {
-    font-size: 1.3rem;
-    color: #EDE9E4;
-    font-style: italic;
+    color: #B87333;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
     line-height: 1.6;
-    margin-bottom: 1rem;
+    text-align: center;
+    font-style: italic;
+    margin: 0;
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.wisdom-quote p::before,
+.wisdom-quote p::after {
+    content: '✨';
+    position: absolute;
+    color: #FFD700;
+    font-size: 1.2rem;
+    animation: sparkle 4s ease-in-out infinite;
+}
+
+.wisdom-quote p::before {
+    top: -10px;
+    left: -20px;
+    animation-delay: 0s;
+}
+
+.wisdom-quote p::after {
+    bottom: -10px;
+    right: -20px;
+    animation-delay: 2s;
+}
+
+@keyframes sparkle {
+    0%, 100% { 
+        opacity: 0.4; 
+        transform: scale(0.8); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2); 
+    }
 }
 
 .wisdom-author {
-    color: #B87333;
-    font-weight: 600;
+    margin-top: 2rem;
+    text-align: center;
+    color: #FFD700;
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    position: relative;
+    z-index: 3;
+}
+
+/* Floating particles around wisdom */
+.cosmic-wisdom::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #FFD700, transparent),
+        radial-gradient(2px 2px at 40px 70px, #B87333, transparent),
+        radial-gradient(1px 1px at 90px 40px, #FFD700, transparent),
+        radial-gradient(1px 1px at 130px 80px, #B87333, transparent),
+        radial-gradient(2px 2px at 160px 30px, #FFD700, transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: floatParticles 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes floatParticles {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-100px); }
+}
+
+/* Cosmic Wisdom Mobile Responsive */
+@media (max-width: 768px) {
+    .cosmic-wisdom {
+        padding: 3rem 1.5rem;
+    }
+    
+    .cosmic-wisdom h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .wisdom-card {
+        padding: 2rem;
+    }
+    
+    .wisdom-quote p {
+        font-size: 1.2rem;
+    }
+    
+    .wisdom-quote p::before,
+    .wisdom-quote p::after {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .cosmic-wisdom {
+        padding: 2rem 1rem;
+    }
+    
+    .cosmic-wisdom h2 {
+        font-size: 1.8rem;
+    }
+    
+    .wisdom-card {
+        padding: 1.5rem;
+    }
+    
+    .wisdom-quote p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
 }
 
 /* Mobile Responsive */

@@ -54,6 +54,7 @@ class MysticalCreature {
         this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
         this.setupVisibilityHandler(); // Pausiere bei inaktivem Tab
         this.initOracleSystem(); // Neues Orakel-System
+        this.loadDailyWisdom(); // Neue kosmische Weisheit laden
     }
 
     setupVisibilityHandler() {
@@ -794,6 +795,7 @@ class MysticalCreature {
 
         const input = document.createElement('textarea');
         input.placeholder = 'Deine Antwort...';
+        input.rows = 3;
         input.style.cssText = `
             background: rgba(26, 26, 26, 0.8);
             border: 2px solid #FFD700;
@@ -802,9 +804,24 @@ class MysticalCreature {
             color: #FFD700;
             font-size: 14px;
             resize: none;
-            rows: 3;
             outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: inherit;
         `;
+        
+        // Prevent event bubbling issues
+        input.addEventListener('keydown', (e) => {
+            e.stopPropagation();
+        });
+        
+        input.addEventListener('keyup', (e) => {
+            e.stopPropagation();
+        });
+        
+        input.addEventListener('input', (e) => {
+            e.stopPropagation();
+        });
 
         const submitBtn = document.createElement('button');
         submitBtn.innerHTML = '✨ Antworten';
@@ -1094,6 +1111,76 @@ class MysticalCreature {
             button.style.opacity = '1';
             button.style.pointerEvents = 'auto';
         }
+    }
+
+    // ===== DAILY COSMIC WISDOM =====
+    
+    async loadDailyWisdom() {
+        const wisdomElement = document.getElementById('dailyWisdom');
+        if (!wisdomElement) {
+            console.warn('Daily wisdom element not found');
+            return;
+        }
+
+        try {
+            // Add loading state
+            wisdomElement.style.opacity = '0.5';
+            wisdomElement.innerHTML = '🌟 Die kosmischen Energien sammeln sich...';
+
+            const response = await fetch('/api/daily-wisdom', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch daily wisdom');
+            }
+
+            const data = await response.json();
+            
+            // Animate wisdom reveal
+            setTimeout(() => {
+                wisdomElement.style.opacity = '0';
+                setTimeout(() => {
+                    wisdomElement.innerHTML = `"${data.wisdom}"`;
+                    wisdomElement.style.opacity = '1';
+                    
+                    // Add mystical glow effect
+                    wisdomElement.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.3)';
+                    
+                    // Update author with date if available
+                    const authorElement = document.querySelector('.wisdom-author');
+                    if (authorElement && data.date) {
+                        authorElement.innerHTML = `— Helionis Astrologie • ${this.formatDate(data.date)}`;
+                    }
+                }, 500);
+            }, 1000);
+
+        } catch (error) {
+            console.error('Failed to load daily wisdom:', error);
+            
+            // Fallback to default wisdom
+            setTimeout(() => {
+                wisdomElement.style.opacity = '0';
+                setTimeout(() => {
+                    wisdomElement.innerHTML = '"Die Sterne sind unsere stillen Lehrer - sie sprechen zu denen, die mit dem Herzen lauschen. Öffne dich für die kosmische Weisheit, die in jedem Moment zu dir fließt."';
+                    wisdomElement.style.opacity = '1';
+                }, 500);
+            }, 1000);
+        }
+    }
+
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric',
+            locale: 'de-DE' 
+        };
+        return date.toLocaleDateString('de-DE', options);
     }
 }
 
