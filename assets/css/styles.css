@@ -267,8 +267,6 @@ p {
     transition: opacity 0.3s ease;
     border-radius: 10px;
     filter: drop-shadow(0 0 20px rgba(0, 150, 200, 0.3));
-    transform: scale(1.1);
-    overflow: hidden;
 }
 
 .product-static-image {
@@ -2532,6 +2530,8 @@ footer {
     margin-bottom: 0.25rem;
 }
 
+.profile-stats {
+    display: flex;
 .profile-stats {
     display: flex;
     gap: 1.5rem;

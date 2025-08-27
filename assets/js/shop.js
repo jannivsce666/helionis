@@ -1,7 +1,7 @@
 // Shop Functionality
 class ShopManager {
     constructor() {
-        this.cart = [];
+        this.cart = JSON.parse(localStorage.getItem('helionis-cart')) || [];
         this.cartTotal = 0;
         this.currencyFormatter = new Intl.NumberFormat('de-DE', { 
             style: 'currency', 
@@ -91,10 +91,51 @@ class ShopManager {
         addToCartButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                const shopItem = button.closest('.shop-item');
-                this.addToCart(shopItem);
+                e.stopPropagation();
+                
+                // Get product data from button attributes
+                const productId = button.dataset.productId;
+                const name = button.dataset.name;
+                const price = parseFloat(button.dataset.price);
+                const image = button.dataset.image;
+                
+                if (productId && name && !isNaN(price) && image) {
+                    this.addToCartDirect(productId, name, price, image);
+                } else {
+                    console.warn('Invalid product data for add to cart');
+                }
             });
         });
+    }
+
+    addToCartDirect(productId, title, price, image) {
+        try {
+            // Check if item already exists in cart
+            const existingItem = this.cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                this.cart.push({
+                    id: productId,
+                    title,
+                    price,
+                    image,
+                    quantity: 1
+                });
+            }
+
+            // Save to localStorage
+            localStorage.setItem('helionis-cart', JSON.stringify(this.cart));
+            
+            this.updateCartDisplay();
+            this.showCartSidebar();
+            this.showAddToCartFeedback(productId);
+            
+            console.log('Added to cart:', title);
+        } catch (error) {
+            console.warn('Add to cart failed:', error);
+        }
     }
 
     addToCart(shopItem) {
@@ -208,8 +249,19 @@ class ShopManager {
         cartSidebar.classList.add('open');
     }
 
-    showAddToCartFeedback(shopItem) {
-        const button = shopItem.querySelector('.add-to-cart');
+    showAddToCartFeedback(itemIdentifier) {
+        let button;
+        
+        if (typeof itemIdentifier === 'string') {
+            // Product ID passed
+            button = document.querySelector(`[data-product-id="${itemIdentifier}"]`);
+        } else {
+            // Shop item element passed
+            button = itemIdentifier.querySelector('.add-to-cart');
+        }
+        
+        if (!button) return;
+
         const originalText = button.textContent;
         
         button.textContent = 'Hinzugefügt!';

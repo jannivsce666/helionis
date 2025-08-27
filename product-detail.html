@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang='de'>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Helionis – Produktdetail</title>
+    <meta name="description" id="page-description" content="Detaillierte Produktbeschreibung im Helionis Shop">
+    <meta property="og:type" content="product">
+    <meta property="og:title" id="og-title" content="Helionis – Produktdetail">
+    <meta property="og:description" id="og-description" content="Entdecke die Details unserer mystischen Produkte">
+    <meta property="og:image" id="og-image" content="assets/images/pyramid.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel='stylesheet' href='assets/css/styles.css'>
+</head>
+<body>
+    <header>
+        <div class='brand'>
+            <img src='assets/images/logo.svg' alt="Helionis Logo" loading="lazy" width="40" height="40">
+            <span class='brand-name'>HELIONIS</span>
+        </div>
+        <button class="menu-toggle" aria-label="Menü öffnen/schließen">
+            <span class="hamburger"></span>
+        </button>
+        <nav>
+            <a href='index.html'>Home</a>
+            <a href='about.html'>Über uns</a>
+            <a href='shop.html'>Shop</a>
+            <a href='horoskop.html'>Horoskope</a>
+            <a href='news.html'>News</a>
+            <a href='login.html' class='dynamic-auth-link' id='auth-nav-link'>
+                <span id='auth-nav-text'>Login</span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="product-detail-main">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li id="breadcrumb-product" aria-current="page">Produktdetail</li>
+            </ol>
+        </nav>
+
+        <!-- Product Detail Section -->
+        <section class="product-detail">
+            <div class="product-detail-container">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <div class="main-image">
+                        <img id="product-main-image" src="assets/images/pyramid.png" alt="Produktbild" loading="lazy">
+                        <div class="image-overlay">
+                            <div class="mystical-glow"></div>
+                        </div>
+                    </div>
+                    <!-- Thumbnail Gallery (für zukünftige Erweiterung) -->
+                    <div class="image-thumbnails" style="display: none;">
+                        <img src="assets/images/pyramid.png" alt="Ansicht 1" class="thumbnail active">
+                        <img src="assets/images/pyramid.png" alt="Ansicht 2" class="thumbnail">
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="product-info">
+                    <div class="product-header">
+                        <h1 id="product-title">Produktname</h1>
+                        <div class="product-category" id="product-category">Kategorie</div>
+                    </div>
+
+                    <div class="product-price-section">
+                        <span class="product-price" id="product-price">€49.99</span>
+                        <span class="price-note">inkl. MwSt., zzgl. Versand</span>
+                    </div>
+
+                    <div class="product-description" id="product-description">
+                        <p>Produktbeschreibung wird hier geladen...</p>
+                    </div>
+
+                    <!-- Features & Properties -->
+                    <div class="product-features" id="product-features">
+                        <h3>Eigenschaften & Wirkung</h3>
+                        <ul id="features-list">
+                            <li>Feature wird geladen...</li>
+                        </ul>
+                    </div>
+
+                    <!-- Custom Order Note -->
+                    <div class="custom-order-note" id="custom-order-note">
+                        <div class="note-icon">✨</div>
+                        <p><strong>Wird nach Bestellung individuell für Sie gefertigt und energetisch aufgeladen</strong></p>
+                    </div>
+
+                    <!-- Add to Cart Section -->
+                    <div class="add-to-cart-section">
+                        <div class="quantity-selector">
+                            <label for="quantity">Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn" id="quantity-decrease" aria-label="Anzahl verringern">−</button>
+                                <input type="number" id="quantity" value="1" min="1" max="10">
+                                <button type="button" class="quantity-btn" id="quantity-increase" aria-label="Anzahl erhöhen">+</button>
+                            </div>
+                        </div>
+
+                        <button class="add-to-cart-btn" id="add-to-cart-detail">
+                            <span class="cart-icon">🛒</span>
+                            <span class="btn-text">In den Warenkorb</span>
+                        </button>
+                    </div>
+
+                    <!-- Product Details Tabs -->
+                    <div class="product-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="description">Beschreibung</button>
+                            <button class="tab-btn" data-tab="shipping">Versand & Lieferung</button>
+                            <button class="tab-btn" data-tab="care">Pflege & Aufladung</button>
+                        </div>
+
+                        <div class="tab-contents">
+                            <div class="tab-content active" id="tab-description">
+                                <h4>Detaillierte Beschreibung</h4>
+                                <p id="detailed-description">Detaillierte Produktbeschreibung wird hier geladen...</p>
+                            </div>
+
+                            <div class="tab-content" id="tab-shipping">
+                                <h4>Versand & Lieferung</h4>
+                                <p><strong>Lieferzeit:</strong> 2-3 Wochen (handgefertigt)</p>
+                                <p><strong>Versandkosten:</strong> €4.90 (kostenlos ab €50)</p>
+                                <p><strong>Versand:</strong> Sicherer Versand mit DHL, versichert und nachverfolgbar</p>
+                                <p><strong>Verpackung:</strong> Liebevoll in energetisch gereinigter Verpackung verschickt</p>
+                            </div>
+
+                            <div class="tab-content" id="tab-care">
+                                <h4>Pflege & energetische Aufladung</h4>
+                                <p><strong>Reinigung:</strong> Regelmäßig mit klarem Wasser oder Mondlicht reinigen</p>
+                                <p><strong>Aufladung:</strong> Bei Vollmond oder auf eine Amethyst-Druse legen</p>
+                                <p><strong>Lagerung:</strong> An einem ruhigen, geschützten Ort aufbewahren</p>
+                                <p><strong>Verwendung:</strong> Vor der ersten Nutzung mit positiver Intention programmieren</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Products -->
+        <section class="related-products">
+            <div class="container">
+                <h2>Ähnliche Produkte</h2>
+                <div class="related-products-grid" id="related-products-grid">
+                    <!-- Related products will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>🛒 Warenkorb</h3>
+            <button class="cart-close" id="cart-close">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Gesamt: <span id="cart-total">€0.00</span></strong>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Zur Kasse</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class='footer-content'>
+            <div class='footer-section'>
+                <h3>HELIONIS</h3>
+                <p>Deine Reise in die mystische Welt beginnt hier.</p>
+            </div>
+            <div class='footer-section'>
+                <h4>Links</h4>
+                <a href='impressum.html'>Impressum</a>
+                <a href='about.html'>Über uns</a>
+                <a href='shop.html'>Shop</a>
+            </div>
+            <div class='footer-section'>
+                <h4>Kontakt</h4>
+                <p>Email: info@helionis.de</p>
+                <p>Telefon: +49 123 456789</p>
+            </div>
+        </div>
+        <div class='footer-bottom'>
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/product-detail.js"></script>
+    <script type="module" src="assets/js/shopping-cart.js"></script>
+    <script type="module" src="assets/js/navigation.js"></script>
+</body>
+</html>
