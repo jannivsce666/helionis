@@ -1256,7 +1256,7 @@ class MysticalCreature {
             this.showSpeechBubble('Die Karten haben gesprochen. Möge ihre Weisheit dich leiten! ✨', () => {
                 setTimeout(() => {
                     this.resetOracle();
-                }, 3000);
+                }, 17000); // 17 Sekunden (total 20 Sekunden: 1+2+17)
             });
         }, 2000);
     }
