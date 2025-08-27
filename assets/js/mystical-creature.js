@@ -25,6 +25,22 @@ class MysticalCreature {
             cycleIndex: 0,
             timer: null
         };
+        
+        // Neues Orakel-System
+        this.oracle = {
+            isActive: false,
+            currentQuestion: 0,
+            questions: [
+                "Was beschäftigt dein Herz am meisten in dieser Zeit?",
+                "Welche Veränderung sehnst du dir in deinem Leben herbei?", 
+                "Vor welcher Entscheidung stehst du gerade?"
+            ],
+            answers: [],
+            cards: [],
+            isReadingCards: false,
+            speechBubble: null
+        };
+        
         this.init();
     }
 
@@ -37,6 +53,7 @@ class MysticalCreature {
         this.setupMessageElement();
         this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
         this.setupVisibilityHandler(); // Pausiere bei inaktivem Tab
+        this.initOracleSystem(); // Neues Orakel-System
     }
 
     setupVisibilityHandler() {
@@ -570,7 +587,517 @@ class MysticalCreature {
     escapeHTML(str) {
         return str.replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[c]));
     }
+
+    // ===== ORAKEL-SYSTEM =====
+    
+    initOracleSystem() {
+        this.createOracleUI();
+        this.setupOracleInteraction();
+    }
+
+    createOracleUI() {
+        const container = document.getElementById('creatureContainer');
+        if (!container) return;
+
+        // Orakel-Button hinzufügen
+        const oracleButton = document.createElement('button');
+        oracleButton.id = 'oracle-trigger';
+        oracleButton.className = 'oracle-button';
+        oracleButton.innerHTML = '🔮 Orakel befragen';
+        oracleButton.style.cssText = `
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #B87333, #FFD700);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: #1a1a1a;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(184, 115, 51, 0.3);
+            transition: all 0.3s ease;
+            font-size: 16px;
+        `;
+
+        container.appendChild(oracleButton);
+
+        // Sprechblase erstellen
+        this.createSpeechBubble(container);
+        
+        // Karten-Container erstellen
+        this.createCardsContainer(container);
+    }
+
+    createSpeechBubble(container) {
+        const bubble = document.createElement('div');
+        bubble.id = 'oracle-speech-bubble';
+        bubble.className = 'speech-bubble';
+        bubble.style.cssText = `
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background: rgba(184, 115, 51, 0.95);
+            color: #FFD700;
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 16px;
+            line-height: 1.4;
+            z-index: 1000;
+        `;
+
+        // Sprechblasen-Pfeil
+        const arrow = document.createElement('div');
+        arrow.style.cssText = `
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid rgba(184, 115, 51, 0.95);
+        `;
+        bubble.appendChild(arrow);
+
+        container.appendChild(bubble);
+        this.oracle.speechBubble = bubble;
+    }
+
+    createCardsContainer(container) {
+        const cardsContainer = document.createElement('div');
+        cardsContainer.id = 'oracle-cards-container';
+        cardsContainer.style.cssText = `
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+            opacity: 0;
+            transition: all 0.8s ease;
+        `;
+        container.appendChild(cardsContainer);
+    }
+
+    setupOracleInteraction() {
+        const oracleButton = document.getElementById('oracle-trigger');
+        if (!oracleButton) return;
+
+        oracleButton.addEventListener('click', () => {
+            if (this.oracle.isActive) return;
+            
+            this.startOracleSession();
+        });
+
+        // Hover-Effekte
+        oracleButton.addEventListener('mouseenter', () => {
+            oracleButton.style.transform = 'translateX(-50%) scale(1.1)';
+            oracleButton.style.boxShadow = '0 6px 20px rgba(184, 115, 51, 0.5)';
+        });
+
+        oracleButton.addEventListener('mouseleave', () => {
+            oracleButton.style.transform = 'translateX(-50%) scale(1)';
+            oracleButton.style.boxShadow = '0 4px 15px rgba(184, 115, 51, 0.3)';
+        });
+    }
+
+    startOracleSession() {
+        this.oracle.isActive = true;
+        this.oracle.currentQuestion = 0;
+        this.oracle.answers = [];
+        
+        // Button ausblenden
+        const button = document.getElementById('oracle-trigger');
+        if (button) {
+            button.style.opacity = '0';
+            button.style.pointerEvents = 'none';
+        }
+
+        // Erste Frage stellen
+        setTimeout(() => {
+            this.askQuestion();
+        }, 500);
+    }
+
+    askQuestion() {
+        const question = this.oracle.questions[this.oracle.currentQuestion];
+        this.showSpeechBubble(question, () => {
+            this.createAnswerInput();
+        });
+    }
+
+    showSpeechBubble(text, callback) {
+        const bubble = this.oracle.speechBubble;
+        if (!bubble) return;
+
+        // Text mit Typewriter-Effekt
+        bubble.innerHTML = '';
+        bubble.style.transform = 'translateX(-50%) scale(1)';
+        bubble.style.opacity = '1';
+
+        // Pfeil hinzufügen
+        const arrow = document.createElement('div');
+        arrow.style.cssText = `
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid rgba(184, 115, 51, 0.95);
+        `;
+
+        this.typeWriter(bubble, text, 50, () => {
+            bubble.appendChild(arrow);
+            if (callback) {
+                setTimeout(callback, 1000);
+            }
+        });
+    }
+
+    typeWriter(element, text, speed, callback) {
+        let i = 0;
+        const timer = setInterval(() => {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(timer);
+                if (callback) callback();
+            }
+        }, speed);
+    }
+
+    createAnswerInput() {
+        const bubble = this.oracle.speechBubble;
+        if (!bubble) return;
+
+        const inputContainer = document.createElement('div');
+        inputContainer.style.cssText = `
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        `;
+
+        const input = document.createElement('textarea');
+        input.placeholder = 'Deine Antwort...';
+        input.style.cssText = `
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 10px;
+            color: #FFD700;
+            font-size: 14px;
+            resize: none;
+            rows: 3;
+            outline: none;
+        `;
+
+        const submitBtn = document.createElement('button');
+        submitBtn.innerHTML = '✨ Antworten';
+        submitBtn.style.cssText = `
+            background: linear-gradient(45deg, #FFD700, #B87333);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            color: #1a1a1a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+
+        submitBtn.addEventListener('click', () => {
+            const answer = input.value.trim();
+            if (answer) {
+                this.handleAnswer(answer);
+            }
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitBtn.click();
+            }
+        });
+
+        inputContainer.appendChild(input);
+        inputContainer.appendChild(submitBtn);
+        bubble.appendChild(inputContainer);
+
+        // Fokus auf Input
+        setTimeout(() => input.focus(), 100);
+    }
+
+    handleAnswer(answer) {
+        this.oracle.answers.push(answer);
+        
+        // Sprechblase ausblenden
+        const bubble = this.oracle.speechBubble;
+        if (bubble) {
+            bubble.style.transform = 'translateX(-50%) scale(0)';
+            bubble.style.opacity = '0';
+        }
+
+        // Nächste Frage oder Karten legen
+        setTimeout(() => {
+            this.oracle.currentQuestion++;
+            
+            if (this.oracle.currentQuestion < this.oracle.questions.length) {
+                this.askQuestion();
+            } else {
+                this.layCards();
+            }
+        }, 800);
+    }
+
+    layCards() {
+        this.showSpeechBubble('Die Karten werden gelegt... 🔮', () => {
+            setTimeout(() => {
+                this.oracle.speechBubble.style.opacity = '0';
+                this.oracle.speechBubble.style.transform = 'translateX(-50%) scale(0)';
+                this.createTarotCards();
+            }, 2000);
+        });
+    }
+
+    createTarotCards() {
+        const cardsContainer = document.getElementById('oracle-cards-container');
+        if (!cardsContainer) return;
+
+        const cardNames = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
+        
+        cardNames.forEach((name, index) => {
+            setTimeout(() => {
+                const card = this.createTarotCard(name, index);
+                cardsContainer.appendChild(card);
+                
+                // Animation
+                setTimeout(() => {
+                    card.style.transform = 'rotateY(0deg) scale(1)';
+                    card.style.opacity = '1';
+                }, 100);
+                
+                // Wenn alle Karten gelegt sind
+                if (index === cardNames.length - 1) {
+                    setTimeout(() => {
+                        cardsContainer.style.opacity = '1';
+                        this.enableCardReading();
+                    }, 500);
+                }
+            }, index * 600);
+        });
+    }
+
+    createTarotCard(name, index) {
+        const card = document.createElement('div');
+        card.className = 'tarot-card';
+        card.dataset.index = index;
+        
+        card.style.cssText = `
+            width: 120px;
+            height: 180px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 3px solid #B87333;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform: rotateY(180deg) scale(0.8);
+            opacity: 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        `;
+
+        // Karten-Rückseite
+        const cardBack = document.createElement('div');
+        cardBack.innerHTML = `
+            <div style="text-align: center; color: #FFD700;">
+                <div style="font-size: 24px; margin-bottom: 10px;">🌟</div>
+                <div style="font-size: 12px; font-weight: bold;">${name}</div>
+                <div style="font-size: 10px; margin-top: 5px; opacity: 0.7;">Klicke für Deutung</div>
+            </div>
+        `;
+        
+        card.appendChild(cardBack);
+        return card;
+    }
+
+    enableCardReading() {
+        const cards = document.querySelectorAll('.tarot-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                if (this.oracle.isReadingCards) return;
+                
+                this.oracle.isReadingCards = true;
+                this.readCard(parseInt(card.dataset.index));
+            });
+
+            // Hover-Effekte
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'rotateY(0deg) scale(1.1)';
+                card.style.boxShadow = '0 12px 35px rgba(184, 115, 51, 0.4)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateY(0deg) scale(1)';
+                card.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
+            });
+        });
+    }
+
+    async readCard(cardIndex) {
+        const cardNames = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
+        const cardName = cardNames[cardIndex];
+        
+        // Loading-Animation auf Karte
+        const card = document.querySelector(`[data-index="${cardIndex}"]`);
+        if (card) {
+            card.innerHTML = `
+                <div style="text-align: center; color: #FFD700;">
+                    <div style="font-size: 16px; animation: spin 1s linear infinite;">🔮</div>
+                    <div style="font-size: 12px; margin-top: 10px;">Lese die Karten...</div>
+                </div>
+            `;
+        }
+
+        try {
+            // OpenAI API Call für Kartendeutung
+            const reading = await this.getCardReading(cardIndex, this.oracle.answers);
+            this.displayCardReading(cardIndex, cardName, reading);
+        } catch (error) {
+            console.error('Card reading failed:', error);
+            this.displayCardReading(cardIndex, cardName, "Die Energien sind heute zu schwach für eine klare Deutung. Versuche es später erneut.");
+        }
+    }
+
+    async getCardReading(cardIndex, answers) {
+        const cardAspects = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
+        const aspect = cardAspects[cardIndex];
+        
+        const prompt = `Du bist ein mystischer Tarot-Experte. Basierend auf diesen spirituellen Antworten:
+        
+        1. "${answers[0]}"
+        2. "${answers[1]}" 
+        3. "${answers[2]}"
+        
+        Erstelle eine tiefgehende Tarot-Deutung für "${aspect}" für den nächsten Monat. 
+        
+        Die Deutung soll:
+        - Mystisch und inspirierend sein
+        - Konkrete Hinweise für den nächsten Monat enthalten
+        - Positive und aufbauende Energie vermitteln
+        - Maximal 150 Wörter lang sein
+        - In deutscher Sprache verfasst sein
+        
+        Beginne direkt mit der Deutung, ohne Anrede.`;
+
+        const response = await fetch('/api/oracle-reading', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                cardIndex: cardIndex
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+
+        const data = await response.json();
+        return data.reading;
+    }
+
+    displayCardReading(cardIndex, cardName, reading) {
+        const card = document.querySelector(`[data-index="${cardIndex}"]`);
+        if (!card) return;
+
+        // Karte umdrehen und Deutung anzeigen
+        card.style.transform = 'rotateY(180deg)';
+        
+        setTimeout(() => {
+            card.innerHTML = `
+                <div style="padding: 10px; text-align: center; height: 100%; display: flex; flex-direction: column;">
+                    <div style="color: #FFD700; font-weight: bold; font-size: 14px; margin-bottom: 10px; border-bottom: 1px solid #B87333; padding-bottom: 5px;">
+                        ${cardName}
+                    </div>
+                    <div style="color: #B87333; font-size: 11px; line-height: 1.3; overflow-y: auto; flex: 1;">
+                        ${reading}
+                    </div>
+                </div>
+            `;
+            
+            card.style.transform = 'rotateY(0deg)';
+            card.style.cursor = 'default';
+        }, 300);
+
+        // Wenn alle Karten gelesen wurden
+        setTimeout(() => {
+            this.oracle.isReadingCards = false;
+            this.showOracleComplete();
+        }, 1000);
+    }
+
+    showOracleComplete() {
+        setTimeout(() => {
+            this.showSpeechBubble('Die Karten haben gesprochen. Möge ihre Weisheit dich leiten! ✨', () => {
+                setTimeout(() => {
+                    this.resetOracle();
+                }, 3000);
+            });
+        }, 2000);
+    }
+
+    resetOracle() {
+        // Alles zurücksetzen
+        this.oracle.isActive = false;
+        this.oracle.currentQuestion = 0;
+        this.oracle.answers = [];
+        this.oracle.isReadingCards = false;
+
+        // UI zurücksetzen
+        const bubble = this.oracle.speechBubble;
+        const cards = document.getElementById('oracle-cards-container');
+        const button = document.getElementById('oracle-trigger');
+
+        if (bubble) {
+            bubble.style.opacity = '0';
+            bubble.style.transform = 'translateX(-50%) scale(0)';
+        }
+
+        if (cards) {
+            cards.style.opacity = '0';
+            cards.innerHTML = '';
+        }
+
+        if (button) {
+            button.style.opacity = '1';
+            button.style.pointerEvents = 'auto';
+        }
+    }
 }
+
+// Initialize the mystical creature when DOM is loaded
 
 // Initialize the mystical creature when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
