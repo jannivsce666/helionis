@@ -1346,6 +1346,7 @@ footer {
     align-items: center;
     gap: 1rem;
     text-align: center;
+    position: relative; /* Für absolute Positionierung der Oracle-Elemente */
 }
 
 #mysticalCreatureCanvas {
@@ -1375,6 +1376,31 @@ footer {
     font-style: italic;
     line-height: 1.6;
     margin: 0;
+}
+
+/* Oracle System Styles */
+#oracle-cards-container {
+    position: absolute;
+    top: 50%;
+    right: -130px;
+    transform: translateY(-50%);
+    display: none;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 50;
+}
+
+/* Mobile responsive Oracle positioning */
+@media (max-width: 768px) {
+    #oracle-cards-container {
+        right: -80px; /* Näher an den Kristall auf Mobile */
+    }
+    
+    #oracle-speech-bubble {
+        max-width: 250px !important;
+        font-size: 12px !important;
+        padding: 12px 15px !important;
+    }
 }
 
 /* Cosmic Wisdom Section */

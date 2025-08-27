@@ -76,6 +76,37 @@
                 <div class="creature-text">
                     <p id="mysticalText">🔮 Klicke auf die Kristallkugel für eine Orakel-Lesung...</p>
                 </div>
+                
+                <!-- Oracle Speech Bubble -->
+                <div id="oracle-speech-bubble" style="
+                    position: absolute;
+                    top: -80px;
+                    left: 50%;
+                    transform: translateX(-50%) scale(0);
+                    background: rgba(184, 115, 51, 0.95);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 15px;
+                    font-size: 14px;
+                    max-width: 300px;
+                    text-align: center;
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                    z-index: 100;
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+                "></div>
+                
+                <!-- Oracle Cards Container -->
+                <div id="oracle-cards-container" style="
+                    position: absolute;
+                    top: 50%;
+                    right: -130px;
+                    transform: translateY(-50%);
+                    display: none;
+                    opacity: 0;
+                    transition: all 0.5s ease;
+                    z-index: 50;
+                "></div>
             </div>
         </section>
     </main>

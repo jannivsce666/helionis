@@ -48,12 +48,22 @@ class MysticalCreature {
         this.createCanvas();
         this.setupCreature();
         this.createStars();
+        this.setupOracle(); // Oracle-Setup hinzufügen
+        this.setupInteractions();
+        this.setupHoroscope();
         this.animate();
-        this.setupInteraction();
-        this.setupMessageElement();
-        this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
-        this.setupVisibilityHandler(); // Pausiere bei inaktivem Tab
-        this.initOracleSystem(); // Neues Orakel-System
+    }
+
+    setupOracle() {
+        // Oracle-Sprechblase referenzieren
+        this.oracle.speechBubble = document.getElementById('oracle-speech-bubble');
+        
+        if (!this.oracle.speechBubble) {
+            console.warn('Oracle speech bubble not found');
+            return;
+        }
+        
+        console.log('Oracle system initialized successfully');
     }
 
     setupVisibilityHandler() {
