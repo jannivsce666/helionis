@@ -676,29 +676,72 @@ class MysticalCreature {
     }
 
     createCardsContainer(container) {
-        // Nutze den bestehenden mystical-text Bereich für die Karten
-        const mysticalTextElement = document.getElementById('mysticalText');
-        if (!mysticalTextElement) {
-            console.warn('mysticalText element not found');
+        // Nutze den Bereich direkt neben dem Kristall-Orb für eine einzelne Karte
+        const creatureContainer = document.getElementById('creatureContainer');
+        if (!creatureContainer) {
+            console.warn('creatureContainer not found');
             return;
         }
 
-        // Verstecke den ursprünglichen Text und verwende den Platz für Karten
+        // Erstelle einen Karten-Container direkt im creature-container
         const cardsContainer = document.createElement('div');
         cardsContainer.id = 'oracle-cards-container';
+        
+        // Responsive Positionierung
+        const isMobile = this.isMobile;
         cardsContainer.style.cssText = `
+            position: absolute;
+            top: 50%;
+            ${isMobile ? 'right: -100px;' : 'right: -140px;'}
+            transform: translateY(-50%);
             display: none;
-            gap: 20px;
             opacity: 0;
             transition: all 0.8s ease;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 100%;
-            padding: 20px 0;
+            z-index: 100;
         `;
 
-        // Füge den Karten-Container zum bestehenden mystical-text Bereich hinzu
-        mysticalTextElement.parentNode.appendChild(cardsContainer);
+        // Füge den Karten-Container direkt zum creature-container hinzu
+        creatureContainer.appendChild(cardsContainer);
+        
+        // Füge Media Query CSS hinzu für bessere mobile Unterstützung
+        this.addOracleCardStyles();
+    }
+
+    addOracleCardStyles() {
+        // Füge spezielle CSS-Regeln für die Oracle-Karten hinzu
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (max-width: 768px) {
+                #oracle-cards-container {
+                    right: -90px !important;
+                    top: 60% !important;
+                }
+                .tarot-card {
+                    width: 80px !important;
+                    height: 120px !important;
+                }
+                .tarot-card div {
+                    font-size: 8px !important;
+                }
+                .tarot-card div:first-child {
+                    font-size: 16px !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                #oracle-cards-container {
+                    right: -70px !important;
+                    top: 65% !important;
+                }
+            }
+            
+            /* Animation für die Karten-Drehung */
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
     }
 
     setupOracleInteraction() {
@@ -879,51 +922,39 @@ class MysticalCreature {
 
     createTarotCards() {
         const cardsContainer = document.getElementById('oracle-cards-container');
-        const mysticalTextElement = document.getElementById('mysticalText');
         
-        if (!cardsContainer || !mysticalTextElement) {
+        if (!cardsContainer) {
             console.warn('Required elements not found for tarot cards');
             return;
         }
 
-        // Verstecke den ursprünglichen Text
-        mysticalTextElement.style.display = 'none';
-        
         // Zeige den Karten-Container
-        cardsContainer.style.display = 'flex';
+        cardsContainer.style.display = 'block';
         cardsContainer.style.opacity = '1';
 
-        const cardNames = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
+        // Nur eine Zukunfts-Karte
+        const card = this.createTarotCard('Deine Zukunft', 0);
+        cardsContainer.appendChild(card);
         
-        cardNames.forEach((name, index) => {
-            setTimeout(() => {
-                const card = this.createTarotCard(name, index);
-                cardsContainer.appendChild(card);
-                
-                // Animation
-                setTimeout(() => {
-                    card.style.transform = 'rotateY(0deg) scale(1)';
-                    card.style.opacity = '1';
-                }, 100);
-                
-                // Wenn alle Karten gelegt sind
-                if (index === cardNames.length - 1) {
-                    setTimeout(() => {
-                        this.enableCardReading();
-                    }, 500);
-                }
-            }, index * 600);
-        });
+        // Animation
+        setTimeout(() => {
+            card.style.transform = 'rotateY(0deg) scale(1)';
+            card.style.opacity = '1';
+        }, 100);
+        
+        // Nach kurzer Zeit Karte für Lesung freigeben
+        setTimeout(() => {
+            this.enableCardReading();
+        }, 800);
     }
 
     createTarotCard(name, index) {
         const card = document.createElement('div');
         card.className = 'tarot-card';
-        card.dataset.index = index;
         
         card.style.cssText = `
-            width: 90px;
-            height: 140px;
+            width: 110px;
+            height: 170px;
             background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
             border: 3px solid #B87333;
             border-radius: 15px;
@@ -944,9 +975,9 @@ class MysticalCreature {
         const cardBack = document.createElement('div');
         cardBack.innerHTML = `
             <div style="text-align: center; color: #FFD700;">
-                <div style="font-size: 24px; margin-bottom: 10px;">🌟</div>
-                <div style="font-size: 12px; font-weight: bold;">${name}</div>
-                <div style="font-size: 10px; margin-top: 5px; opacity: 0.7;">Klicke für Deutung</div>
+                <div style="font-size: 20px; margin-bottom: 8px;">🔮</div>
+                <div style="font-size: 11px; font-weight: bold;">${name}</div>
+                <div style="font-size: 9px; margin-top: 5px; opacity: 0.7;">Klicke für Deutung</div>
             </div>
         `;
         
@@ -955,14 +986,14 @@ class MysticalCreature {
     }
 
     enableCardReading() {
-        const cards = document.querySelectorAll('.tarot-card');
+        const card = document.querySelector('.tarot-card');
         
-        cards.forEach(card => {
+        if (card) {
             card.addEventListener('click', () => {
                 if (this.oracle.isReadingCards) return;
                 
                 this.oracle.isReadingCards = true;
-                this.readCard(parseInt(card.dataset.index));
+                this.readCard(0); // Index 0, aber liest Zukunft
             });
 
             // Hover-Effekte
@@ -975,31 +1006,31 @@ class MysticalCreature {
                 card.style.transform = 'rotateY(0deg) scale(1)';
                 card.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
             });
-        });
+        }
     }
 
     async readCard(cardIndex) {
-        const cardNames = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
-        const cardName = cardNames[cardIndex];
+        // Da wir nur eine Zukunfts-Karte haben, ist der Index immer 0, aber wir lesen die Zukunft
+        const cardName = 'Deine Zukunft';
         
         // Loading-Animation auf Karte
-        const card = document.querySelector(`[data-index="${cardIndex}"]`);
+        const card = document.querySelector('.tarot-card');
         if (card) {
             card.innerHTML = `
                 <div style="text-align: center; color: #FFD700;">
                     <div style="font-size: 16px; animation: spin 1s linear infinite;">🔮</div>
-                    <div style="font-size: 12px; margin-top: 10px;">Lese die Karten...</div>
+                    <div style="font-size: 12px; margin-top: 10px;">Lese die Zukunft...</div>
                 </div>
             `;
         }
 
         try {
-            // OpenAI API Call für Kartendeutung
-            const reading = await this.getCardReading(cardIndex, this.oracle.answers);
-            this.displayCardReading(cardIndex, cardName, reading);
+            // OpenAI API Call für Zukunfts-Deutung
+            const reading = await this.getCardReading(2, this.oracle.answers); // Index 2 = Zukunft
+            this.displayCardReading(cardName, reading);
         } catch (error) {
             console.error('Card reading failed:', error);
-            this.displayCardReading(cardIndex, cardName, "Die Energien sind heute zu schwach für eine klare Deutung. Versuche es später erneut.");
+            this.displayCardReading(cardName, "Die Energien sind heute zu schwach für eine klare Deutung. Versuche es später erneut.");
         }
     }
 
@@ -1083,8 +1114,8 @@ class MysticalCreature {
         return "Die kosmischen Energien sind heute zu schwach für eine klare Deutung. Versuche es zu einem anderen Zeitpunkt erneut.";
     }
 
-    displayCardReading(cardIndex, cardName, reading) {
-        const card = document.querySelector(`[data-index="${cardIndex}"]`);
+    displayCardReading(cardName, reading) {
+        const card = document.querySelector('.tarot-card');
         if (!card) return;
 
         // Karte umdrehen und Deutung anzeigen
@@ -1092,11 +1123,11 @@ class MysticalCreature {
         
         setTimeout(() => {
             card.innerHTML = `
-                <div style="padding: 10px; text-align: center; height: 100%; display: flex; flex-direction: column;">
-                    <div style="color: #FFD700; font-weight: bold; font-size: 14px; margin-bottom: 10px; border-bottom: 1px solid #B87333; padding-bottom: 5px;">
+                <div style="padding: 12px; text-align: center; height: 100%; display: flex; flex-direction: column;">
+                    <div style="color: #FFD700; font-weight: bold; font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #B87333; padding-bottom: 5px;">
                         ${cardName}
                     </div>
-                    <div style="color: #B87333; font-size: 11px; line-height: 1.3; overflow-y: auto; flex: 1;">
+                    <div style="color: #B87333; font-size: 10px; line-height: 1.2; overflow-y: auto; flex: 1;">
                         ${reading}
                     </div>
                 </div>
@@ -1106,9 +1137,8 @@ class MysticalCreature {
             card.style.cursor = 'default';
         }, 300);
 
-        // Wenn alle Karten gelesen wurden
+        // Nach kurzer Zeit Oracle-Vollendung anzeigen
         setTimeout(() => {
-            this.oracle.isReadingCards = false;
             this.showOracleComplete();
         }, 1000);
     }
@@ -1133,7 +1163,6 @@ class MysticalCreature {
         // UI zurücksetzen
         const bubble = this.oracle.speechBubble;
         const cards = document.getElementById('oracle-cards-container');
-        const mysticalTextElement = document.getElementById('mysticalText');
 
         if (bubble) {
             bubble.style.opacity = '0';
@@ -1144,11 +1173,6 @@ class MysticalCreature {
             cards.style.opacity = '0';
             cards.style.display = 'none';
             cards.innerHTML = '';
-        }
-
-        // Zeige den ursprünglichen Text wieder an
-        if (mysticalTextElement) {
-            mysticalTextElement.style.display = 'block';
         }
     }
 }

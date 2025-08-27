@@ -429,29 +429,26 @@ function initProductDescriptions() {
         }
     };
 
-    // Add click handlers to description buttons - moved to main init function
-
-    function initProductDescriptionButtons() {
-        const descriptionButtons = document.querySelectorAll('.product-description-btn');
-        
-        console.log('Found product description buttons:', descriptionButtons.length);
-        
-        descriptionButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const productKey = this.getAttribute('data-product');
-                console.log('Product key clicked:', productKey);
-                
-                if (productKey && productDescriptions[productKey]) {
-                    showProductDescription(productKey, productDescriptions[productKey]);
-                } else {
-                    console.warn('Product description not found for key:', productKey);
-                }
-            });
+    // Add click handlers to description buttons
+    const descriptionButtons = document.querySelectorAll('.product-description-btn');
+    
+    console.log('Found product description buttons:', descriptionButtons.length);
+    
+    descriptionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productKey = this.getAttribute('data-product');
+            console.log('Product key clicked:', productKey);
+            
+            if (productKey && productDescriptions[productKey]) {
+                showProductDescription(productKey, productDescriptions[productKey]);
+            } else {
+                console.warn('Product description not found for key:', productKey);
+            }
         });
-    }
+    });
 
     function showProductDescription(productKey, productData) {
         if (!productData) return;
@@ -518,9 +515,6 @@ function initProductDescriptions() {
 document.addEventListener('DOMContentLoaded', function() {
     initProductHoverVideos();
     initProductDescriptions();
-    
-    // Initialize product description buttons
-    initProductDescriptionButtons();
     
     // Initialize mystical glow effect
     try {
