@@ -6,6 +6,10 @@ class MysticalGlow {
         this.particles = [];
         this.mouse = { x: 0, y: 0 };
         this.animationId = null;
+        this.lastFrameTime = 0;
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
+        this.targetFPS = this.isMobile ? 15 : 30; // Reduzierte FPS auf Mobile
+        this.frameInterval = 1000 / this.targetFPS;
         
         try {
             this.init();
@@ -46,18 +50,23 @@ class MysticalGlow {
     }
 
     createParticles() {
-        const particleCount = 60;
+        // Weniger Partikel auf Mobile für bessere Performance
+        const particleCount = this.isMobile ? 15 : 60;
         
         for (let i = 0; i < particleCount; i++) {
             this.particles.push({
-                x: Math.random() * (this.canvas?.width || window.innerWidth),
-                y: Math.random() * (this.canvas?.height || window.innerHeight),
-                size: Math.random() * 2 + 0.5,
-                speedX: (Math.random() - 0.5) * 0.1,
-                speedY: (Math.random() - 0.5) * 0.1,
-                opacity: Math.random() * 0.3 + 0.1,
-                hue: Math.random() < 0.6 ? 210 : (Math.random() < 0.5 ? 240 : 45), // Only 3 colors: blue, purple, gold
-                pulse: Math.random() * Math.PI * 2
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                vx: (Math.random() - 0.5) * (this.isMobile ? 0.3 : 0.5), // Langsamere Bewegung auf Mobile
+                vy: (Math.random() - 0.5) * (this.isMobile ? 0.3 : 0.5),
+                size: Math.random() * 3 + 1,
+                life: Math.random() * 100 + 100,
+                maxLife: Math.random() * 100 + 100,
+                color: {
+                    h: Math.random() * 60 + 200,
+                    s: 80,
+                    l: 70
+                }
             });
         }
     }
@@ -149,30 +158,40 @@ class MysticalGlow {
     animate() {
         if (!this.ctx || !this.canvas) return;
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const currentTime = performance.now();
+        const elapsed = currentTime - this.lastFrameTime;
         
-        // Ambient background glow with pulsing
-        const time = Date.now() * 0.001;
-        const ambientGradient = this.ctx.createRadialGradient(
-            this.canvas.width / 2, this.canvas.height / 2, 0,
-            this.canvas.width / 2, this.canvas.height / 2, Math.max(this.canvas.width, this.canvas.height)
-        );
-        
-        const pulseIntensity = Math.sin(time * 0.2) * 0.01 + 0.02;
-        ambientGradient.addColorStop(0, `hsla(210, 80%, 50%, ${pulseIntensity})`);
-        ambientGradient.addColorStop(0.5, `hsla(240, 80%, 40%, ${pulseIntensity * 0.6})`);
-        ambientGradient.addColorStop(1, 'hsla(45, 80%, 30%, 0)');
-        
-        this.ctx.fillStyle = ambientGradient;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Draw connections and particles
-        this.drawConnections();
-        
-        this.particles.forEach(particle => {
-            this.updateParticle(particle);
-            this.drawParticle(particle);
-        });
+        // Frame rate control - nur animieren wenn genug Zeit vergangen ist
+        if (elapsed >= this.frameInterval) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            // Ambient background glow with pulsing - reduziert auf Mobile
+            if (!this.isMobile) {
+                const time = Date.now() * 0.001;
+                const ambientGradient = this.ctx.createRadialGradient(
+                    this.canvas.width / 2, this.canvas.height / 2, 0,
+                    this.canvas.width / 2, this.canvas.height / 2, Math.max(this.canvas.width, this.canvas.height)
+                );
+                
+                const pulseIntensity = Math.sin(time * 0.2) * 0.01 + 0.02;
+                ambientGradient.addColorStop(0, `hsla(210, 80%, 50%, ${pulseIntensity})`);
+                ambientGradient.addColorStop(0.5, `hsla(240, 80%, 40%, ${pulseIntensity * 0.6})`);
+                ambientGradient.addColorStop(1, 'hsla(45, 80%, 30%, 0)');
+                
+                this.ctx.fillStyle = ambientGradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw connections nur auf Desktop
+                this.drawConnections();
+            }
+            
+            this.particles.forEach(particle => {
+                this.updateParticle(particle);
+                this.drawParticle(particle);
+            });
+            
+            this.lastFrameTime = currentTime;
+        }
         
         this.animationId = requestAnimationFrame(() => this.animate());
     }

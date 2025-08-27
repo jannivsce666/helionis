@@ -3,6 +3,11 @@ class MysticalCreature {
     constructor() {
         this.canvas = null;
         this.ctx = null;
+        this.animationId = null;
+        this.lastFrameTime = 0;
+        this.targetFPS = 30; // Standardwert
+        this.frameInterval = 1000 / this.targetFPS;
+        
         this.creature = {
             x: 0,
             y: 0,
@@ -31,6 +36,27 @@ class MysticalCreature {
         this.setupInteraction();
         this.setupMessageElement();
         this.fetchHoroscopeData(); // Neu: Daily Horoscope laden
+        this.setupVisibilityHandler(); // Pausiere bei inaktivem Tab
+    }
+
+    setupVisibilityHandler() {
+        // Pausiere Animationen wenn Tab nicht sichtbar ist
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Pausiere Animation
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                    this.animationId = null;
+                }
+                console.log('Animation paused - tab hidden');
+            } else {
+                // Starte Animation wieder
+                if (!this.animationId) {
+                    this.animate();
+                    console.log('Animation resumed - tab visible');
+                }
+            }
+        });
     }
 
     setupMessageElement() {
@@ -69,8 +95,18 @@ class MysticalCreature {
         // Check for mobile device
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
         
+        // Mobile performance optimizations
+        if (this.isMobile) {
+            this.targetFPS = 15; // Viel langsamere FPS auf Mobile
+            this.frameInterval = 1000 / this.targetFPS;
+            console.log('Mobile device detected - reducing animation to', this.targetFPS, 'FPS');
+        } else {
+            this.targetFPS = 30;
+            this.frameInterval = 1000 / this.targetFPS;
+        }
+        
         // Adjust animation speed for mobile
-        this.animationSpeed = this.isMobile ? 0.7 : 1.0;
+        this.animationSpeed = this.isMobile ? 0.3 : 1.0;
         
         console.log('Canvas initialized successfully', this.canvas.width, 'x', this.canvas.height);
     }
@@ -146,14 +182,16 @@ class MysticalCreature {
     }
 
     createStars() {
-        // Create floating stars around the creature
-        for (let i = 0; i < 8; i++) {
+        // Create floating stars around the creature - reduce count on mobile
+        const starCount = this.isMobile ? 4 : 8; // Weniger Sterne auf Mobile
+        
+        for (let i = 0; i < starCount; i++) {
             this.stars.push({
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
                 size: Math.random() * 3 + 1,
                 twinkle: Math.random() * Math.PI * 2,
-                speed: Math.random() * 0.02 + 0.01
+                speed: (Math.random() * 0.02 + 0.01) * (this.isMobile ? 0.3 : 1.0) // Langsamere Sterne auf Mobile
             });
         }
     }
@@ -381,43 +419,86 @@ class MysticalCreature {
             return;
         }
         
-        try {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            // Detect mobile devices and slow down animations
-            const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
-            const speedMultiplier = isMobile ? 0.3 : 1; // 70% slower on mobile
-            
-            // Update creature animations with mobile-aware speed
-            this.creature.floatOffset += 0.02 * speedMultiplier;
-            this.creature.rotation += 0.008 * speedMultiplier;
-            this.creature.haloRotation += 0.015 * speedMultiplier;
-            
-            // Draw everything
-            this.drawStars();
-            this.drawCreature();
-            
-            requestAnimationFrame(() => this.animate());
-        } catch (error) {
-            console.error('Animation error:', error);
-            // Try to show fallback if animation fails
-            this.showFallbackOrb();
+        const currentTime = performance.now();
+        const elapsed = currentTime - this.lastFrameTime;
+        
+        // Frame rate control - only animate when enough time has passed
+        if (elapsed >= this.frameInterval) {
+            try {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Mobile-optimized speed multiplier
+                const speedMultiplier = this.isMobile ? 0.1 : 0.5; // Noch langsamere Geschwindigkeit
+                
+                // Update creature animations with mobile-aware speed
+                this.creature.floatOffset += 0.02 * speedMultiplier * this.animationSpeed;
+                this.creature.rotation += 0.008 * speedMultiplier * this.animationSpeed;
+                this.creature.haloRotation += 0.015 * speedMultiplier * this.animationSpeed;
+                
+                // Draw everything
+                this.drawStars();
+                this.drawCreature();
+                
+                this.lastFrameTime = currentTime;
+            } catch (error) {
+                console.error('Animation error:', error);
+                // Try to show fallback if animation fails
+                this.showFallbackOrb();
+                return;
+            }
         }
+        
+        this.animationId = requestAnimationFrame(() => this.animate());
+    }
+
+    destroy() {
+        // Stoppe alle Animationen und Timer
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+        
+        if (this.horoscope.timer) {
+            clearInterval(this.horoscope.timer);
+            this.horoscope.timer = null;
+        }
+        
+        // Entferne Event Listener
+        if (this.canvas) {
+            this.canvas.removeEventListener('mouseenter', this.mouseEnterHandler);
+            this.canvas.removeEventListener('mouseleave', this.mouseLeaveHandler);
+            this.canvas.removeEventListener('click', this.clickHandler);
+        }
+        
+        console.log('MysticalCreature destroyed and animations stopped');
     }
 
     setupInteraction() {
-        this.canvas.addEventListener('mouseenter', () => {
+        if (!this.canvas) return;
+        
+        // Speichere Handler-Referenzen für cleanup
+        this.mouseEnterHandler = () => {
             this.canvas.style.transform = 'scale(1.1)';
-        });
+        };
         
-        this.canvas.addEventListener('mouseleave', () => {
+        this.mouseLeaveHandler = () => {
             this.canvas.style.transform = 'scale(1)';
-        });
+        };
         
-        this.canvas.addEventListener('click', () => {
-            // Add some sparkle effect on click
-            this.createClickSparkles();
-        });
+        this.clickHandler = () => {
+            // Add some sparkle effect on click - nur auf Desktop
+            if (!this.isMobile) {
+                this.createClickSparkles();
+            }
+        };
+        
+        // Reduziere Interaktionen auf Mobile für bessere Performance
+        if (!this.isMobile) {
+            this.canvas.addEventListener('mouseenter', this.mouseEnterHandler);
+            this.canvas.addEventListener('mouseleave', this.mouseLeaveHandler);
+        }
+        
+        this.canvas.addEventListener('click', this.clickHandler);
     }
 
     createClickSparkles() {
