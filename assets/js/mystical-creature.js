@@ -49,8 +49,10 @@ class MysticalCreature {
         this.setupCreature();
         this.createStars();
         this.setupOracle(); // Oracle-Setup hinzufügen
-        this.setupInteractions();
+        this.setupInteraction(); // Fix: setupInteraction() nicht setupInteractions()
         this.setupHoroscope();
+        this.setupVisibilityHandler(); // Tab-Wechsel Handler
+        this.setupMessageElement(); // Message Element referenzieren
         this.animate();
     }
 
@@ -106,6 +108,12 @@ class MysticalCreature {
         if (!this.messageEl) {
             console.warn('Mystical text element not found');
         }
+    }
+
+    setupHoroscope() {
+        // Setup horoscope data fetching
+        this.setupMessageElement();
+        this.fetchHoroscopeData();
     }
 
     createCanvas() {
