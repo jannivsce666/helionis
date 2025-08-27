@@ -406,12 +406,35 @@ function initProductDescriptions() {
                 'Verstärkte meditative Wirkung'
             ],
             customNote: '✨ Wird nach Bestellung individuell für Sie gefertigt und energetisch aufgeladen'
+        },
+        'pentagramm-kristall': {
+            title: 'Pentagramm Kristall',
+            description: 'Ein kraftvoller Kristall mit eingravierten Pentagramm für Schutz und spirituelle Stärkung.',
+            features: [
+                'Pentagramm-Symbol für maximalen Schutz',
+                'Verstärkung spiritueller Kräfte',
+                'Harmonisierung der fünf Elemente'
+            ],
+            customNote: '✨ Wird nach Bestellung individuell für Sie gefertigt und energetisch aufgeladen'
+        },
+        'elementar-wuerfel': {
+            title: 'Elementar Würfel',
+            description: 'Ein spezieller Würfel, der die vier Elemente Feuer, Wasser, Erde und Luft in sich vereint.',
+            features: [
+                'Vereinigung aller vier Elemente',
+                'Perfekte Balance und Harmonie',
+                'Verstärkung elementarer Energien'
+            ],
+            customNote: '✨ Wird nach Bestellung individuell für Sie gefertigt und energetisch aufgeladen'
         }
     };
 
-    // Add click handlers to description buttons
-    document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers to description buttons - moved to main init function
+
+    function initProductDescriptionButtons() {
         const descriptionButtons = document.querySelectorAll('.product-description-btn');
+        
+        console.log('Found product description buttons:', descriptionButtons.length);
         
         descriptionButtons.forEach(button => {
             button.addEventListener('click', function(e) {
@@ -419,12 +442,16 @@ function initProductDescriptions() {
                 e.stopPropagation();
                 
                 const productKey = this.getAttribute('data-product');
+                console.log('Product key clicked:', productKey);
+                
                 if (productKey && productDescriptions[productKey]) {
                     showProductDescription(productKey, productDescriptions[productKey]);
+                } else {
+                    console.warn('Product description not found for key:', productKey);
                 }
             });
         });
-    });
+    }
 
     function showProductDescription(productKey, productData) {
         if (!productData) return;
@@ -491,6 +518,9 @@ function initProductDescriptions() {
 document.addEventListener('DOMContentLoaded', function() {
     initProductHoverVideos();
     initProductDescriptions();
+    
+    // Initialize product description buttons
+    initProductDescriptionButtons();
     
     // Initialize mystical glow effect
     try {

@@ -114,18 +114,21 @@ class MysticalCreature {
         // Check for mobile device
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
         
+        // Check for reduced motion preference
+        this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
         // Mobile performance optimizations
         if (this.isMobile) {
-            this.targetFPS = 15; // Viel langsamere FPS auf Mobile
+            this.targetFPS = this.prefersReducedMotion ? 5 : 10; // Noch langsamere FPS auf Mobile, extrem langsam bei reduced motion
             this.frameInterval = 1000 / this.targetFPS;
             console.log('Mobile device detected - reducing animation to', this.targetFPS, 'FPS');
         } else {
-            this.targetFPS = 30;
+            this.targetFPS = this.prefersReducedMotion ? 15 : 30;
             this.frameInterval = 1000 / this.targetFPS;
         }
         
         // Adjust animation speed for mobile
-        this.animationSpeed = this.isMobile ? 0.3 : 1.0;
+        this.animationSpeed = this.isMobile ? (this.prefersReducedMotion ? 0.05 : 0.1) : (this.prefersReducedMotion ? 0.3 : 1.0);
         
         console.log('Canvas initialized successfully', this.canvas.width, 'x', this.canvas.height);
     }
@@ -210,7 +213,7 @@ class MysticalCreature {
                 y: Math.random() * this.canvas.height,
                 size: Math.random() * 3 + 1,
                 twinkle: Math.random() * Math.PI * 2,
-                speed: (Math.random() * 0.02 + 0.01) * (this.isMobile ? 0.3 : 1.0) // Langsamere Sterne auf Mobile
+                speed: (Math.random() * 0.02 + 0.01) * (this.isMobile ? 0.1 : 1.0) // Noch langsamere Sterne auf Mobile
             });
         }
     }
@@ -299,7 +302,10 @@ class MysticalCreature {
     drawCrystalOrb(size, rotation) {
         // Main crystal orb - modern geometric design
         this.ctx.save();
-        this.ctx.rotate(rotation * 0.5);
+        // Disable orb rotation on mobile for better performance and less distraction
+        if (!this.isMobile) {
+            this.ctx.rotate(rotation * 0.5);
+        }
         
         // Outer crystal shell with gradient
         const outerGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, size/2);
@@ -406,16 +412,22 @@ class MysticalCreature {
         // Mystical runes floating around the orb
         const runes = ['◊', '◇', '◈', '◉'];
         
+        // Reduce or disable rotation on mobile
+        const runeRotation = this.isMobile ? rotation * 0.1 : rotation; // Kaum Rotation auf Mobile
+        
         for (let i = 0; i < 4; i++) {
             this.ctx.save();
             
-            const angle = (i / 4) * Math.PI * 2 + rotation;
+            const angle = (i / 4) * Math.PI * 2 + runeRotation;
             const distance = size/1.2;
             const x = Math.cos(angle) * distance;
             const y = Math.sin(angle) * distance;
             
             this.ctx.translate(x, y);
-            this.ctx.rotate(rotation * (i % 2 === 0 ? 1 : -1));
+            // Disable individual rune rotation on mobile
+            if (!this.isMobile) {
+                this.ctx.rotate(runeRotation * (i % 2 === 0 ? 1 : -1));
+            }
             
             // Rune glow
             this.ctx.shadowColor = '#B87333';
@@ -446,13 +458,13 @@ class MysticalCreature {
             try {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                // Mobile-optimized speed multiplier
-                const speedMultiplier = this.isMobile ? 0.1 : 0.5; // Noch langsamere Geschwindigkeit
+                // Mobile-optimized speed multiplier - extrem langsam für Mobile
+                const speedMultiplier = this.isMobile ? 0.02 : 0.5; // Noch viel langsamere Geschwindigkeit auf Mobile
                 
                 // Update creature animations with mobile-aware speed
                 this.creature.floatOffset += 0.02 * speedMultiplier * this.animationSpeed;
-                this.creature.rotation += 0.008 * speedMultiplier * this.animationSpeed;
-                this.creature.haloRotation += 0.015 * speedMultiplier * this.animationSpeed;
+                this.creature.rotation += (this.isMobile ? 0.001 : 0.008) * speedMultiplier * this.animationSpeed; // Kaum Rotation auf Mobile
+                this.creature.haloRotation += (this.isMobile ? 0.002 : 0.015) * speedMultiplier * this.animationSpeed; // Kaum Halo-Rotation auf Mobile
                 
                 // Draw everything
                 this.drawStars();
@@ -664,47 +676,29 @@ class MysticalCreature {
     }
 
     createCardsContainer(container) {
-        // Erstelle einen separaten Bereich für die Karten außerhalb des creature-containers
-        const body = document.body;
-        const cardsSection = document.createElement('section');
-        cardsSection.id = 'oracle-cards-section';
-        cardsSection.className = 'oracle-cards-section';
-        cardsSection.style.cssText = `
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, 
-                rgba(13, 13, 13, 0.95) 0%, 
-                rgba(26, 26, 26, 0.9) 50%, 
-                rgba(13, 13, 13, 0.95) 100%);
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.8s ease;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        `;
+        // Nutze den bestehenden mystical-text Bereich für die Karten
+        const mysticalTextElement = document.getElementById('mysticalText');
+        if (!mysticalTextElement) {
+            console.warn('mysticalText element not found');
+            return;
+        }
 
+        // Verstecke den ursprünglichen Text und verwende den Platz für Karten
         const cardsContainer = document.createElement('div');
         cardsContainer.id = 'oracle-cards-container';
         cardsContainer.style.cssText = `
-            display: flex;
-            gap: 30px;
+            display: none;
+            gap: 20px;
             opacity: 0;
             transition: all 0.8s ease;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 1000px;
+            max-width: 100%;
+            padding: 20px 0;
         `;
 
-        cardsSection.appendChild(cardsContainer);
-        
-        // Füge die Sektion nach dem main-Element hinzu
-        const main = document.querySelector('main');
-        if (main && main.parentNode) {
-            main.parentNode.insertBefore(cardsSection, main.nextSibling);
-        }
+        // Füge den Karten-Container zum bestehenden mystical-text Bereich hinzu
+        mysticalTextElement.parentNode.appendChild(cardsContainer);
     }
 
     setupOracleInteraction() {
@@ -885,11 +879,19 @@ class MysticalCreature {
 
     createTarotCards() {
         const cardsContainer = document.getElementById('oracle-cards-container');
-        const cardsSection = document.getElementById('oracle-cards-section');
-        if (!cardsContainer || !cardsSection) return;
+        const mysticalTextElement = document.getElementById('mysticalText');
+        
+        if (!cardsContainer || !mysticalTextElement) {
+            console.warn('Required elements not found for tarot cards');
+            return;
+        }
 
-        // Zeige die Karten-Sektion
-        cardsSection.style.opacity = '1';
+        // Verstecke den ursprünglichen Text
+        mysticalTextElement.style.display = 'none';
+        
+        // Zeige den Karten-Container
+        cardsContainer.style.display = 'flex';
+        cardsContainer.style.opacity = '1';
 
         const cardNames = ['Vergangenheit', 'Gegenwart', 'Zukunft'];
         
@@ -907,7 +909,6 @@ class MysticalCreature {
                 // Wenn alle Karten gelegt sind
                 if (index === cardNames.length - 1) {
                     setTimeout(() => {
-                        cardsContainer.style.opacity = '1';
                         this.enableCardReading();
                     }, 500);
                 }
@@ -921,8 +922,8 @@ class MysticalCreature {
         card.dataset.index = index;
         
         card.style.cssText = `
-            width: 120px;
-            height: 180px;
+            width: 90px;
+            height: 140px;
             background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
             border: 3px solid #B87333;
             border-radius: 15px;
@@ -1023,23 +1024,63 @@ class MysticalCreature {
         
         Beginne direkt mit der Deutung, ohne Anrede.`;
 
-        const response = await fetch('/api/oracle-reading', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                cardIndex: cardIndex
-            })
-        });
+        try {
+            const response = await fetch('/.netlify/functions/oracle-reading', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    cardIndex: cardIndex
+                })
+            });
 
-        if (!response.ok) {
-            throw new Error('API request failed');
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const data = await response.json();
+            return data.reading;
+        } catch (error) {
+            console.warn('Netlify function not available, using fallback reading');
+            // Fallback-Deutungen wenn die API nicht verfügbar ist
+            return this.getFallbackReading(cardIndex, aspect);
+        }
+    }
+
+    getFallbackReading(cardIndex, aspect) {
+        const fallbackReadings = {
+            0: { // Vergangenheit
+                readings: [
+                    "Die Vergangenheit hat dich gelehrt, dass wahre Stärke aus innerer Ruhe erwächst. Erfahrungen, die einst schmerzhaft waren, erweisen sich nun als wertvolle Lektionen. Die Sterne zeigen, dass vergangene Hindernisse zu deiner spirituellen Entwicklung beigetragen haben.",
+                    "Aus den Schatten der Vergangenheit tritt eine neue Erkenntnis hervor. Was einst als Rückschlag erschien, war in Wahrheit ein notwendiger Schritt auf deinem spirituellen Pfad. Die kosmischen Kräfte haben dich durch diese Zeit geführt, um dich auf das vorzubereiten, was kommt.",
+                    "Die Vergangenheit whispert Geheimnisse der Weisheit. Erkenne, dass jede Prüfung dich näher zu deinem wahren Selbst gebracht hat. Die Kristalle der Zeit haben deine Seele geschliffen und zu dem Diamanten geformt, der du heute bist."
+                ]
+            },
+            1: { // Gegenwart  
+                readings: [
+                    "In diesem Moment stehst du an einem mächtigen Wendepunkt. Die Energien des Universums sammeln sich um dich, bereit, neue Türen zu öffnen. Vertraue deiner Intuition und erkenne die Zeichen, die dir der Kosmos sendet.",
+                    "Die Gegenwart ist durchdrungen von magischen Möglichkeiten. Deine spirituelle Energie erreicht einen Höhepunkt - nutze diese kraftvolle Zeit für Manifestation und innere Klarheit. Die Sterne stehen günstig für transformative Durchbrüche.",
+                    "Jetzt ist die Zeit der Ernte gekommen. Was du gesät hast, beginnt zu blühen. Die mystischen Kräfte unterstützen dich dabei, deine Träume in die Realität zu bringen. Öffne dein Herz für die Wunder, die sich bereits zeigen."
+                ]
+            },
+            2: { // Zukunft
+                readings: [
+                    "Die Zukunft strahlt in goldenem Licht vor dir. Ein Pfad des Wachstums und der Erfüllung öffnet sich. Die kosmischen Winde tragen dich zu neuen Horizonten, wo Träume Wirklichkeit werden und deine wahre Bestimmung erwacht.",
+                    "Vor dir liegt eine Zeit großer spiritueller Expansion. Die Sterne weisen den Weg zu tieferer Erkenntnis und authentischer Lebensfreude. Bereite dich auf transformative Begegnungen vor, die dein Leben in wundervoller Weise verändern werden.",
+                    "Die Zukunft birgt Geschenke der Weisheit und des Friedens. Dein spiritueller Weg führt dich zu einer Zeit der Harmonie, in der sich deine höchsten Visionen manifestieren. Vertraue dem Fluss des Universums - es führt dich zu deinem Glück."
+                ]
+            }
+        };
+
+        const cardReadings = fallbackReadings[cardIndex];
+        if (cardReadings) {
+            const randomIndex = Math.floor(Math.random() * cardReadings.readings.length);
+            return cardReadings.readings[randomIndex];
         }
 
-        const data = await response.json();
-        return data.reading;
+        return "Die kosmischen Energien sind heute zu schwach für eine klare Deutung. Versuche es zu einem anderen Zeitpunkt erneut.";
     }
 
     displayCardReading(cardIndex, cardName, reading) {
@@ -1092,7 +1133,7 @@ class MysticalCreature {
         // UI zurücksetzen
         const bubble = this.oracle.speechBubble;
         const cards = document.getElementById('oracle-cards-container');
-        const cardsSection = document.getElementById('oracle-cards-section');
+        const mysticalTextElement = document.getElementById('mysticalText');
 
         if (bubble) {
             bubble.style.opacity = '0';
@@ -1101,11 +1142,13 @@ class MysticalCreature {
 
         if (cards) {
             cards.style.opacity = '0';
+            cards.style.display = 'none';
             cards.innerHTML = '';
         }
 
-        if (cardsSection) {
-            cardsSection.style.opacity = '0';
+        // Zeige den ursprünglichen Text wieder an
+        if (mysticalTextElement) {
+            mysticalTextElement.style.display = 'block';
         }
     }
 }

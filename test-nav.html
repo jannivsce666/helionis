@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Navigation</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        nav { background: #333; padding: 10px; }
+        nav a { color: white; text-decoration: none; margin: 0 10px; }
+        nav a:hover { background: #555; padding: 5px; }
+        .test-btn { background: #007cba; color: white; padding: 10px; border: none; cursor: pointer; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Navigation Test</h1>
+    
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="impressum.html">Impressum</a>
+    </nav>
+    
+    <h2>Test Links</h2>
+    <p><a href="impressum.html">Test Impressum Link</a></p>
+    <p><a href="shop.html">Test Shop Link</a></p>
+    
+    <h2>Test Buttons</h2>
+    <button class="test-btn product-description-btn" data-product="pyramide-gleichgewicht">Test Product Button</button>
+    
+    <script>
+        console.log('Test page loaded');
+        
+        // Test product button
+        document.querySelector('.product-description-btn').addEventListener('click', function() {
+            alert('Product button clicked: ' + this.getAttribute('data-product'));
+        });
+        
+        // Test all links
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                console.log('Link clicked:', this.href);
+            });
+        });
+    </script>
+</body>
+</html>
