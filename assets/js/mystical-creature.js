@@ -105,10 +105,12 @@ class MysticalCreature {
         this.canvas.width = 300;
         this.canvas.height = 300;
         
-        // Add visible border for debugging
+        // Add visible border for debugging and interaction
         this.canvas.style.border = '2px solid rgba(184, 115, 51, 0.3)';
         this.canvas.style.borderRadius = '15px';
         this.canvas.style.background = 'rgba(13, 13, 13, 0.5)';
+        this.canvas.style.cursor = 'pointer'; // Zeigt an, dass es klickbar ist
+        this.canvas.style.transition = 'all 0.3s ease'; // Für Hover-Effekte
         
         // Check for mobile device
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
@@ -142,7 +144,7 @@ class MysticalCreature {
                     </div>
                 </div>
                 <div class="creature-text">
-                    <p id="mysticalText">🔮 Das Kristall-Orakel erwacht...</p>
+                    <p id="mysticalText">🔮 Klicke auf die Kristallkugel für eine Orakel-Lesung...</p>
                 </div>
                 <style>
                 .fallback-orb {
@@ -496,17 +498,30 @@ class MysticalCreature {
         
         // Speichere Handler-Referenzen für cleanup
         this.mouseEnterHandler = () => {
-            this.canvas.style.transform = 'scale(1.1)';
+            if (!this.oracle.isActive) {
+                this.canvas.style.transform = 'scale(1.05)';
+                this.canvas.style.borderColor = 'rgba(255, 215, 0, 0.6)';
+                this.canvas.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.3)';
+            }
         };
         
         this.mouseLeaveHandler = () => {
-            this.canvas.style.transform = 'scale(1)';
+            if (!this.oracle.isActive) {
+                this.canvas.style.transform = 'scale(1)';
+                this.canvas.style.borderColor = 'rgba(184, 115, 51, 0.3)';
+                this.canvas.style.boxShadow = 'none';
+            }
         };
         
         this.clickHandler = () => {
-            // Add some sparkle effect on click - nur auf Desktop
-            if (!this.isMobile) {
-                this.createClickSparkles();
+            // Starte Orakel-Session beim Klick auf die Kristallkugel
+            if (!this.oracle.isActive) {
+                this.startOracleSession();
+            } else {
+                // Add some sparkle effect on click wenn Orakel bereits aktiv - nur auf Desktop
+                if (!this.isMobile) {
+                    this.createClickSparkles();
+                }
             }
         };
         
@@ -600,30 +615,6 @@ class MysticalCreature {
         const container = document.getElementById('creatureContainer');
         if (!container) return;
 
-        // Orakel-Button hinzufügen
-        const oracleButton = document.createElement('button');
-        oracleButton.id = 'oracle-trigger';
-        oracleButton.className = 'oracle-button';
-        oracleButton.innerHTML = '🔮 Orakel befragen';
-        oracleButton.style.cssText = `
-            position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(45deg, #B87333, #FFD700);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            color: #1a1a1a;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(184, 115, 51, 0.3);
-            transition: all 0.3s ease;
-            font-size: 16px;
-        `;
-
-        container.appendChild(oracleButton);
-
         // Sprechblase erstellen
         this.createSpeechBubble(container);
         
@@ -691,38 +682,14 @@ class MysticalCreature {
     }
 
     setupOracleInteraction() {
-        const oracleButton = document.getElementById('oracle-trigger');
-        if (!oracleButton) return;
-
-        oracleButton.addEventListener('click', () => {
-            if (this.oracle.isActive) return;
-            
-            this.startOracleSession();
-        });
-
-        // Hover-Effekte
-        oracleButton.addEventListener('mouseenter', () => {
-            oracleButton.style.transform = 'translateX(-50%) scale(1.1)';
-            oracleButton.style.boxShadow = '0 6px 20px rgba(184, 115, 51, 0.5)';
-        });
-
-        oracleButton.addEventListener('mouseleave', () => {
-            oracleButton.style.transform = 'translateX(-50%) scale(1)';
-            oracleButton.style.boxShadow = '0 4px 15px rgba(184, 115, 51, 0.3)';
-        });
+        // Oracle wird direkt über die Kristallkugel gestartet
+        // Kein separater Button mehr nötig
     }
 
     startOracleSession() {
         this.oracle.isActive = true;
         this.oracle.currentQuestion = 0;
         this.oracle.answers = [];
-        
-        // Button ausblenden
-        const button = document.getElementById('oracle-trigger');
-        if (button) {
-            button.style.opacity = '0';
-            button.style.pointerEvents = 'none';
-        }
 
         // Erste Frage stellen
         setTimeout(() => {
@@ -1095,7 +1062,6 @@ class MysticalCreature {
         // UI zurücksetzen
         const bubble = this.oracle.speechBubble;
         const cards = document.getElementById('oracle-cards-container');
-        const button = document.getElementById('oracle-trigger');
 
         if (bubble) {
             bubble.style.opacity = '0';
@@ -1105,11 +1071,6 @@ class MysticalCreature {
         if (cards) {
             cards.style.opacity = '0';
             cards.innerHTML = '';
-        }
-
-        if (button) {
-            button.style.opacity = '1';
-            button.style.pointerEvents = 'auto';
         }
     }
 
