@@ -5,6 +5,7 @@ class HoroscopeSlideshow {
         this.isAutoPlaying = true;
         this.autoPlayInterval = null;
         this.autoPlayDelay = 8000; // 8 seconds per slide
+        this.dailyHoroscopes = null;
         
         this.zodiacData = [
             {
@@ -117,7 +118,55 @@ class HoroscopeSlideshow {
             }
         ];
 
-        this.init();
+        this.loadDailyHoroscopes().then(() => {
+            this.init();
+        });
+    }
+
+    async loadDailyHoroscopes() {
+        try {
+            const response = await fetch('assets/data/horoscope.json');
+            const data = await response.json();
+            this.dailyHoroscopes = data.signs;
+            
+            console.log('Täglich Horoskope geladen für:', data.date);
+            console.log('Anzahl Sternzeichen:', Object.keys(this.dailyHoroscopes).length);
+            
+            // Update zodiac data with daily horoscopes
+            this.updateHoroscopeTexts();
+        } catch (error) {
+            console.warn('Konnte tägliche Horoskope nicht laden, verwende Standard-Texte:', error);
+        }
+    }
+
+    updateHoroscopeTexts() {
+        if (!this.dailyHoroscopes) return;
+
+        const signMapping = {
+            'aries': 'widder',
+            'taurus': 'stier', 
+            'gemini': 'zwillinge',
+            'cancer': 'krebs',
+            'leo': 'loewe',
+            'virgo': 'jungfrau',
+            'libra': 'waage',
+            'scorpio': 'skorpion',
+            'sagittarius': 'schuetze',
+            'capricorn': 'steinbock',
+            'aquarius': 'wassermann',
+            'pisces': 'fische'
+        };
+
+        let updatedCount = 0;
+        this.zodiacData.forEach(zodiac => {
+            const dailyKey = signMapping[zodiac.sign];
+            if (dailyKey && this.dailyHoroscopes[dailyKey]) {
+                zodiac.horoscope = this.dailyHoroscopes[dailyKey].text;
+                updatedCount++;
+            }
+        });
+        
+        console.log(`${updatedCount} Horoskop-Texte erfolgreich aktualisiert`);
     }
 
     init() {
