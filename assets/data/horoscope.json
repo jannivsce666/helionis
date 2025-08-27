@@ -1,55 +1,54 @@
 {
-  "date": "2025-08-26",
-  "generated_at": "2025-08-26T10:35:16.997Z",
-  "source": "fallback",
+  "date": "2025-08-27",
+  "generated_at": "2025-08-27T04:17:26.585Z",
   "signs": {
     "widder": {
       "name": "Widder",
-      "text": "Die Sterne zeigen neue Möglichkeiten auf. Vertraue deiner Intuition."
+      "text": "Heute kannst du neue Wege beschreiten. Mut und Entschlossenheit führen dich zu unerwarteten Möglichkeiten. Lass dich von deiner Intuition leiten."
     },
     "stier": {
       "name": "Stier",
-      "text": "Stabilität und Beständigkeit prägen deinen Tag. Bleibe geerdet."
+      "text": "Die Ruhe kehrt in deinen Alltag zurück. Schenke dir selbst Zeit für Entspannung. Ein kleines Geschenk für dich wird große Freude bereiten."
     },
     "zwillinge": {
       "name": "Zwillinge",
-      "text": "Kommunikation öffnet heute neue Türen. Sei offen für Gespräche."
+      "text": "Verbindungen stärken deinen Tag. Nutze dein kommunikatives Talent, um neue Kontakte zu knüpfen. Überraschungen warten auf dich."
     },
     "krebs": {
       "name": "Krebs",
-      "text": "Emotionale Tiefe bringt Klarheit. Höre auf dein Herz."
+      "text": "Heute fühlt sich dein Zuhause besonders geborgen an. Nimm dir Zeit, um deine Gefühle zu reflektieren. Selbstliebe ist der Schlüssel."
     },
     "loewe": {
       "name": "Löwe",
-      "text": "Deine natürliche Ausstrahlung steht heute im Mittelpunkt."
+      "text": "Dein Charisma zieht heute alle Blicke auf sich. Nutze diese Energie, um deine Ideen zu präsentieren. Erfolg ist in Reichweite."
     },
     "jungfrau": {
       "name": "Jungfrau",
-      "text": "Präzision und Aufmerksamkeit führen zum Erfolg."
+      "text": "Die Details sind heute entscheidend. Achte auf kleine Dinge, die dir helfen, deine Ziele zu erreichen. Organisation bringt dir Klarheit."
     },
     "waage": {
       "name": "Waage",
-      "text": "Balance und Harmonie sind heute deine Stärken."
+      "text": "Harmonie umgibt dich heute. Suche den Ausgleich in deinen Beziehungen und schaffe Frieden. Dein diplomatisches Geschick ist gefragt."
     },
     "skorpion": {
       "name": "Skorpion",
-      "text": "Transformation liegt in der Luft. Umarme Veränderungen."
+      "text": "Intuition und Leidenschaft leiten dich. Vertraue auf deine tiefen Empfindungen und gehe mutig neue Wege. Wandel liegt in der Luft."
     },
     "schuetze": {
       "name": "Schütze",
-      "text": "Neue Horizonte warten darauf, entdeckt zu werden."
+      "text": "Abenteuer und Freude stehen im Fokus. Nutze den Tag, um neue Horizonte zu erkunden. Freiheit und Kreativität inspirieren dich."
     },
     "steinbock": {
       "name": "Steinbock",
-      "text": "Ausdauer und Zielstrebigkeit zahlen sich aus."
+      "text": "Hartnäckigkeit zahlt sich heute aus. Setze deine Pläne in die Tat um und beobachte, wie deine Träume Form annehmen."
     },
     "wassermann": {
       "name": "Wassermann",
-      "text": "Innovation und Originalität bringen Fortschritt."
+      "text": "Innovative Gedanken sprudeln heute. Teile deine Ideen und inspirier andere. Gemeinsam könnt ihr Großartiges erreichen."
     },
     "fische": {
       "name": "Fische",
-      "text": "Intuition und Kreativität fließen besonders stark."
+      "text": "Deine Sensibilität ist heute dein Vorteil. Lass deine Kreativität fließen und entdecke neue Ausdrucksformen. Sei offen für Inspiration."
     }
   }
 }
