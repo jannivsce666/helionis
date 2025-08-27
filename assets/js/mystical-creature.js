@@ -119,6 +119,8 @@ class MysticalCreature {
     createCanvas() {
         // Find existing canvas element
         this.canvas = document.getElementById('mysticalCreatureCanvas');
+        console.log('Looking for canvas element:', this.canvas);
+        
         if (!this.canvas) {
             console.error('Mystical creature canvas not found!');
             this.showFallbackOrb();
@@ -137,11 +139,15 @@ class MysticalCreature {
         this.canvas.height = 300;
         
         // Add visible border for debugging and interaction
-        this.canvas.style.border = '2px solid rgba(184, 115, 51, 0.3)';
+        this.canvas.style.border = '3px solid rgba(184, 115, 51, 0.8)'; // Sichtbarerer Border für Debugging
         this.canvas.style.borderRadius = '15px';
         this.canvas.style.background = 'rgba(13, 13, 13, 0.5)';
         this.canvas.style.cursor = 'pointer'; // Zeigt an, dass es klickbar ist
         this.canvas.style.transition = 'all 0.3s ease'; // Für Hover-Effekte
+        
+        console.log('✅ Canvas setup complete:', this.canvas.width, 'x', this.canvas.height);
+        console.log('Canvas style cursor:', this.canvas.style.cursor);
+        console.log('Canvas in DOM:', document.contains(this.canvas));
         
         // Check for mobile device and window size
         this.updateMobileState();
@@ -588,10 +594,16 @@ class MysticalCreature {
     }
 
     setupInteraction() {
-        if (!this.canvas) return;
+        if (!this.canvas) {
+            console.error('Canvas not found for interaction setup!');
+            return;
+        }
+        
+        console.log('Setting up interaction handlers for canvas:', this.canvas);
         
         // Speichere Handler-Referenzen für cleanup
         this.mouseEnterHandler = () => {
+            console.log('Mouse entered canvas');
             if (!this.oracle.isActive) {
                 this.canvas.style.transform = 'scale(1.05)';
                 this.canvas.style.borderColor = 'rgba(255, 215, 0, 0.6)';
@@ -600,6 +612,7 @@ class MysticalCreature {
         };
         
         this.mouseLeaveHandler = () => {
+            console.log('Mouse left canvas');
             if (!this.oracle.isActive) {
                 this.canvas.style.transform = 'scale(1)';
                 this.canvas.style.borderColor = 'rgba(184, 115, 51, 0.3)';
@@ -608,7 +621,8 @@ class MysticalCreature {
         };
         
         this.clickHandler = () => {
-            console.log('Kristallkugel geklickt! Oracle-Status:', this.oracle.isActive);
+            console.log('🔮 Kristallkugel geklickt! Oracle-Status:', this.oracle.isActive);
+            console.log('Oracle speechBubble available:', !!this.oracle.speechBubble);
             
             // Starte Orakel-Session beim Klick auf die Kristallkugel
             if (!this.oracle.isActive) {
@@ -627,9 +641,19 @@ class MysticalCreature {
         if (!this.isMobile) {
             this.canvas.addEventListener('mouseenter', this.mouseEnterHandler);
             this.canvas.addEventListener('mouseleave', this.mouseLeaveHandler);
+            console.log('Mouse events added (desktop mode)');
+        } else {
+            console.log('Mouse events skipped (mobile mode)');
         }
         
         this.canvas.addEventListener('click', this.clickHandler);
+        console.log('✅ Click event listener added to canvas');
+        
+        // Test-Click nach 1 Sekunde für Debugging
+        setTimeout(() => {
+            console.log('🧪 Testing click event programmatically...');
+            this.canvas.click();
+        }, 3000);
     }
 
     createClickSparkles() {
