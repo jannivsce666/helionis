@@ -2,12 +2,7 @@
 <html lang='de'>
 <head>
     <meta charset='utf-8'/>
-    <meta name="viewpo                        <div class="shop-item-overlay">
-                            <div class="overlay-buttons">
-                                <a href="product-detail.html?product=pyramide-gleichgewicht" class="product-detail-link" aria-label="Details: Pyramide des Gleichgewichts">Details ansehen</a>
-                                <button class="add-to-cart" data-product-id="pyramide-gleichgewicht" data-name="Pyramide des Gleichgewichts" data-price="79.99" data-image="assets/images/pyramid.png" aria-label="In den Warenkorb: Pyramide des Gleichgewichts">In den Warenkorb</button>
-                            </div>
-                        </div>ntent="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helionis – Shop</title>
     <meta name="description" content="Mystische Pyramiden, Amulette & spirituelle Artefakte im Helionis Shop – handgefertigt mit energetischer Aufladung.">
     <meta property="og:type" content="website">
@@ -216,22 +211,20 @@
             </div>
         </section>
 
-        <!-- Shopping Cart Modal -->
-        <div id="cart-modal" class="cart-modal">
-            <div class="cart-content">
-                <div class="cart-header">
-                    <h2>Warenkorb</h2>
-                    <button class="cart-close">&times;</button>
+        <!-- Shopping Cart Sidebar -->
+        <div id="cart-sidebar" class="cart-sidebar">
+            <div class="cart-header">
+                <h2>Warenkorb</h2>
+                <button id="close-cart" class="close-cart">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be populated by JavaScript -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    Gesamt: <span id="cart-total">€0.00</span>
                 </div>
-                <div class="cart-items" id="cart-items">
-                    <!-- Cart items will be populated by JavaScript -->
-                </div>
-                <div class="cart-footer">
-                    <div class="cart-total">
-                        Gesamt: €<span id="cart-total">0.00</span>
-                    </div>
-                    <button class="checkout-btn">Zur Kasse</button>
-                </div>
+                <button class="checkout-btn">Zur Kasse</button>
             </div>
         </div>
     </main>
@@ -289,9 +282,7 @@
 
     <script type="module" src='assets/js/google-auth.js'></script>
     <script type="module" src='assets/js/dynamic-navigation.js'></script>
-    <script type="module" src='assets/js/shopping-cart.js'></script>
-    <script type="module" src='assets/js/shop-advanced-filter.js'></script>
-    <script type="module" src='assets/js/main.js' defer></script>
+    <script src='assets/js/shop.js'></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
 </body>
 </html>
