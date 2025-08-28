@@ -634,8 +634,13 @@ class MysticalCreature {
             console.log('Mouse events skipped (mobile mode)');
         }
         
+        // Füge sowohl Click- als auch Touch-Events hinzu für bessere Mobile-Unterstützung
         this.canvas.addEventListener('click', this.clickHandler);
-        console.log('✅ Click event listener added to canvas');
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault(); // Verhindere doppelte Events
+            this.clickHandler();
+        });
+        console.log('✅ Click and touch event listeners added to canvas');
     }
 
     createClickSparkles() {
@@ -780,13 +785,11 @@ class MysticalCreature {
         const cardsContainer = document.createElement('div');
         cardsContainer.id = 'oracle-cards-container';
         
-        // Responsive Positionierung für große Karte (300x300px)
+        // Responsive Positionierung für große Karte (300x300px) - bessere Mobile-Positionierung
         const isMobile = this.isMobile;
         cardsContainer.style.cssText = `
             position: absolute;
-            top: 50%;
-            ${isMobile ? 'right: -200px;' : 'right: -350px;'} 
-            transform: translateY(-50%);
+            ${isMobile ? 'top: 120%; left: 50%; transform: translate(-50%, 0);' : 'top: 50%; right: -350px; transform: translateY(-50%);'} 
             display: none;
             opacity: 0;
             transition: all 0.8s ease;
@@ -806,12 +809,14 @@ class MysticalCreature {
         style.textContent = `
             @media (max-width: 768px) {
                 #oracle-cards-container {
-                    right: -150px !important;
-                    top: 50% !important;
+                    top: 120% !important;
+                    left: 50% !important;
+                    right: auto !important;
+                    transform: translate(-50%, 0) !important;
                 }
                 .tarot-card {
-                    width: 200px !important;
-                    height: 200px !important;
+                    width: 250px !important;
+                    height: 250px !important;
                 }
                 .tarot-card div {
                     font-size: 12px !important;
@@ -824,12 +829,14 @@ class MysticalCreature {
             
             @media (max-width: 480px) {
                 #oracle-cards-container {
-                    right: -120px !important;
-                    top: 50% !important;
+                    top: 120% !important;
+                    left: 50% !important;
+                    right: auto !important;
+                    transform: translate(-50%, 0) !important;
                 }
                 .tarot-card {
-                    width: 150px !important;
-                    height: 150px !important;
+                    width: 200px !important;
+                    height: 200px !important;
                 }
                 .tarot-card div {
                     font-size: 10px !important;
@@ -1097,23 +1104,32 @@ class MysticalCreature {
         const card = document.querySelector('.tarot-card');
         
         if (card) {
-            card.addEventListener('click', () => {
+            // Sowohl Click- als auch Touch-Events für Mobile-Unterstützung
+            const cardClickHandler = () => {
                 if (this.oracle.isReadingCards) return;
                 
                 this.oracle.isReadingCards = true;
                 this.readCard(0); // Index 0, aber liest Zukunft
+            };
+            
+            card.addEventListener('click', cardClickHandler);
+            card.addEventListener('touchend', (e) => {
+                e.preventDefault(); // Verhindere doppelte Events
+                cardClickHandler();
             });
 
-            // Hover-Effekte
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'rotateY(0deg) scale(1.1)';
-                card.style.boxShadow = '0 12px 35px rgba(184, 115, 51, 0.4)';
-            });
+            // Hover-Effekte nur auf Desktop
+            if (!this.isMobile) {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'rotateY(0deg) scale(1.1)';
+                    card.style.boxShadow = '0 12px 35px rgba(184, 115, 51, 0.4)';
+                });
 
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'rotateY(0deg) scale(1)';
-                card.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
-            });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'rotateY(0deg) scale(1)';
+                    card.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
+                });
+            }
         }
     }
 
