@@ -602,6 +602,252 @@ footer {
     margin: 0 auto;
 }
 
+/* =============================
+   LOGIN PAGE STYLES
+   ============================= */
+.login-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, rgba(184,115,51,0.08) 0%, rgba(13,13,13,0.95) 80%);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container {
+    background: rgba(26,26,26,0.85);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(184,115,51,0.15);
+    padding: 3rem 2rem;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.login-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.mystical-symbols {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.symbol {
+    font-size: 2.2rem;
+    color: #FFD700;
+    filter: drop-shadow(0 0 8px #B87333);
+    opacity: 0.8;
+    transition: transform 0.3s;
+}
+.symbol:hover {
+    transform: scale(1.2) rotate(-8deg);
+    color: #B87333;
+}
+
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.auth-tab {
+    background: rgba(184,115,51,0.08);
+    border: 2px solid #B87333;
+    color: #FFD700;
+    padding: 0.7rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+.auth-tab.active {
+    background: linear-gradient(90deg, #FFD700 60%, #B87333 100%);
+    color: #1a1a1a;
+    box-shadow: 0 0 12px rgba(184,115,51,0.15);
+}
+.auth-tab:not(.active):hover {
+    background: rgba(184,115,51,0.15);
+    color: #B87333;
+}
+
+.auth-content {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+.auth-content.active {
+    display: flex;
+}
+.login-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #FFD700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(184,115,51,0.2);
+}
+.login-subtitle {
+    color: #B87333;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.google-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0 1rem 0;
+}
+.google-login-btn-animated {
+    position: relative;
+    background: linear-gradient(90deg, #FFD700 60%, #B87333 100%);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 1rem 2.5rem 1rem 3.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(184,115,51,0.15);
+    overflow: hidden;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.google-login-btn-animated:hover {
+    background: linear-gradient(90deg, #B87333 60%, #FFD700 100%);
+    color: #FFD700;
+    box-shadow: 0 0 30px rgba(184,115,51,0.25);
+}
+.google-sprite-container {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-text-animated {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #1a1a1a;
+    text-shadow: 0 0 8px #FFD700;
+}
+.button-shine {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 25px;
+    pointer-events: none;
+    background: linear-gradient(120deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+    opacity: 0.7;
+}
+
+.login-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: #FFD700;
+    font-size: 1rem;
+}
+.login-footer .highlight {
+    color: #B87333;
+    font-weight: bold;
+}
+.mystical-text {
+    color: #FFD700;
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Mystical Particles */
+.mystical-particles {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD700 60%, #B87333 100%);
+    opacity: 0.15;
+    animation: particleFloat 8s infinite linear;
+}
+.particle-1 { width: 30px; height: 30px; top: 10%; left: 20%; animation-delay: 0s; }
+.particle-2 { width: 20px; height: 20px; top: 60%; left: 80%; animation-delay: 1.2s; }
+.particle-3 { width: 25px; height: 25px; top: 80%; left: 30%; animation-delay: 2.4s; }
+.particle-4 { width: 18px; height: 18px; top: 40%; left: 60%; animation-delay: 3.6s; }
+.particle-5 { width: 22px; height: 22px; top: 70%; left: 10%; animation-delay: 4.8s; }
+.particle-6 { width: 15px; height: 15px; top: 20%; left: 70%; animation-delay: 6s; }
+@keyframes particleFloat {
+    0% { transform: translateY(0) scale(1); opacity: 0.15; }
+    50% { transform: translateY(-30px) scale(1.2); opacity: 0.25; }
+    100% { transform: translateY(0) scale(1); opacity: 0.15; }
+}
+
+/* Responsive Login Styles */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 2rem 1rem;
+        max-width: 95vw;
+    }
+    .login-title {
+        font-size: 1.5rem;
+    }
+    .google-login-btn-animated {
+        padding: 1rem 1.5rem 1rem 3rem;
+        font-size: 1rem;
+    }
+    .google-sprite-container {
+        width: 36px;
+        height: 36px;
+        left: 0.5rem;
+    }
+    .auth-tab {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+}
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1rem 0.5rem;
+        max-width: 99vw;
+    }
+    .login-title {
+        font-size: 1.2rem;
+    }
+    .google-login-btn-animated {
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        font-size: 0.95rem;
+    }
+    .google-sprite-container {
+        width: 28px;
+        height: 28px;
+        left: 0.2rem;
+    }
+    .auth-tab {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
 /* Shop Styles */
 .shop-hero {
     min-height: 40vh;
@@ -1610,139 +1856,127 @@ footer {
 .hero-subtitle {
     font-size: 1.2rem;
     color: #EDE9E4;
-    margin-bottom: 30px;
-    font-style: italic;
 }
 
-.moon-phase {
-    background: rgba(212, 175, 55, 0.1);
-    border: 1px solid #D4AF37;
-    border-radius: 25px;
-    padding: 12px 24px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1rem;
-    color: #D4AF37;
+/* Mobile override to prevent spinning effect on horoscope symbols */
+@media (max-width: 768px) {
+    .slide-symbol {
+        animation: floatMobile 6s ease-in-out infinite !important; /* remove rotate */
+        will-change: transform;
+    }
 }
 
-.moon-icon {
-    font-size: 1.2rem;
+@keyframes floatMobile {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
 }
 
-/* Zodiac Selector */
-.zodiac-selector {
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .slideshow-controls {
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .horoscope-slide {
+        padding: 2rem 1.5rem;
+        min-height: 400px;
+    }
+    
+    .slide-symbol {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+    }
+    
+    .slide-horoscope {
+        font-size: 1.1rem;
+    }
+    
+    .slide-keywords {
+        gap: 0.5rem;
+    }
+    
+    .autoplay-controls {
+        position: static;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    /* Mystical Creature Mobile - Slower animations */
+    #mystical-creature-canvas {
+        width: 200px !important;
+        height: 230px !important;
+        bottom: 10px !important;
+        right: 10px !important;
+    }
+    
+    /* Reduce mystical creature animation speed on mobile */
+    .mystical-creature-mobile {
+        animation-duration: 8s !important; /* Slower than desktop */
+    }
+}
+
+@media (max-width: 480px) {
+    .horoscope-slideshow {
+        padding: 1rem;
+    }
+    
+    .horoscope-slide {
+        padding: 1.5rem 1rem;
+    }
+    
+    .slide-title {
+        font-size: 1.8rem;
+    }
+    
+    .slide-horoscope {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    /* Mystical Creature Small Mobile - Even slower */
+    #mystical-creature-canvas {
+        width: 150px !important;
+        height: 175px !important;
+        bottom: 5px !important;
+        right: 5px !important;
+    }
+    
+    /* Further reduce animation speed on small mobile */
+    .mystical-creature-mobile {
+        animation-duration: 12s !important; /* Much slower */
+    }
+}
+
+/* Horoscope Page Styles */
+.horoscope-hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
     padding: 60px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.zodiac-selector h2 {
     text-align: center;
-    font-size: 2rem;
-    color: #D4AF37;
-    margin-bottom: 40px;
-    font-family: 'Georgia', serif;
-}
-
-.zodiac-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.zodiac-card {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-    border: 2px solid #333;
-    border-radius: 15px;
-    padding: 25px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
-.zodiac-card::before {
+.horoscope-hero::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.zodiac-card:hover {
-    border-color: #D4AF37;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
-}
-
-.zodiac-card:hover::before {
-    opacity: 1;
-}
-
-.zodiac-symbol {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    transition: transform 0.3s ease;
-}
-
-.zodiac-symbol img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
-    transition: filter 0.3s ease;
-}
-
-.zodiac-card:hover .zodiac-symbol {
-    transform: scale(1.1);
-}
-
-.zodiac-card:hover .zodiac-symbol img {
-    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
-}
-
-.zodiac-card h3 {
-    font-size: 1.3rem;
-    color: #EDE9E4;
-    margin-bottom: 8px;
-    position: relative;
-    z-index: 2;
-}
-
-.zodiac-dates {
-    font-size: 0.9rem;
-    color: #b0b0b0;
-    position: relative;
-    z-index: 2;
-}
-
-/* Horoscope Display */
-.horoscope-display {
-    padding: 60px 20px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.horoscope-container {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-    border: 2px solid #D4AF37;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .horoscope-header {
@@ -2525,7 +2759,7 @@ footer {
 }
 
 .related-products .container {
-    max-width: 
+    max-width: 1200px;
     margin: 0 auto;
 }
 
