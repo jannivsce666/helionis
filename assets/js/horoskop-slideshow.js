@@ -171,15 +171,22 @@ class HoroscopeSlideshow {
 
     init() {
         this.setupCanvas();
+        this.createStars();
         this.createSlides();
         this.setupControls();
         this.updateDate();
+        this.startStarAnimation();
         this.startAutoPlay();
         this.showSlide(0);
     }
 
     setupCanvas() {
         this.canvas = document.getElementById('constellationCanvas');
+        if (!this.canvas) {
+            console.warn('Constellation canvas not found');
+            return;
+        }
+        
         this.ctx = this.canvas.getContext('2d');
         this.resizeCanvas();
         
@@ -189,6 +196,71 @@ class HoroscopeSlideshow {
     resizeCanvas() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+    }
+
+    createStars() {
+        this.backgroundStars = [];
+        const starCount = window.innerWidth < 768 ? 30 : 60; // Fewer stars on mobile
+        
+        for (let i = 0; i < starCount; i++) {
+            this.backgroundStars.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 2 + 0.5,
+                opacity: Math.random() * 0.8 + 0.2,
+                twinkleSpeed: Math.random() * 0.02 + 0.01,
+                twinkleOffset: Math.random() * Math.PI * 2
+            });
+        }
+    }
+
+    startStarAnimation() {
+        if (!this.canvas || !this.ctx) return;
+        
+        const animate = () => {
+            this.drawStarBackground();
+            this.animationId = requestAnimationFrame(animate);
+        };
+        animate();
+    }
+
+    drawStarBackground() {
+        // Clear canvas with dark space background
+        this.ctx.fillStyle = 'rgba(13, 13, 13, 0.1)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Draw twinkling stars
+        this.backgroundStars.forEach((star, index) => {
+            const twinkle = Math.sin(Date.now() * star.twinkleSpeed + star.twinkleOffset);
+            const alpha = star.opacity * (0.5 + 0.5 * twinkle);
+            
+            // Star glow
+            const glowSize = star.size * 4;
+            const gradient = this.ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, glowSize);
+            gradient.addColorStop(0, `rgba(184, 115, 51, ${alpha * 0.8})`);
+            gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.beginPath();
+            this.ctx.arc(star.x, star.y, glowSize, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Star center
+            this.ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`;
+            this.ctx.beginPath();
+            this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            // Gentle floating motion
+            star.y += Math.sin(Date.now() * 0.0005 + index) * 0.1;
+            star.x += Math.cos(Date.now() * 0.0003 + index) * 0.05;
+            
+            // Wrap around edges
+            if (star.x > this.canvas.width) star.x = 0;
+            if (star.x < 0) star.x = this.canvas.width;
+            if (star.y > this.canvas.height) star.y = 0;
+            if (star.y < 0) star.y = this.canvas.height;
+        });
     }
 
     createSlides() {
@@ -309,21 +381,14 @@ class HoroscopeSlideshow {
     }
 
     drawConstellation(constellation) {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // Don't clear the canvas - draw over the star background
+        // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
         const scale = Math.min(this.canvas.width, this.canvas.height) * 0.3;
 
-        // Draw stars
-        constellation.stars.forEach(star => {
-            const x = centerX + star.x * scale;
-            const y = centerY + star.y * scale;
-            
-            this.drawStar(x, y, star.brightness);
-        });
-
-        // Draw connections
+        // Draw connections first (behind stars)
         constellation.connections.forEach(connection => {
             const star1 = constellation.stars[connection[0]];
             const star2 = constellation.stars[connection[1]];
@@ -335,16 +400,32 @@ class HoroscopeSlideshow {
             
             this.drawConnection(x1, y1, x2, y2);
         });
+
+        // Draw constellation stars on top
+        constellation.stars.forEach(star => {
+            const x = centerX + star.x * scale;
+            const y = centerY + star.y * scale;
+            
+            this.drawStar(x, y, star.brightness, true); // true for constellation star
+        });
     }
 
-    drawStar(x, y, brightness) {
-        const radius = 2 + brightness * 3;
-        const glowRadius = radius * 3;
+    drawStar(x, y, brightness, isConstellation = false) {
+        const radius = isConstellation ? 3 + brightness * 4 : 2 + brightness * 3;
+        const glowRadius = radius * (isConstellation ? 4 : 3);
+        const alpha = isConstellation ? Math.min(1, brightness + 0.3) : brightness;
         
-        // Glow effect
+        // Enhanced glow effect for constellation stars
         const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, glowRadius);
-        gradient.addColorStop(0, `rgba(184, 115, 51, ${brightness})`);
-        gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+        
+        if (isConstellation) {
+            gradient.addColorStop(0, `rgba(255, 215, 0, ${alpha})`);
+            gradient.addColorStop(0.5, `rgba(184, 115, 51, ${alpha * 0.8})`);
+            gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+        } else {
+            gradient.addColorStop(0, `rgba(184, 115, 51, ${alpha})`);
+            gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+        }
         
         this.ctx.fillStyle = gradient;
         this.ctx.beginPath();
@@ -352,19 +433,25 @@ class HoroscopeSlideshow {
         this.ctx.fill();
         
         // Star center
-        this.ctx.fillStyle = '#B87333';
+        this.ctx.fillStyle = isConstellation ? '#FFD700' : '#B87333';
         this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, Math.PI * 2);
         this.ctx.fill();
     }
 
     drawConnection(x1, y1, x2, y2) {
-        this.ctx.strokeStyle = 'rgba(184, 115, 51, 0.4)';
-        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = 'rgba(184, 115, 51, 0.7)';
+        this.ctx.lineWidth = 1.5;
+        this.ctx.shadowColor = '#B87333';
+        this.ctx.shadowBlur = 2;
+        
         this.ctx.beginPath();
         this.ctx.moveTo(x1, y1);
         this.ctx.lineTo(x2, y2);
         this.ctx.stroke();
+        
+        // Reset shadow
+        this.ctx.shadowBlur = 0;
     }
 
     // Constellation data (simplified representations)
@@ -529,6 +616,25 @@ class HoroscopeSlideshow {
             ],
             connections: [[0, 1], [1, 2], [2, 3], [3, 4], [1, 5], [3, 6], [5, 6]]
         };
+    }
+
+    // Cleanup method to stop animations
+    destroy() {
+        this.stopAnimation();
+        if (this.autoPlayTimer) {
+            clearInterval(this.autoPlayTimer);
+            this.autoPlayTimer = null;
+        }
+        
+        // Remove event listeners
+        window.removeEventListener('resize', this.resizeCanvas);
+    }
+
+    stopAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
     }
 }
 
