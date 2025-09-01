@@ -3092,3 +3092,125 @@ footer {
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(184, 115, 51, 0.3);
 }
+
+/* Mobile Responsive Fixes - Prevent Horizontal Scrolling */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* About Content Section Mobile */
+@media (max-width: 768px) {
+    .about-content-section {
+        padding: 3rem 1rem;
+    }
+    
+    .about-story {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .story-text h2 {
+        font-size: 2rem;
+    }
+    
+    .story-text h3 {
+        font-size: 1.3rem;
+    }
+    
+    .story-text p {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
+    .story-image .video-wrapper {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-content-section {
+        padding: 2rem 0.5rem;
+    }
+    
+    .story-text h2 {
+        font-size: 1.8rem;
+    }
+    
+    .story-text h3 {
+        font-size: 1.2rem;
+    }
+    
+    .story-image .video-wrapper {
+        max-width: 300px;
+    }
+}
+
+/* Symbolik Section Mobile */
+@media (max-width: 768px) {
+    .symbolik-section {
+        padding: 3rem 1rem;
+    }
+    
+    .symbol-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .symbol-content {
+        margin-bottom: 1.5rem;
+    }
+    
+    .symbol-media video,
+    .symbol-media img {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .symbolik-section {
+        padding: 2rem 0.5rem;
+    }
+    
+    .symbolik-header h2 {
+        font-size: 2rem;
+    }
+    
+    .symbol-media video,
+    .symbol-media img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* General Mobile Container Fix */
+@media (max-width: 768px) {
+    .container,
+    section,
+    main {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .container,
+    section,
+    main {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
