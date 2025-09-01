@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="de">
+<!doctype html>
+<html lang='de'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset='utf-8'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pyramide der Stabilität - Helionis</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Helionis – Pyramide des Gleichgewichts</title>
+    <meta name="description" content="Pyramide des Gleichgewichts - Eine mächtige Pyramide für innere Balance und Klarheit">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel='stylesheet' href='assets/css/styles.css'>
 </head>
 <body>
     <header id="header">
@@ -59,104 +58,102 @@
     </header>
 
     <main class="product-main">
-        <div class="container">
-            <section class="product-detail-section">
-                <nav class="breadcrumb">
-                    <a href="index.html">Startseite</a>
-                    <span class="divider">›</span>
-                    <a href="shop.html">Shop</a>
-                    <span class="divider">›</span>
-                    <span>Pyramide der Stabilität</span>
-                </nav>
+        <!-- Product Detail Section -->
+        <section class="product-detail-section">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <a href="shop.html">Shop</a> 
+                    <span class="divider">></span> 
+                    <a href="shop.html?filter=pyramide">Pyramiden</a> 
+                    <span class="divider">></span> 
+                    <span>Pyramide des Gleichgewichts</span>
+                </div>
 
                 <div class="product-layout">
+                    <!-- Product Image -->
                     <div class="product-image">
-                        <img src="assets/images/pyramid.png" alt="Pyramide der Stabilität">
+                        <img src='assets/images/pyramid.png' alt="Pyramide des Gleichgewichts" loading="lazy">
                     </div>
-                    
+
+                    <!-- Product Info -->
                     <div class="product-info">
-                        <div class="product-category">Spiritueller Schmuck</div>
-                        <h1>Pyramide der Stabilität</h1>
-                        <div class="product-price">€89,99 <span class="price-note">inkl. MwSt.</span></div>
+                        <h1>Pyramide des Gleichgewichts</h1>
+                        <p class="product-category">Mystische Pyramiden</p>
+                        <div class="product-price">€79.99 <span class="price-note">inkl. MwSt., zzgl. Versand</span></div>
                         
                         <div class="product-summary">
-                            <p>Diese geheimnisvolle Pyramide vereint uralte Weisheit mit moderner Spiritualität. Ein kraftvolles Symbol für Stabilität, Erdung und inneres Gleichgewicht.</p>
+                            <p>Die Pyramide des Gleichgewichts ist ein außergewöhnliches esoterisches Werkzeug, das seit Jahrtausenden für Meditation und spirituelle Praxis verwendet wird. Diese handgefertigte Pyramide aus hochwertigem Material channelt kosmische Energie und hilft dabei, innere Balance zu finden. Jede Pyramide wird individuell gefertigt und energetisch aufgeladen.</p>
                         </div>
-                        
+
+                        <!-- Key Features -->
                         <div class="features-section">
-                            <h3>Besondere Eigenschaften</h3>
+                            <h3>Eigenschaften & Wirkung</h3>
                             <ul class="features-list">
-                                <li>Handgefertigtes Unikat aus hochwertigem Material</li>
-                                <li>Energetisch aufgeladen nach alter Tradition</li>
-                                <li>Fördert mentale Klarheit und Fokus</li>
-                                <li>Perfekt für Meditation und spirituelle Praxis</li>
-                                <li>Zeitloses Design für jeden Raum</li>
+                                <li><strong>Energieausgleich:</strong> Harmonisiert die Chakren und bringt Körper, Geist und Seele in Einklang</li>
+                                <li><strong>Meditation:</strong> Verstärkt die Konzentration und vertieft meditative Zustände</li>
+                                <li><strong>Schutz:</strong> Schirmt negative Energien ab und schafft einen heiligen Raum</li>
+                                <li><strong>Klarheit:</strong> Fördert geistige Klarheit und intuitive Einsichten</li>
                             </ul>
                         </div>
-                        
+
+                        <!-- Technical Details -->
                         <div class="specs-grid">
                             <div class="spec-item">
-                                <strong>Material:</strong> Hochwertiger Stein
+                                <strong>Größe:</strong> 12cm x 12cm Grundfläche, 8cm Höhe
                             </div>
                             <div class="spec-item">
-                                <strong>Größe:</strong> 8 x 8 x 6 cm
-                            </div>
-                            <div class="spec-item">
-                                <strong>Gewicht:</strong> ca. 350g
-                            </div>
-                            <div class="spec-item">
-                                <strong>Herkunft:</strong> Handgefertigt
+                                <strong>Material:</strong> Hochwertiger Kunststein mit energetischen Einlagerungen
                             </div>
                         </div>
-                        
+
+                        <!-- Custom Order Note -->
                         <div class="special-note">
-                            <p>✨ Jede Pyramide ist ein Unikat und kann leicht in Form und Farbe variieren</p>
+                            <p>✨ <strong>Wird nach Bestellung individuell für Sie gefertigt und energetisch aufgeladen</strong></p>
                         </div>
-                        
+
+                        <!-- Purchase Section -->
                         <div class="purchase-section">
                             <div class="quantity-controls">
                                 <label for="quantity">Anzahl:</label>
                                 <div class="quantity-input">
-                                    <button type="button" class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                    <button type="button" class="qty-btn minus">-</button>
                                     <input type="number" id="quantity" value="1" min="1" max="10">
-                                    <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                                    <button type="button" class="qty-btn plus">+</button>
                                 </div>
                             </div>
                             
-                            <button class="btn-primary" onclick="addToCart('pyramid', 'Pyramide der Stabilität', 89.99)">
-                                In den Warenkorb
-                            </button>
-                            
-                            <div class="shipping-options">
-                                <label>
-                                    <input type="radio" name="shipping" value="standard" checked>
-                                    Standardversand (3-5 Tage) - Kostenlos
-                                </label>
-                                <label>
-                                    <input type="radio" name="shipping" value="express">
-                                    Expressversand (1-2 Tage) - €9,99
-                                </label>
+                            <div class="action-buttons">
+                                <button class="btn-primary add-to-cart">In den Warenkorb</button>
+                                <div class="shipping-options">
+                                    <label><input type="radio" name="shipping" value="standard" checked> Beschreibung</label>
+                                    <label><input type="radio" name="shipping" value="express"> Versand & Lieferung</label>
+                                    <label><input type="radio" name="shipping" value="care"> Pflege & Aufladung</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Detailed Description -->
                 <div class="detailed-description">
-                    <h2>Beschreibung</h2>
+                    <h2>Detaillierte Beschreibung</h2>
+                    <p>Diese einzigartige Pyramide vereint jahrtausendealte Weisheit mit moderner Handwerkskunst. Die perfekten geometrischen Proportionen entsprechen den großen Pyramiden von Gizeh und erzeugen ein kraftvolles Energiefeld. Das verwendete Material wurde sorgfältig ausgewählt und verstärkt die natürlichen Eigenschaften der Pyramidenform. Bei der Herstellung werden traditionelle Techniken mit modernem Wissen kombiniert, um ein Werkzeug zu schaffen, das sowohl ästhetisch ansprechend als auch spirituell kraftvoll ist.</p>
                     
-                    <p>Die Pyramide der Stabilität ist weit mehr als nur ein schönes Objekt – sie ist ein Portal zu innerer Ruhe und spirituellem Wachstum. Seit Jahrtausenden gelten Pyramiden als Symbole für die Verbindung zwischen Himmel und Erde, zwischen dem Göttlichen und dem Irdischen.</p>
+                    <h3>Versand & Lieferung</h3>
+                    <p><strong>Lieferzeit:</strong> 2-3 Wochen (handgefertigt)</p>
+                    <p><strong>Versandkosten:</strong> €4.90 (kostenlos ab €50)</p>
+                    <p><strong>Versand:</strong> Sicherer Versand mit DHL, versichert und nachverfolgbar</p>
+                    <p><strong>Verpackung:</strong> Liebevoll in energetisch gereinigter Verpackung verschickt</p>
                     
-                    <h3>Die Kraft der Pyramide</h3>
-                    <p>Diese besondere Pyramide wurde nach uralten Traditionen gefertigt und energetisch aufgeladen. Ihre perfekte geometrische Form konzentriert und verstärkt die Lebensenergie in ihrem Umfeld. Viele Menschen berichten von einer spürbaren Verbesserung ihrer Konzentration, Meditation und ihres allgemeinen Wohlbefindens.</p>
-                    
-                    <h3>Anwendung in der Praxis</h3>
-                    <p>Platziere die Pyramide in deinem Zuhause, Büro oder Meditationsraum. Sie eignet sich hervorragend als Fokuspunkt für Meditationen, kann aber auch einfach durch ihre Präsenz positive Energie in jeden Raum bringen. Viele nutzen sie auch zur Reinigung und Aufladung von Kristallen und anderen spirituellen Objekten.</p>
-                    
-                    <h3>Authentizität und Qualität</h3>
-                    <p>Jede Pyramide wird von erfahrenen Handwerkern individuell gefertigt und durchläuft einen speziellen Energetisierungsprozess. Das macht jedes Stück zu einem wahren Unikat mit seiner ganz eigenen Ausstrahlung und Kraft.</p>
+                    <h3>Pflege & energetische Aufladung</h3>
+                    <p><strong>Reinigung:</strong> Regelmäßig mit klarem Wasser oder Mondlicht reinigen</p>
+                    <p><strong>Aufladung:</strong> Bei Vollmond oder auf eine Amethyst-Druse legen</p>
+                    <p><strong>Lagerung:</strong> An einem ruhigen, geschützten Ort aufbewahren</p>
+                    <p><strong>Verwendung:</strong> Vor der ersten Nutzung mit positiver Intention programmieren</p>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </main>
 
     <footer>
