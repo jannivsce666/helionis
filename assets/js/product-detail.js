@@ -452,5 +452,3 @@ let productDetailManager;
 document.addEventListener('DOMContentLoaded', () => {
     productDetailManager = new ProductDetailManager();
 });
-
-export { ProductDetailManager };
