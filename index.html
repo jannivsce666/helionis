@@ -3,11 +3,11 @@
 <head>
     <meta charset='utf-8'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helionis – Home</title>
-    <meta name="description" content="Mystische Pyramiden & Amulette – eigener Shop, handgefertigt in Herbrechtingen. Dunkles Design, Kupfer-Akzente, Lumineszenz.">
+    <title>Helionis – Finde deine innere Ausrichtung</title>
+    <meta name="description" content="Handwerklich gefertigte mystische Pyramiden, Würfel & Amulette für innere Ausrichtung und spirituelle Transformation.">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Helionis – Eigener Shop">
-    <meta property="og:description" content="Mystische Pyramiden & Amulette – eigener Shop, handgefertigt in Herbrechtingen.">
+    <meta property="og:title" content="Helionis – Finde deine innere Ausrichtung">
+    <meta property="og:description" content="Handwerklich gefertigte mystische Pyramiden, Würfel & Amulette für innere Ausrichtung und spirituelle Transformation.">
     <meta property="og:image" content="assets/images/pyramid.png">
     <meta property="og:url" content="">
     <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +27,6 @@
         </button>
         <nav>
             <a href='index.html' class='active'>Home</a>
-            <a href='about.html'>Über uns</a>
             <a href='shop.html'>Shop</a>
             <a href='horoskop.html'>Horoskope</a>
             <a href='login.html' class='dynamic-auth-link' id='auth-nav-link'>
@@ -35,109 +34,131 @@
             </a>
         </nav>
     </header>
-
+    
     <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
+        <!-- About Hero Section -->
+        <section class="about-hero">
+            <div class="about-hero-content">
                 <h1>Finde deine innere Ausrichtung</h1>
-                <a href="shop.html" class="cta-button">Kollektion entdecken</a>
-            </a></div>
+                <p>Handwerk. Intuition. Transformation.</p>
+            </div>
         </section>
 
-        <!-- Products Section -->
-        <section class="products">
-            <div class="product-card pyramid-card">
-                <div class="product-image">
-                    <img src='assets/images/pyramid.png' alt="Pyramide des Gleichgewichts – Lumineszenz & Kupfer" loading="lazy" width="180" height="180" class="product-static-image">
-                    <video muted loop playsinline preload="none" width="180" height="180" class="product-hover-video">
-                        <source src="videos/start.mp4" type="video/mp4">
-                    </video>
-                </a></div>
-                <h3>PYRAMIDE DES GLEICHGEWICHTS</h3>
-            </a></div>
-            <div class="product-card cube-card">
-                <div class="product-image">
-                    <img src='assets/images/cube.png' alt="Balance Würfel – Kristallwürfel für Meditation" loading="lazy" width="180" height="180" class="product-static-image">
-                    <video muted loop playsinline preload="none" width="180" height="180" class="product-hover-video">
-                        <source src="videos/cube.mp4" type="video/mp4">
-                    </video>
-                </a></div>
-                <h3>BALANCE WÜRFEL</h3>
-            </a></div>
-            <div class="product-card amulet-card">
-                <div class="product-image">
-                    <img src='assets/images/amulet.png' alt="Spiralen Amulett – Schutz vor negativen Energien" loading="lazy" width="180" height="180" class="product-static-image">
-                    <video muted loop playsinline preload="none" width="180" height="180" class="product-hover-video">
-                        <source src="videos/amulet.mp4" type="video/mp4">
-                    </video>
-                </a></div>
-                <h3>SPIRALEN AMULETT</h3>
-            </a></div>
+        <!-- YouTube Video Section -->
+        <section class="youtube-video-section">
+            <div class="video-wrapper">
+                <iframe 
+                    width="560" 
+                    height="315" 
+                    src="https://www.youtube.com/embed/O00M9hfKDss" 
+                    title="Helionis Video" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
         </section>
 
-        <!-- JSON-LD Product Schema -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "itemListElement": [
-            {
-              "@type": "Product",
-              "position": 1,
-              "name": "Pyramide des Gleichgewichts",
-              "image": ["assets/images/pyramid.png"],
-              "description": "Eine mächtige Pyramide, die innere Balance und Klarheit fördert. Handgefertigt mit energetischer Aufladung.",
-              "brand": { "@type": "Brand", "name": "Helionis" },
-              "offers": {
-                "@type": "Offer",
-                "priceCurrency": "EUR",
-                "price": "89.99",
-                "availability": "https://schema.org/InStock"
-              }
-            },
-            {
-              "@type": "Product",
-              "position": 2,
-              "name": "Balance Würfel",
-              "image": ["assets/images/cube.png"],
-              "description": "Kristallwürfel für Meditation und energetische Reinigung.",
-              "brand": { "@type": "Brand", "name": "Helionis" },
-              "offers": {
-                "@type": "Offer",
-                "priceCurrency": "EUR",
-                "price": "59.99",
-                "availability": "https://schema.org/InStock"
-              }
-            },
-            {
-              "@type": "Product",
-              "position": 3,
-              "name": "Spiralen Amulett",
-              "image": ["assets/images/amulet.png"],
-              "description": "Schützt vor negativen Energien und verstärkt die Intuition.",
-              "brand": { "@type": "Brand", "name": "Helionis" },
-              "offers": {
-                "@type": "Offer",
-                "priceCurrency": "EUR",
-                "price": "39.99",
-                "availability": "https://schema.org/InStock"
-              }
-            }
-          ]
-        }
-        </script>
+        <!-- About Content Section -->
+        <section class="about-content-section">
+            <div class="about-story">
+                <div class="story-text">
+                    <h2>Unsere Mission</h2>
+                    <p>Wir – <strong>Michael Helmel</strong> und <strong>Johannes Piperidis</strong> – erschaffen in stiller Handarbeit Artefakte, die mehr sind als bloße Formen aus Harz und Metall.</p>
+                    
+                    <p>Jedes Stück ist ein einzigartiges Unikat, geboren aus Intuition, Geduld und der Absicht, Energie sichtbar zu machen.</p>
+                    
+                    <h3>Symbole der Wandlung</h3>
+                    <p>Unsere Pyramiden, Würfel und Amulette tragen Symbole, die seit Jahrhunderten für Orientierung, Balance und Transformation stehen.</p>
+                    
+                    <p>Der <em>Kompass</em>, der im Inneren ruht, erinnert daran, dass wahre Ausrichtung nur aus dem eigenen Herzen erwächst. Die <em>Spirale</em> führt dich auf den Weg der Wandlung, während das Leuchten im Harz das Unsichtbare ins Sichtbare bringt.</p>
+                    
+                    <h3>Für die Suchenden</h3>
+                    <p>Diese Werke richten sich an Menschen, die mehr suchen als Dekoration – an jene, die spüren, dass Materie Geist trägt und dass man Bedeutung in Dinge manifestieren kann.</p>
+                    
+                    <p>So entsteht aus jedem Objekt ein <strong>Begleiter</strong>: ein Anker für die innere Reise, ein Symbol für dein Gleichgewicht, ein Tor in die stille Tiefe.</p>
+                </div>
+                
+                <div class="story-image">
+                    <div class="video-container">
+                        <img src='assets/images/pyramid.png' alt="Handgefertigte mystische Pyramide" loading="lazy" width="400" height="400" id="video-thumbnail" style="cursor: pointer;">
+                        <video id="helionis-video" width="400" height="400" controls style="display: none;">
+                            <source src="assets/images/helionis.mp4" type="video/mp4">
+                            Ihr Browser unterstützt das Video-Tag nicht.
+                        </video>
+                        <div class="play-button" id="play-button">
+                            <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="50" fill="rgba(184, 115, 51, 0.8)"/>
+                                <polygon points="40,30 70,50 40,70" fill="white"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Symbolik Section -->
+        <section class="symbolik-section">
+            <div class="symbolik-header">
+                <h2>Die Sprache der Symbole</h2>
+                <p>Jede Form trägt eine Botschaft – jedes Material einen Geist</p>
+            </div>
+            
+            <div class="symbol-explanation">
+                <!-- Kompass / Pyramide -->
+                <div class="symbol-item">
+                    <div class="symbol-content">
+                        <h2>Warum der Kompass?</h2>
+                        <p>Der Kompass, der im Inneren unserer Pyramide ruht, erinnert daran, dass wahre Ausrichtung nicht von außen kommt. Seine Nadel zeigt nicht starr nach Norden, sondern spiegelt deine innere Klarheit. Erst wenn du dich selbst gefunden hast, richtet sich die Welt an dir aus.</p>
+                    </div>
+                    <div class="symbol-media">
+                        <video autoplay muted loop playsinline width="300" height="300" class="symbol-video">
+                            <source src="videos/start.mp4" type="video/mp4">
+                            <img src='assets/images/pyramid.png' alt="Pyramide mit Kompass – Innere Ausrichtung" loading="lazy" width="300" height="300">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- Würfel -->
+                <div class="symbol-item">
+                    <div class="symbol-media">
+                        <video autoplay muted loop playsinline width="300" height="300" class="symbol-video">
+                            <source src="videos/cube.mp4" type="video/mp4">
+                            <img src='assets/images/cube.png' alt="Balance Würfel – Harmonie durch Unperfektion" loading="lazy" width="300" height="300">
+                        </video>
+                    </div>
+                    <div class="symbol-content">
+                        <h2>Warum der Würfel?</h2>
+                        <p>Der Würfel ist ein altes Symbol für Ordnung und Stabilität. Doch unser Balance-Würfel trägt bewusst kleine Abweichungen in sich. Er zeigt: Harmonie entsteht nicht durch perfekte Symmetrie, sondern durch das Annehmen des Unvollkommenen. In seiner Form liegt die Lehre, dass wahres Gleichgewicht erst dann entsteht, wenn man Gegensätze integriert und in sich ruhen lässt.</p>
+                    </div>
+                </div>
+
+                <!-- Spirale / Amulett -->
+                <div class="symbol-item">
+                    <div class="symbol-content">
+                        <h2>Warum die Spirale?</h2>
+                        <p>Die Spirale ist eines der ältesten Symbole der Menschheit – sie steht für Energie, Wachstum und den unendlichen Zyklus der Wandlung. In unserem Amulett ist sie eingefasst in Harz und Kupfer, doch ihr Kern bleibt Bewegung. Sie erinnert dich daran: Nichts bleibt starr, alles wandelt sich – und in dieser Bewegung liegt deine Kraft.</p>
+                    </div>
+                    <div class="symbol-media">
+                        <video autoplay muted loop playsinline width="300" height="300" class="symbol-video">
+                            <source src="videos/amulet.mp4" type="video/mp4">
+                            <img src='assets/images/amulet.png' alt="Spiralen Amulett – Wandlung und Energie" loading="lazy" width="300" height="300">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
-
+    
     <footer>
         <div class="footer-brand">
             <img src='assets/images/helionis-logo-sprite.svg' alt="Helionis Logo" loading="lazy" width="180" height="45" style="object-fit: contain;">
-        </a></div>
+        </div>
         <div class="footer-links">
             <a href="impressum.html">IMPRESSUM</a>
             <a href="datenschutz.html">DATENSCHUTZ</a>
             <a href="agb.html">AGB</a>
-        </a></div>
+        </div>
         <div class="footer-social">
             <a href="tel:015226560105" aria-label="Telefon Kontakt">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#B87333">
@@ -149,7 +170,7 @@
                     <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                 </svg>
             </a>
-        </a></div>
+        </div>
     </footer>
 
     <!-- Firebase SDK -->
@@ -189,5 +210,32 @@
     <script src='assets/js/mystical-glow.js'></script>
     <script type="module" src='assets/js/main.js' defer></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
+    
+    <!-- Video Player Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbnail = document.getElementById('video-thumbnail');
+            const video = document.getElementById('helionis-video');
+            const playButton = document.getElementById('play-button');
+            
+            // Klick auf Thumbnail oder Play-Button startet Video
+            function startVideo() {
+                thumbnail.style.display = 'none';
+                playButton.style.display = 'none';
+                video.style.display = 'block';
+                video.play();
+            }
+            
+            thumbnail.addEventListener('click', startVideo);
+            playButton.addEventListener('click', startVideo);
+            
+            // Video Ende: zurück zum Thumbnail
+            video.addEventListener('ended', function() {
+                video.style.display = 'none';
+                thumbnail.style.display = 'block';
+                playButton.style.display = 'block';
+            });
+        });
+    </script>
 </body>
 </html>
