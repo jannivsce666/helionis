@@ -1788,18 +1788,19 @@ footer {
     }
     
     #oracle-speech-bubble {
-        top: -120px !important; /* Weiter unten positionieren */
+        top: -250px !important; /* Viel weiter unten positionieren */
         max-width: 280px !important;
         font-size: 13px !important;
         padding: 16px 20px !important;
-        z-index: 9999 !important;
-        margin-top: 40px !important; /* Zusätzlicher Abstand nach unten */
+        z-index: 100 !important; /* Niedrigerer z-index */
+        margin-top: 60px !important; /* Noch mehr Abstand nach unten */
+        pointer-events: auto !important; /* Input-Felder anklickbar machen */
     }
     
     /* Mystical Creature Section - mehr Platz für Oracle */
     .mystical-creature-section {
-        min-height: 600px !important; /* Mehr Platz */
-        padding: 3rem 2rem !important;
+        min-height: 700px !important; /* Noch mehr Platz */
+        padding: 4rem 2rem !important;
     }
 }
 

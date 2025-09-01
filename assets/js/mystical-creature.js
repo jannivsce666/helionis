@@ -889,6 +889,7 @@ class MysticalCreature {
         bubble.innerHTML = '';
         bubble.style.transform = 'translateX(-50%) scale(1)';
         bubble.style.opacity = '1';
+        bubble.style.pointerEvents = 'auto'; // WICHTIG: Interaktion aktivieren
 
         // Pfeil hinzufügen
         const arrow = document.createElement('div');
@@ -1010,6 +1011,7 @@ class MysticalCreature {
         if (bubble) {
             bubble.style.transform = 'translateX(-50%) scale(0)';
             bubble.style.opacity = '0';
+            bubble.style.pointerEvents = 'none'; // Interaktion deaktivieren
         }
 
         // Nächste Frage oder Karten legen
