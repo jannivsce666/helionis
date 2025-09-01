@@ -1564,13 +1564,31 @@ footer {
     background: none;
     border: none;
     color: #B87333;
-    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.autoplay-btn svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
 }
 
 .autoplay-btn:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+}
+
+.autoplay-btn:hover svg {
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
 }
 
 .autoplay-text {

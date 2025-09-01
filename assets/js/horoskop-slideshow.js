@@ -356,14 +356,15 @@ class HoroscopeSlideshow {
 
     toggleAutoPlay() {
         const autoplayBtn = document.getElementById('autoplayBtn');
+        const svgUse = autoplayBtn.querySelector('use');
         
         if (this.isAutoPlaying) {
             this.stopAutoPlay();
-            autoplayBtn.textContent = '▶️';
+            svgUse.setAttribute('href', 'assets/images/mystical-sprites.svg#mystical-play');
             this.isAutoPlaying = false;
         } else {
             this.startAutoPlay();
-            autoplayBtn.textContent = '⏸️';
+            svgUse.setAttribute('href', 'assets/images/mystical-sprites.svg#mystical-pause');
             this.isAutoPlaying = true;
         }
     }

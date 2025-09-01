@@ -12,4 +12,64 @@
   <symbol id="capricorn" viewBox="0 0 64 64"><path fill="#D4AF37" d="M18 14h6v20c0 4 2 6 4 6s4-2 4-6V14h6v20c0 4 2 6 4 6 3 0 4-3 4-6 0-5-2-8-5-8v-4c7 0 11 6 11 12 0 6-4 12-10 12-3 0-6-1-8-4-2 3-5 4-8 4-6 0-10-6-10-12V14z"/></symbol>
   <symbol id="aquarius" viewBox="0 0 64 64"><path fill="#D4AF37" d="M10 26c4 0 6-4 10-4s6 4 10 4 6-4 10-4 6 4 10 4v6c-4 0-6-4-10-4s-6 4-10 4-6-4-10-4-6 4-10 4v-6zM10 40c4 0 6-4 10-4s6 4 10 4 6-4 10-4 6 4 10 4v6c-4 0-6-4-10-4s-6 4-10 4-6-4-10-4-6 4-10 4v-6z"/></symbol>
   <symbol id="pisces" viewBox="0 0 64 64"><path fill="#D4AF37" d="M14 18c6 2 10 6 18 6s12-4 18-6v6c-4 2-8 4-12 5v6c4 1 8 3 12 5v6c-6-2-10-6-18-6s-12 4-18 6v-6c4-2 8-4 12-5v-6c-4-1-8-3-12-5v-6z"/></symbol>
+  
+  <!-- Mystical Play/Pause Controls -->
+  <symbol id="mystical-play" viewBox="0 0 64 64">
+    <!-- Mystical Play Triangle with sacred geometry -->
+    <defs>
+      <radialGradient id="playGradient" cx="50%" cy="50%">
+        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#B87333;stop-opacity:1" />
+      </radialGradient>
+      <filter id="playGlow">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge> 
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <!-- Outer mystical circle -->
+    <circle cx="32" cy="32" r="28" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
+    <!-- Inner sacred geometry points -->
+    <circle cx="20" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="44" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="32" cy="12" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="52" cy="32" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="20" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <!-- Main play triangle -->
+    <path d="M22 16 L22 48 L46 32 Z" fill="url(#playGradient)" filter="url(#playGlow)" stroke="#B87333" stroke-width="1"/>
+  </symbol>
+
+  <symbol id="mystical-pause" viewBox="0 0 64 64">
+    <!-- Mystical Pause Bars with sacred geometry -->
+    <defs>
+      <linearGradient id="pauseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#B87333;stop-opacity:1" />
+      </linearGradient>
+      <filter id="pauseGlow">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge> 
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <!-- Outer mystical circle -->
+    <circle cx="32" cy="32" r="28" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
+    <!-- Inner sacred geometry points -->
+    <circle cx="20" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="44" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="32" cy="12" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="52" cy="32" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <circle cx="20" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+    <!-- Main pause bars -->
+    <rect x="20" y="16" width="8" height="32" fill="url(#pauseGradient)" filter="url(#pauseGlow)" stroke="#B87333" stroke-width="1" rx="2"/>
+    <rect x="36" y="16" width="8" height="32" fill="url(#pauseGradient)" filter="url(#pauseGlow)" stroke="#B87333" stroke-width="1" rx="2"/>
+  </symbol>
 </svg>
