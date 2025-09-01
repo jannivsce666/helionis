@@ -1,148 +1,218 @@
-<!doctype html>
-<html lang='de'>
+<!DOCTYPE html>
+<html lang="de">
 <head>
-    <meta charset='utf-8'/>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helionis – Pyramide des Gleichgewichts</title>
-    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-    <link rel='stylesheet' href='assets/css/styles.css'>
+    <title>Pyramide der Stabilität - Helionis</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <div class='brand'>
-            <a href='index.html'>
-                <img src='assets/images/helionis-logo-sprite.svg' alt="Helionis Logo" loading="lazy" width="220" height="55" style="object-fit: contain;">
-            </a>
-        </div>
-        <button class="menu-toggle" aria-label="Menü öffnen/schließen">
-            <span class="hamburger"></span>
-        </button>
-        <nav>
-            <a href='index.html'>Home</a>
-            <a href='shop.html'>Shop</a>
-            <a href='horoskop.html'>Horoskope</a>
-            <a href='login.html' class='dynamic-auth-link' id='auth-nav-link'>
-                <span id='auth-nav-text'>Login</span>
-            </a>
+    <header id="header">
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-link">
+                    <svg class="logo" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#B87333;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M20 2L6 35h28L20 2z" fill="url(#logoGradient)" stroke="#FFD700" stroke-width="0.5"/>
+                        <circle cx="20" cy="20" r="5" fill="#1a1a1a"/>
+                        <circle cx="20" cy="20" r="2" fill="#D4AF37"/>
+                    </svg>
+                    <span class="brand-name">Helionis</span>
+                </a>
+            </div>
+            
+            <div class="nav-center">
+                <ul class="nav-menu">
+                    <li><a href="index.html">Startseite</a></li>
+                    <li><a href="horoskop.html">Horoskop</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="about.html">Über uns</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-right">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Suchen...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <a href="profile.html" class="profile-btn">👤</a>
+                <button class="cart-btn" id="cart-toggle">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+            
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                ☰
+            </button>
         </nav>
     </header>
 
-    <main>
-        <!-- Product Hero Section -->
-        <section class="product-hero">
-            <div class="product-hero-content">
-                <div class="product-breadcrumb">
-                    <a href="shop.html">Shop</a> > <a href="shop.html?filter=pyramide">Pyramiden</a> > <span>Pyramide des Gleichgewichts</span>
-                </div>
-                <h1>Pyramide des Gleichgewichts</h1>
-                <p class="product-subtitle">Eine mächtige Pyramide, die innere Balance und Klarheit fördert</p>
-            </div>
-        </section>
+    <main class="product-main">
+        <div class="container">
+            <section class="product-detail-section">
+                <nav class="breadcrumb">
+                    <a href="index.html">Startseite</a>
+                    <span class="divider">›</span>
+                    <a href="shop.html">Shop</a>
+                    <span class="divider">›</span>
+                    <span>Pyramide der Stabilität</span>
+                </nav>
 
-        <!-- Product Details Section -->
-        <section class="product-details">
-            <div class="product-container">
-                <div class="product-image-section">
-                    <div class="product-main-image">
-                        <img src='assets/images/pyramid.png' alt="Pyramide des Gleichgewichts">
+                <div class="product-layout">
+                    <div class="product-image">
+                        <img src="assets/images/pyramid.png" alt="Pyramide der Stabilität">
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category">Spiritueller Schmuck</div>
+                        <h1>Pyramide der Stabilität</h1>
+                        <div class="product-price">€89,99 <span class="price-note">inkl. MwSt.</span></div>
+                        
+                        <div class="product-summary">
+                            <p>Diese geheimnisvolle Pyramide vereint uralte Weisheit mit moderner Spiritualität. Ein kraftvolles Symbol für Stabilität, Erdung und inneres Gleichgewicht.</p>
+                        </div>
+                        
+                        <div class="features-section">
+                            <h3>Besondere Eigenschaften</h3>
+                            <ul class="features-list">
+                                <li>Handgefertigtes Unikat aus hochwertigem Material</li>
+                                <li>Energetisch aufgeladen nach alter Tradition</li>
+                                <li>Fördert mentale Klarheit und Fokus</li>
+                                <li>Perfekt für Meditation und spirituelle Praxis</li>
+                                <li>Zeitloses Design für jeden Raum</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <strong>Material:</strong> Hochwertiger Stein
+                            </div>
+                            <div class="spec-item">
+                                <strong>Größe:</strong> 8 x 8 x 6 cm
+                            </div>
+                            <div class="spec-item">
+                                <strong>Gewicht:</strong> ca. 350g
+                            </div>
+                            <div class="spec-item">
+                                <strong>Herkunft:</strong> Handgefertigt
+                            </div>
+                        </div>
+                        
+                        <div class="special-note">
+                            <p>✨ Jede Pyramide ist ein Unikat und kann leicht in Form und Farbe variieren</p>
+                        </div>
+                        
+                        <div class="purchase-section">
+                            <div class="quantity-controls">
+                                <label for="quantity">Anzahl:</label>
+                                <div class="quantity-input">
+                                    <button type="button" class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                    <input type="number" id="quantity" value="1" min="1" max="10">
+                                    <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn-primary" onclick="addToCart('pyramid', 'Pyramide der Stabilität', 89.99)">
+                                In den Warenkorb
+                            </button>
+                            
+                            <div class="shipping-options">
+                                <label>
+                                    <input type="radio" name="shipping" value="standard" checked>
+                                    Standardversand (3-5 Tage) - Kostenlos
+                                </label>
+                                <label>
+                                    <input type="radio" name="shipping" value="express">
+                                    Expressversand (1-2 Tage) - €9,99
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="product-info-section">
-                    <div class="product-price">€89.99</div>
+                <div class="detailed-description">
+                    <h2>Beschreibung</h2>
                     
-                    <div class="product-description">
-                        <h3>Beschreibung</h3>
-                        <p>Die Pyramide des Gleichgewichts ist ein kraftvolles esoterisches Werkzeug, das seit Jahrhunderten für Meditation und spirituelle Praxis verwendet wird. Diese handgefertigte Pyramide aus hochwertigem Material channelt kosmische Energie und hilft dabei, innere Balance zu finden.</p>
-                        
-                        <h4>Eigenschaften & Wirkung</h4>
-                        <ul>
-                            <li><strong>Energieausgleich:</strong> Harmonisiert die Chakren und bringt Körper, Geist und Seele in Einklang</li>
-                            <li><strong>Meditation:</strong> Verstärkt die Konzentration und vertieft meditative Zustände</li>
-                            <li><strong>Schutz:</strong> Schirmt negative Energien ab und schafft einen heiligen Raum</li>
-                            <li><strong>Klarheit:</strong> Fördert geistige Klarheit und intuitive Einsichten</li>
-                        </ul>
-                        
-                        <h4>Anwendung</h4>
-                        <p>Platziere die Pyramide in deinem Meditationsraum oder Wohnbereich. Sie kann auch während der Meditation in den Händen gehalten werden. Für optimale Wirkung sollte sie nach den Himmelsrichtungen ausgerichtet werden.</p>
-                        
-                        <h4>Technische Details</h4>
-                        <ul>
-                            <li>Material: Hochwertiges Kristallglas</li>
-                            <li>Größe: 8 cm × 8 cm × 6 cm (H)</li>
-                            <li>Gewicht: ca. 400g</li>
-                            <li>Handgefertigt mit energetischer Aufladung</li>
-                        </ul>
-                        
-                        <div class="custom-order-note">
-                            <p>✨ <strong>Individuell für Sie gefertigt:</strong> Dieses Produkt wird erst nach Ihrer Bestellung hergestellt, da wir persönliche Informationen über Sie benötigen, um es energetisch für Ihren bestimmten Zweck aufzuladen.</p>
-                        </div>
-                    </div>
+                    <p>Die Pyramide der Stabilität ist weit mehr als nur ein schönes Objekt – sie ist ein Portal zu innerer Ruhe und spirituellem Wachstum. Seit Jahrtausenden gelten Pyramiden als Symbole für die Verbindung zwischen Himmel und Erde, zwischen dem Göttlichen und dem Irdischen.</p>
                     
-                    <div class="product-actions">
-                        <div class="quantity-selector">
-                            <label for="quantity">Anzahl:</label>
-                            <input type="number" id="quantity" value="1" min="1" max="10">
-                        </div>
-                        <button class="add-to-cart-large">In den Warenkorb - €89.99</button>
-                        <button class="back-to-shop" onclick="window.location.href='shop.html'">← Zurück zum Shop</button>
-                    </div>
+                    <h3>Die Kraft der Pyramide</h3>
+                    <p>Diese besondere Pyramide wurde nach uralten Traditionen gefertigt und energetisch aufgeladen. Ihre perfekte geometrische Form konzentriert und verstärkt die Lebensenergie in ihrem Umfeld. Viele Menschen berichten von einer spürbaren Verbesserung ihrer Konzentration, Meditation und ihres allgemeinen Wohlbefindens.</p>
+                    
+                    <h3>Anwendung in der Praxis</h3>
+                    <p>Platziere die Pyramide in deinem Zuhause, Büro oder Meditationsraum. Sie eignet sich hervorragend als Fokuspunkt für Meditationen, kann aber auch einfach durch ihre Präsenz positive Energie in jeden Raum bringen. Viele nutzen sie auch zur Reinigung und Aufladung von Kristallen und anderen spirituellen Objekten.</p>
+                    
+                    <h3>Authentizität und Qualität</h3>
+                    <p>Jede Pyramide wird von erfahrenen Handwerkern individuell gefertigt und durchläuft einen speziellen Energetisierungsprozess. Das macht jedes Stück zu einem wahren Unikat mit seiner ganz eigenen Ausstrahlung und Kraft.</p>
                 </div>
-            </div>
-        </section>
-
-        <!-- Related Products -->
-        <section class="related-products">
-            <div class="container">
-                <h2>Ähnliche Produkte</h2>
-                <div class="related-grid">
-                    <div class="related-item">
-                        <img src='assets/images/pyramid.png' alt="Goldene Pyramide">
-                        <h4>Goldene Pyramide</h4>
-                        <p>€129.99</p>
-                        <button onclick="window.location.href='product-goldene-pyramide.html'">Ansehen</button>
-                    </div>
-                    <div class="related-item">
-                        <img src='assets/images/pyramid.png' alt="Kristall Pyramide">
-                        <h4>Kristall Pyramide</h4>
-                        <p>€159.99</p>
-                        <button onclick="window.location.href='product-kristall-pyramide.html'">Ansehen</button>
-                    </div>
-                    <div class="related-item">
-                        <img src='assets/images/cube.png' alt="Kosmischer Würfel">
-                        <h4>Kosmischer Würfel</h4>
-                        <p>€79.99</p>
-                        <button onclick="window.location.href='product-kosmischer-wuerfel.html'">Ansehen</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
     <footer>
-        <div class="footer-brand">
-            <img src='assets/images/helionis-logo-sprite.svg' alt="Helionis Logo" loading="lazy" width="180" height="45" style="object-fit: contain;">
-        </div>
-        <div class="footer-links">
-            <a href="impressum.html">IMPRESSUM</a>
-            <a href="datenschutz.html">DATENSCHUTZ</a>
-            <a href="agb.html">AGB</a>
-        </div>
-        <div class="footer-social">
-            <a href="tel:015226560105" aria-label="Telefon Kontakt">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#B87333">
-                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                </svg>
-            </a>
-            <a href="mailto:kontakt@helionis.de" aria-label="E-Mail Kontakt">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#B87333">
-                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-            </a>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Helionis</h3>
+                    <p>Entdecke die Geheimnisse des Universums</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Startseite</a></li>
+                        <li><a href="horoskop.html">Horoskop</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="about.html">Über uns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Service</h4>
+                    <ul>
+                        <li><a href="impressum.html">Impressum</a></li>
+                        <li><a href="datenschutz.html">Datenschutz</a></li>
+                        <li><a href="agb.html">AGB</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Helionis. Alle Rechte vorbehalten.</p>
+            </div>
         </div>
     </footer>
 
-    <script type="module" src="assets/js/dynamic-navigation.js"></script>
+    <!-- Shopping Cart Overlay -->
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h3>Warenkorb</h3>
+                <button class="cart-close" id="cart-close">×</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be populated here -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Gesamt: €<span id="cart-total">0.00</span></strong>
+                </div>
+                <button class="checkout-btn">Zur Kasse</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/product-detail.js"></script>
+    <script type="module" src="assets/js/shopping-cart.js"></script>
     <script type="module" src="assets/js/mobile-nav.js"></script>
 </body>
 </html>
