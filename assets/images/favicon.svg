@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="1" stop-color="#d89a2b"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Hexagramm -->
+    <polygon points="128,24 232,200 24,200"/>
+    <polygon points="128,232 24,56 232,56"/>
+    <!-- Auge -->
+    <path d="M64 128 Q128 84 192 128 Q128 172 64 128 Z"/>
+  </g>
+  <!-- Pupille -->
+  <circle cx="128" cy="128" r="18" fill="url(#g)"/>
+</svg>
