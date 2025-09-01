@@ -44,21 +44,6 @@
             </div>
         </section>
 
-        <!-- YouTube Video Section -->
-        <section class="youtube-video-section">
-            <div class="video-wrapper">
-                <iframe 
-                    width="560" 
-                    height="315" 
-                    src="https://www.youtube.com/embed/O00M9hfKDss" 
-                    title="Helionis Video" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen>
-                </iframe>
-            </div>
-        </section>
-
         <!-- About Content Section -->
         <section class="about-content-section">
             <div class="about-story">
@@ -80,18 +65,16 @@
                 </div>
                 
                 <div class="story-image">
-                    <div class="video-container">
-                        <img src='assets/images/pyramid.png' alt="Handgefertigte mystische Pyramide" loading="lazy" width="400" height="400" id="video-thumbnail" style="cursor: pointer;">
-                        <video id="helionis-video" width="400" height="400" controls style="display: none;">
-                            <source src="assets/images/helionis.mp4" type="video/mp4">
-                            Ihr Browser unterstützt das Video-Tag nicht.
-                        </video>
-                        <div class="play-button" id="play-button">
-                            <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
-                                <circle cx="50" cy="50" r="50" fill="rgba(184, 115, 51, 0.8)"/>
-                                <polygon points="40,30 70,50 40,70" fill="white"/>
-                            </svg>
-                        </div>
+                    <div class="video-wrapper">
+                        <iframe 
+                            width="400" 
+                            height="225" 
+                            src="https://www.youtube.com/embed/O00M9hfKDss" 
+                            title="Helionis Video" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -210,32 +193,5 @@
     <script src='assets/js/mystical-glow.js'></script>
     <script type="module" src='assets/js/main.js' defer></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
-    
-    <!-- Video Player Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const thumbnail = document.getElementById('video-thumbnail');
-            const video = document.getElementById('helionis-video');
-            const playButton = document.getElementById('play-button');
-            
-            // Klick auf Thumbnail oder Play-Button startet Video
-            function startVideo() {
-                thumbnail.style.display = 'none';
-                playButton.style.display = 'none';
-                video.style.display = 'block';
-                video.play();
-            }
-            
-            thumbnail.addEventListener('click', startVideo);
-            playButton.addEventListener('click', startVideo);
-            
-            // Video Ende: zurück zum Thumbnail
-            video.addEventListener('ended', function() {
-                video.style.display = 'none';
-                thumbnail.style.display = 'block';
-                playButton.style.display = 'block';
-            });
-        });
-    </script>
 </body>
 </html>
