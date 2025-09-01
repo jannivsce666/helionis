@@ -737,14 +737,14 @@ class MysticalCreature {
         bubble.className = 'speech-bubble';
         bubble.style.cssText = `
             position: absolute;
-            top: -80px;
+            top: ${this.isMobile ? '-140px' : '-80px'};
             left: 50%;
             transform: translateX(-50%) scale(0);
             background: rgba(184, 115, 51, 0.95);
             color: #FFD700;
             padding: 20px;
             border-radius: 20px;
-            max-width: 300px;
+            max-width: ${this.isMobile ? '280px' : '300px'};
             text-align: center;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             opacity: 0;

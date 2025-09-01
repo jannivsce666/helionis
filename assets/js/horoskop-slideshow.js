@@ -356,15 +356,36 @@ class HoroscopeSlideshow {
 
     toggleAutoPlay() {
         const autoplayBtn = document.getElementById('autoplayBtn');
-        const svgUse = autoplayBtn.querySelector('use');
+        const svg = autoplayBtn.querySelector('svg');
         
         if (this.isAutoPlaying) {
             this.stopAutoPlay();
-            svgUse.setAttribute('href', 'assets/images/mystical-sprites.svg#mystical-play');
+            // Play Symbol (Triangle)
+            svg.innerHTML = `
+                <circle cx="32" cy="32" r="28" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
+                <circle cx="20" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="44" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="32" cy="12" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="52" cy="32" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="20" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <path d="M22 16 L22 48 L46 32 Z" fill="#D4AF37" stroke="#B87333" stroke-width="1"/>
+            `;
             this.isAutoPlaying = false;
         } else {
             this.startAutoPlay();
-            svgUse.setAttribute('href', 'assets/images/mystical-sprites.svg#mystical-pause');
+            // Pause Symbol (Two Bars)
+            svg.innerHTML = `
+                <circle cx="32" cy="32" r="28" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
+                <circle cx="20" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="44" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="32" cy="12" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="52" cy="32" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <circle cx="20" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
+                <rect x="20" y="16" width="8" height="32" fill="#D4AF37" stroke="#B87333" stroke-width="1" rx="2"/>
+                <rect x="36" y="16" width="8" height="32" fill="#D4AF37" stroke="#B87333" stroke-width="1" rx="2"/>
+            `;
             this.isAutoPlaying = true;
         }
     }
