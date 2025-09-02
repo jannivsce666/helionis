@@ -224,6 +224,7 @@ class ShopManager {
 
             cartTotalElement.textContent = this.currencyFormatter.format(this.cartTotal);
             localStorage.setItem('empyreal_cart', JSON.stringify(this.cart));
+            if (typeof updateCartBadge === 'function') updateCartBadge();
         } catch (error) {
             console.warn('Cart display update failed:', error);
         }
@@ -271,6 +272,29 @@ class ShopManager {
             button.textContent = originalText;
             button.style.background = 'transparent';
         }, 1000);
+    }
+}
+
+// Floating Cart Button logic
+const floatingCartBtn = document.getElementById('floating-cart-btn');
+const cartBadge = document.getElementById('cart-badge');
+if (floatingCartBtn) {
+    floatingCartBtn.addEventListener('click', () => {
+        const cartSidebar = document.getElementById('cart-sidebar');
+        if (cartSidebar) cartSidebar.classList.add('open');
+    });
+}
+
+// Update badge count
+function updateCartBadge() {
+    if (!cartBadge) return;
+    const cart = JSON.parse(localStorage.getItem('helionis-cart')) || [];
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    if (count > 0) {
+        cartBadge.textContent = count;
+        cartBadge.style.display = 'flex';
+    } else {
+        cartBadge.style.display = 'none';
     }
 }
 
@@ -352,3 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Shop initialization failed:', error);
     }
 });
+
+// Update badge on cart change
+window.addEventListener('storage', updateCartBadge);
+document.addEventListener('DOMContentLoaded', updateCartBadge);
