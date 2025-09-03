@@ -247,7 +247,26 @@ class ShopManager {
 
     showCartSidebar() {
         const cartSidebar = document.getElementById('cart-sidebar');
+        if (!cartSidebar) {
+            console.warn('Cart sidebar element not found');
+            return;
+        }
         cartSidebar.classList.add('open');
+        // Fallback inline styles in case stylesheet not applied / caching issue
+        if (getComputedStyle(cartSidebar).position !== 'fixed') {
+            cartSidebar.style.position = 'fixed';
+            cartSidebar.style.top = '0';
+            cartSidebar.style.right = '0';
+            cartSidebar.style.height = '100vh';
+            cartSidebar.style.zIndex = '1200';
+            cartSidebar.style.background = 'rgba(13,13,13,0.85)';
+        }
+        if (!getComputedStyle(cartSidebar).transform || getComputedStyle(cartSidebar).transform === 'none') {
+            cartSidebar.style.transform = 'translateX(0)';
+            cartSidebar.style.transition = 'transform .45s cubic-bezier(.65,.05,.36,1)';
+        }
+        window.dispatchEvent(new CustomEvent('cart:opened'));
+        console.log('🛒 Cart sidebar opened');
     }
 
     showAddToCartFeedback(itemIdentifier) {
@@ -275,15 +294,43 @@ class ShopManager {
     }
 }
 
-// Floating Cart Button logic
-const floatingCartBtn = document.getElementById('floating-cart-btn');
-const cartBadge = document.getElementById('cart-badge');
-if (floatingCartBtn) {
-    floatingCartBtn.addEventListener('click', () => {
-        const cartSidebar = document.getElementById('cart-sidebar');
-        if (cartSidebar) cartSidebar.classList.add('open');
-    });
-}
+// Expose open function globally (e.g., for debugging or future header icon)
+window.openCart = function() {
+    try {
+        if (window.shop) {
+            window.shop.showCartSidebar();
+        } else {
+            const sidebar = document.getElementById('cart-sidebar');
+            if (sidebar) {
+                sidebar.classList.add('open');
+                console.log('🛒 Cart opened via global fallback');
+            }
+        }
+    } catch (e) { console.warn('openCart failed', e); }
+};
+
+// Floating Cart Button logic (defer until DOM ready to be safe)
+(function(){
+    function attachFloatingBtn() {
+        const floatingCartBtn = document.getElementById('floating-cart-btn');
+        if (!floatingCartBtn) { return; }
+        floatingCartBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.shop) {
+                window.shop.showCartSidebar();
+            } else {
+                window.openCart();
+            }
+        }, { passive: true });
+        console.log('🛒 Floating cart button listener attached');
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachFloatingBtn);
+    } else {
+        attachFloatingBtn();
+    }
+})();
 
 // Update badge count
 function updateCartBadge() {
@@ -371,6 +418,7 @@ let shop;
 document.addEventListener('DOMContentLoaded', () => {
     try {
         shop = new ShopManager();
+        window.shop = shop;
         console.log('🛒 Shop functionality activated');
     } catch (error) {
         console.warn('Shop initialization failed:', error);
