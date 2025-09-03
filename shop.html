@@ -237,6 +237,7 @@
             <a href="impressum.html">IMPRESSUM</a>
             <a href="datenschutz.html">DATENSCHUTZ</a>
             <a href="agb.html">AGB</a>
+            <a href="#" id="cookie-settings-link">COOKIES</a>
         </div>
         <div class="footer-social">
             <a href="mailto:kontakt@helionis.de" aria-label="E-Mail Kontakt">
@@ -259,15 +260,11 @@
     </footer>
 
     <!-- Firebase SDK -->
-    <!-- Firebase SDK -->
     <script type="module">
-        // Firebase App (the core Firebase SDK) is always required
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
-        
-        // Initialize Firebase (this should run first)
         const firebaseConfig = {
             apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
             authDomain: "helionis.firebaseapp.com",
@@ -278,11 +275,12 @@
             appId: "1:112789846576:web:5a8049942a7c559ca98bf5",
             measurementId: "G-8W0GMB0F73"
         };
-        
         window.firebaseApp = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth();
         window.firebaseDatabase = getDatabase();
-        window.firebaseAnalytics = getAnalytics();
+        window.enableAnalytics = () => { try { if(!window.firebaseAnalytics) { window.firebaseAnalytics = getAnalytics(); console.log('Analytics aktiviert nach Consent'); } } catch(e){} };
+        try { const c = JSON.parse(localStorage.getItem('helionisConsent')||'null'); if (c && c.analytics) window.enableAnalytics(); } catch(e){}
+        window.firebaseReady = true; window.dispatchEvent(new Event('firebaseReady'));
     </script>
 
     <script type="module" src='assets/js/google-auth.js'></script>
@@ -290,5 +288,6 @@
     <script src='assets/js/shop.js'></script>
     <script src='assets/js/mystical-glow.js'></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
+    <script type="module" src='assets/js/cookie-consent.js'></script>
 </body>
 </html>

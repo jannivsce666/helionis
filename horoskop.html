@@ -137,6 +137,7 @@
             <a href="impressum.html">IMPRESSUM</a>
             <a href="datenschutz.html">DATENSCHUTZ</a>
             <a href="agb.html">AGB</a>
+            <a href="#" id="cookie-settings-link">COOKIES</a>
         </div>
         <div class="footer-social">
             <a href="tel:015226560105" aria-label="Telefon Kontakt">
@@ -154,7 +155,6 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-        // Firebase App (the core Firebase SDK) is always required
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
@@ -175,9 +175,8 @@
         window.firebaseApp = initializeApp(firebaseConfig);
         window.firebaseAuth = getAuth();
         window.firebaseDatabase = getDatabase();
-        window.firebaseAnalytics = getAnalytics();
-        
-        // Signal that Firebase is ready
+        window.enableAnalytics = () => { try { if(!window.firebaseAnalytics) { window.firebaseAnalytics = getAnalytics(); console.log('Analytics aktiviert nach Consent'); } } catch(e){} };
+        try { const c = JSON.parse(localStorage.getItem('helionisConsent')||'null'); if (c && c.analytics) window.enableAnalytics(); } catch(e){}
         window.firebaseReady = true;
         window.dispatchEvent(new Event('firebaseReady'));
     </script>
@@ -188,5 +187,6 @@
     <script type="module" src="assets/js/mystical-creature.js"></script>
     <script src='assets/js/mystical-glow.js'></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
+    <script type="module" src="assets/js/cookie-consent.js"></script>
 </body>
 </html>
