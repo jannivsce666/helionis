@@ -2147,3 +2147,89 @@ footer {
     .floating-cart-btn { bottom: 18px; right: 18px; width: 54px; height: 54px; }
     .cart-badge { width: 18px; height: 18px; font-size: .7rem; }
 }
+
+/* =========================================
+   MOBILE LAYOUT FIXES (center + single col)
+   ========================================= */
+@media (max-width: 780px) {
+  /* Collapse multi-column grids to single column */
+  .about,
+  .symbol-item,
+  .products,
+  .product-container,
+  .product-detail-container,
+  .about-story {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reset alternating RTL trick */
+  .symbol-item,
+  .symbol-item:nth-child(even) {
+    direction: ltr !important;
+  }
+  .symbol-item:nth-child(even) .symbol-content,
+  .symbol-item:nth-child(even) .symbol-media {
+    direction: ltr !important;
+  }
+
+  /* Ensure symbol items stack cleanly */
+  .symbol-item { gap: 2rem !important; }
+
+  /* Center text blocks */
+  .about-content p,
+  .story-text p,
+  .symbol-content p,
+  .shop-hero-content p,
+  .product-description,
+  .product-features ul,
+  .product-hero-content p {
+    text-align: center;
+  }
+
+  /* Center headings inside sections */
+  .about-content h2,
+  .story-text h2,
+  .story-text h3,
+  .symbol-content h2,
+  .product-hero-content h1,
+  .shop-hero-content h1,
+  .product-header h1 {
+    text-align: center;
+  }
+
+  /* Reduce horizontal padding to avoid visual right-shift */
+  .hero,
+  .about,
+  .symbolik-section,
+  .products,
+  .shop-products,
+  .about-content-section,
+  .product-details,
+  .product-detail-container,
+  .product-detail-main,
+  .related-products .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Products grid: full width single column */
+  .products { grid-template-columns: 1fr !important; gap: 3rem !important; }
+
+  /* Shop grid fallback */
+  .shop-grid { grid-template-columns: 1fr !important; }
+
+  /* Prevent oversized headings pushing layout */
+  .hero h1,
+  .about-hero-content h1,
+  .shop-hero-content h1,
+  .product-hero-content h1 { font-size: clamp(2rem, 8vw, 3rem); }
+
+  /* Make media blocks auto width & centered */
+  .symbol-media,
+  .story-image,
+  .product-images,
+  .product-image-section { margin-left: auto !important; margin-right: auto !important; }
+
+  /* Sticky images on product detail not needed on small screens */
+  .product-images { position: static !important; }
+}
