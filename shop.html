@@ -313,5 +313,26 @@
     <script src='assets/js/mystical-glow.js'></script>
     <script type="module" src='assets/js/mobile-nav.js'></script>
     <script type="module" src='assets/js/cookie-consent.js'></script>
+    <script>
+      // Runtime image fix: re-request with cache-busting query if image failed or has zero size (immutable cached 404 workaround)
+      (function(){
+        function bust(img){
+          const base = img.getAttribute('data-original') || img.getAttribute('src');
+          const v = Date.now().toString().slice(-6);
+            img.src = base.split('?')[0] + '?v=' + v;
+        }
+        document.querySelectorAll('.shop-item-image img').forEach(img => {
+          // store original
+          img.setAttribute('data-original', img.getAttribute('src'));
+          // if already broken after load
+          if (img.complete && img.naturalWidth === 0) bust(img);
+          img.addEventListener('error', () => {
+            if (!img.src.includes('?v=')) bust(img);
+          }, { once: true });
+          // extra delayed check (handles silent cached 404 without error firing)
+          setTimeout(() => { if (img.naturalWidth === 0) bust(img); }, 600);
+        });
+      })();
+    </script>
 </body>
 </html>
