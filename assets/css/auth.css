@@ -1,0 +1,241 @@
+/* assets/css/auth.css */
+
+/* Main container for auth forms and profile pages */
+.auth-container, .profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+    min-height: calc(100vh - 200px); /* Adjust based on header/footer height */
+    background: var(--background-color);
+}
+
+/* Wrapper for the form content */
+.auth-form-wrapper {
+    width: 100%;
+    max-width: 480px;
+    background: var(--primary-color);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--accent-color-dark);
+    border: 1px solid var(--accent-color-translucent);
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.auth-form-wrapper h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    color: var(--headline-color);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.auth-form-wrapper p {
+    color: var(--text-color-light);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+/* Form styles */
+#login-form, #register-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: var(--text-color-light);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background: var(--background-color);
+    border: 1px solid var(--accent-color-dark);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color-translucent);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.form-group-checkbox input {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color);
+}
+
+.form-group-checkbox label {
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+}
+
+.form-group-checkbox a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+.form-group-checkbox a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.auth-button {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.auth-button:hover {
+    background: var(--accent-color-dark);
+    transform: translateY(-2px);
+}
+
+/* Google Button & Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 30px 0;
+    color: var(--text-color-light);
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--accent-color-dark);
+}
+.divider span {
+    padding: 0 15px;
+    font-size: 0.9rem;
+}
+
+.google-login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    background: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.google-login-btn:hover {
+    background: #357ae8;
+}
+.google-login-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    background: white;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+/* Auth switch link */
+.auth-switch {
+    margin-top: 30px;
+    font-size: 1rem;
+    color: var(--text-color-light);
+}
+.auth-switch a {
+    color: var(--accent-color);
+    font-weight: bold;
+    text-decoration: none;
+}
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* Error message */
+#auth-error {
+    color: #ff6b6b;
+    margin-top: 20px;
+    min-height: 20px;
+    font-weight: 500;
+}
+
+/* --- Profile Page Styles --- */
+.profile-container {
+    align-items: center;
+    flex-direction: column;
+}
+
+.profile-header {
+    width: 100%;
+    max-width: 700px;
+    background: var(--primary-color);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--accent-color-translucent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.profile-info h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    color: var(--headline-color);
+    margin: 0 0 10px;
+}
+
+.profile-info p {
+    color: var(--text-color-light);
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+#logout-btn {
+    width: auto;
+    padding: 12px 25px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
