@@ -41,6 +41,30 @@ class ShoppingCart {
                 }
             });
         }
+
+        // Delegated event listener for cart items
+        const cartItemsContainer = document.getElementById('cart-items');
+        if (cartItemsContainer) {
+            cartItemsContainer.addEventListener('click', (e) => {
+                const target = e.target;
+
+                // Handle remove from cart
+                if (target.matches('.quantity-btn.remove-from-cart')) {
+                    const productId = target.dataset.id;
+                    if (productId) {
+                        this.removeFromCart(productId);
+                    }
+                }
+
+                // Handle add to cart
+                if (target.matches('.quantity-btn.add-to-cart')) {
+                    const { id, name, price } = target.dataset;
+                    if (id && name && price) {
+                        this.addToCart(id, name, parseFloat(price));
+                    }
+                }
+            });
+        }
     }
 
     addToCart(productId, name, price) {
@@ -156,9 +180,9 @@ class ShoppingCart {
                     <p>${item.price.toFixed(2)} € × ${item.quantity}</p>
                 </div>
                 <div class="item-controls">
-                    <button class="quantity-btn" onclick="window.shoppingCart.removeFromCart('${item.id}')">-</button>
+                    <button class="quantity-btn remove-from-cart" data-id="${item.id}">-</button>
                     <span class="quantity">${item.quantity}</span>
-                    <button class="quantity-btn" onclick="window.shoppingCart.addToCart('${item.id}', '${item.name}', ${item.price})">+</button>
+                    <button class="quantity-btn add-to-cart" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">+</button>
                 </div>
             `;
             cartItems.appendChild(itemElement);
