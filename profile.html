@@ -38,206 +38,23 @@
 
     <main class="profile-container">
         <div class="profile-header">
-            <div class="profile-avatar">
-                <div class="avatar-circle">
-                    <svg id="zodiac-avatar" width="80" height="80" viewBox="0 0 100 100">
-                        <!-- Zodiac sprite will be loaded here -->
-                    </svg>
-                            </a>
-        </div>
-                <div class="profile-info">
-                    <h1 id="profile-name">Lade Profil...</h1>
-                    <p id="profile-email"></p>
-                    <p id="profile-member-since"></p>
-                            </a>
-        </div>
-                        </a>
-        </div>
-            
-            <div class="profile-stats">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#B87333">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                                </a>
-        </div>
-                    <div class="stat-info">
-                        <h3 id="total-orders">0</h3>
-                        <p>Bestellungen</p>
-                                </a>
-        </div>
-                            </a>
-        </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#B87333">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                                </a>
-        </div>
-                    <div class="stat-info">
-                        <h3 id="profile-level">Novize</h3>
-                        <p>Mystiker Level</p>
-                                </a>
-        </div>
-                            </a>
-        </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#B87333">
-                            <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
-                        </svg>
-                                </a>
-        </div>
-                    <div class="stat-info">
-                        <h3 id="energy-points">0</h3>
-                        <p>Energie Punkte</p>
-                                </a>
-        </div>
-                            </a>
-        </div>
-                        </a>
-        </div>
-                    </a>
+            <div class="profile-info">
+                <h1 id="profile-name">Lade Profil...</h1>
+                <p id="profile-email"></p>
+                <p id="profile-address"></p>
+            </div>
+            <button id="logout-btn" class="auth-button">Abmelden</button>
         </div>
 
+        <!-- This section can be re-enabled later if needed -->
+        <!-- 
+        <div class="profile-stats">
+            ...
+        </div>
         <div class="profile-content">
-            <div class="profile-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h2>Persönliche Daten</h2>
-                    <button id="logout-btn" class="logout-button">Abmelden</button>
-                            </a>
+            ...
         </div>
-                <form id="profile-form" class="profile-form">
-                    <div class="form-grid">
-                        <div class="input-group">
-                            <label for="edit-displayName">Anzeigename</label>
-                            <input type="text" id="edit-displayName" name="displayName">
-                                    </a>
-        </div>
-                        
-                        <div class="input-group">
-                            <label for="edit-email">E-Mail</label>
-                            <input type="email" id="edit-email" name="email" readonly>
-                                    </a>
-        </div>
-                        
-                        <div class="input-group">
-                            <label for="edit-zodiacSign">Sternzeichen</label>
-                            <select id="edit-zodiacSign" name="zodiacSign">
-                                <option value="">Wähle dein Sternzeichen</option>
-                                <option value="aries">Widder</option>
-                                <option value="taurus">Stier</option>
-                                <option value="gemini">Zwillinge</option>
-                                <option value="cancer">Krebs</option>
-                                <option value="leo">Löwe</option>
-                                <option value="virgo">Jungfrau</option>
-                                <option value="libra">Waage</option>
-                                <option value="scorpio">Skorpion</option>
-                                <option value="sagittarius">Schütze</option>
-                                <option value="capricorn">Steinbock</option>
-                                <option value="aquarius">Wassermann</option>
-                                <option value="pisces">Fische</option>
-                            </select>
-                                    </a>
-        </div>
-                        
-                        <div class="input-group">
-                            <label for="edit-birthDate">Geburtsdatum</label>
-                            <input type="date" id="edit-birthDate" name="birthDate">
-                                    </a>
-        </div>
-                        
-                        <div class="input-group full-width">
-                            <label for="edit-bio">Über mich</label>
-                            <textarea id="edit-bio" name="bio" rows="3" placeholder="Erzähle uns etwas über deine spirituelle Reise..."></textarea>
-                                    </a>
-        </div>
-                                </a>
-        </div>
-                    
-                    <div class="form-actions">
-                        <button type="submit" class="save-button">Änderungen speichern</button>
-                                </a>
-        </div>
-                </form>
-                        </a>
-        </div>
-
-            <div class="profile-section">
-                <h2>Mystische Präferenzen</h2>
-                <div class="preferences-grid">
-                    <div class="preference-card">
-                        <h3>Lieblings-Kristalle</h3>
-                        <div class="preference-tags" id="favorite-crystals">
-                            <span class="tag">Amethyst</span>
-                            <span class="tag">Rosenquarz</span>
-                            <span class="tag">Bergkristall</span>
-                            <button class="add-tag">+</button>
-                                    </a>
-        </div>
-                                </a>
-        </div>
-                    
-                    <div class="preference-card">
-                        <h3>Interessensgebiete</h3>
-                        <div class="preference-tags" id="interests">
-                            <span class="tag">Astrologie</span>
-                            <span class="tag">Meditation</span>
-                            <span class="tag">Tarot</span>
-                            <button class="add-tag">+</button>
-                                    </a>
-        </div>
-                                </a>
-        </div>
-                    
-                    <div class="preference-card">
-                        <h3>Benachrichtigungen</h3>
-                        <div class="notification-settings">
-                            <label class="switch">
-                                <input type="checkbox" id="daily-horoscope" checked>
-                                <span class="slider"></span>
-                                Tägliches Horoskop
-                            </label>
-                            <label class="switch">
-                                <input type="checkbox" id="new-products" checked>
-                                <span class="slider"></span>
-                                Neue Produkte
-                            </label>
-                            <label class="switch">
-                                <input type="checkbox" id="moon-phases">
-                                <span class="slider"></span>
-                                Mondphasen
-                            </label>
-                                    </a>
-        </div>
-                                </a>
-        </div>
-                            </a>
-        </div>
-                        </a>
-        </div>
-
-            <div class="profile-section">
-                <h2>Bestellhistorie</h2>
-                <div id="order-history" class="order-history">
-                    <div class="empty-state">
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="#B87333" opacity="0.5">
-                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                        </svg>
-                        <p>Noch keine Bestellungen</p>
-                        <a href="shop.html" class="cta-button">Zum Shop</a>
-                                </a>
-        </div>
-                            </a>
-        </div>
-                        </a>
-        </div>
-                    </a>
-        </div>
+        -->
     </main>
 
     <footer>
@@ -264,39 +81,8 @@
             </a>
                     </a>
         </div>
-    </footer>
+</footer>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Firebase App (the core Firebase SDK) is always required
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
-        
-        // Initialize Firebase (this should run first)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
-            authDomain: "helionis.firebaseapp.com",
-            databaseURL: "https://helionis-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "helionis",
-            storageBucket: "helionis.firebasestorage.app",
-            messagingSenderId: "112789846576",
-            appId: "1:112789846576:web:5a8049942a7c559ca98bf5",
-            measurementId: "G-8W0GMB0F73"
-        };
-        
-        window.firebaseApp = initializeApp(firebaseConfig);
-        window.firebaseAuth = getAuth();
-        window.firebaseDatabase = getDatabase();
-        window.firebaseAnalytics = getAnalytics();
-    </script>
-
-    <script type="module" src='assets/js/google-auth.js'></script>
-    <script type="module" src='assets/js/dynamic-navigation.js'></script>
-    <script type="module" src='assets/js/profile-guard.js'></script>
-    <script type="module" src='assets/js/shopping-cart.js'></script>
-    <script type="module" src='assets/js/profile.js'></script>
-    <script type="module" src='assets/js/mobile-nav.js'></script>
+<script type="module" src="assets/js/main.js"></script>
 </body>
 </html>

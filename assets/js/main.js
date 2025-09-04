@@ -1,5 +1,11 @@
+// Import core modules
+import './auth.js';
+import './shopping-cart.js';
+import './mobile-nav.js';
+
 // Mystical Luminescent Background Effects
 class MysticalGlow {
+// ... existing code ...
     constructor() {
         this.canvas = null;
         this.ctx = null;

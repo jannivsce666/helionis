@@ -1,248 +1,226 @@
 import {
+    auth,
+    db,
+    googleProvider
+} from './firebase-config.js';
+import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInWithPopup,
     signOut,
-    onAuthStateChanged,
-    updateProfile,
-    sendPasswordResetEmail
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
     doc,
     setDoc,
+    getDoc,
     serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 class AuthManager {
     constructor() {
-        this.isSignupMode = false;
-        this.auth = null;
-        this.db = null;
-        this.init();
+        this.handleAuthentication();
     }
 
-    init() {
-        // Wait for Firebase to be initialized
-        if (window.firebaseAuth && window.firebaseDb) {
-            this.auth = window.firebaseAuth;
-            this.db = window.firebaseDb;
-            this.bindEvents();
-            this.checkAuthState();
-        } else {
-            // Wait for Firebase to load
-            setTimeout(() => this.init(), 100);
-        }
-    }
-
-    bindEvents() {
-        const authForm = document.getElementById('auth-form');
-        const authToggle = document.getElementById('auth-toggle');
-        const forgotPasswordBtn = document.getElementById('forgot-password');
-
-        if (authForm) {
-            authForm.addEventListener('submit', (e) => this.handleSubmit(e));
-        }
-
-        if (authToggle) {
-            authToggle.addEventListener('click', () => this.toggleAuthMode());
-        }
-
-        if (forgotPasswordBtn) {
-            forgotPasswordBtn.addEventListener('click', () => this.handleForgotPassword());
-        }
-    }
-
-    toggleAuthMode() {
-        this.isSignupMode = !this.isSignupMode;
-        
-        const title = document.getElementById('auth-title');
-        const subtitle = document.getElementById('auth-subtitle');
-        const submitBtn = document.getElementById('auth-submit');
-        const toggleBtn = document.getElementById('auth-toggle');
-        const switchText = document.getElementById('switch-text');
-        const signupFields = document.getElementById('signup-fields');
-        const forgotPasswordBtn = document.getElementById('forgot-password');
-
-        if (this.isSignupMode) {
-            title.textContent = 'Tritt der mystischen Gemeinschaft bei';
-            subtitle.textContent = 'Erstelle dein Konto für exklusive Produkte';
-            submitBtn.textContent = 'Registrieren';
-            toggleBtn.textContent = 'Anmelden';
-            switchText.textContent = 'Bereits Mitglied?';
-            signupFields.style.display = 'block';
-            forgotPasswordBtn.style.display = 'none';
-        } else {
-            title.textContent = 'Willkommen zurück';
-            subtitle.textContent = 'Melde dich in deinem mystischen Portal an';
-            submitBtn.textContent = 'Anmelden';
-            toggleBtn.textContent = 'Registrieren';
-            switchText.textContent = 'Noch kein Konto?';
-            signupFields.style.display = 'none';
-            forgotPasswordBtn.style.display = 'block';
-        }
-
-        this.clearMessages();
-    }
-
-    async handleSubmit(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        this.clearMessages();
-        this.setLoading(true);
-
-        try {
-            if (this.isSignupMode) {
-                await this.handleSignup(email, password);
+    handleAuthentication() {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                this.updateUIAfterLogin(user);
+                if (window.location.pathname.endsWith('profile.html')) {
+                    this.loadUserProfile(user);
+                }
             } else {
-                await this.handleLogin(email, password);
-            }
-        } catch (error) {
-            this.showError(this.getErrorMessage(error.code));
-        } finally {
-            this.setLoading(false);
-        }
-    }
-
-    async handleSignup(email, password) {
-        const displayName = document.getElementById('displayName').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const zodiacSign = document.getElementById('zodiacSign').value;
-
-        // Validation
-        if (password !== confirmPassword) {
-            throw new Error('auth/passwords-dont-match');
-        }
-
-        if (password.length < 6) {
-            throw new Error('auth/weak-password');
-        }
-
-        // Create user
-        const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-        const user = userCredential.user;
-
-        // Update profile
-        await updateProfile(user, {
-            displayName: displayName || 'Mystiker'
-        });
-
-        // Create user document in Firestore
-        await setDoc(doc(this.db, 'users', user.uid), {
-            email: email,
-            displayName: displayName || 'Mystiker',
-            zodiacSign: zodiacSign,
-            createdAt: serverTimestamp(),
-            level: 'Novize',
-            energyPoints: 100,
-            totalOrders: 0,
-            preferences: {
-                dailyHoroscope: true,
-                newProducts: true,
-                moonPhases: false,
-                favoriteCrystals: ['Amethyst', 'Rosenquarz', 'Bergkristall'],
-                interests: ['Astrologie', 'Meditation', 'Tarot']
+                this.updateUIAfterLogout();
             }
         });
 
-        this.showSuccess('Willkommen in der mystischen Gemeinschaft! Du wirst weitergeleitet...');
-        
-        setTimeout(() => {
-            window.location.href = 'profile.html';
-        }, 2000);
-    }
-
-    async handleLogin(email, password) {
-        await signInWithEmailAndPassword(this.auth, email, password);
-        
-        this.showSuccess('Erfolgreich angemeldet! Du wirst weitergeleitet...');
-        
-        setTimeout(() => {
-            window.location.href = 'profile.html';
-        }, 1500);
-    }
-
-    async handleForgotPassword() {
-        const email = document.getElementById('email').value;
-        
-        if (!email) {
-            this.showError('Bitte gib deine E-Mail Adresse ein');
-            return;
+        const pathname = window.location.pathname;
+        if (pathname.endsWith('register.html')) {
+            this.attachRegisterListener();
         }
+        if (pathname.endsWith('login.html')) {
+            this.attachLoginListener();
+            this.attachGoogleLoginListener();
+        }
+        // The logout button can be on any page, so we always try to attach it.
+        this.attachLogoutListener();
+    }
+
+    attachRegisterListener() {
+        const form = document.getElementById('register-form');
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorDiv = document.getElementById('auth-error');
+            errorDiv.textContent = '';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            if (!data.agb) {
+                errorDiv.textContent = 'Sie müssen den AGB zustimmen.';
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    firstname: data.firstname,
+                    lastname: data.lastname,
+                    email: data.email,
+                    address: data.address,
+                    zip: data.zip,
+                    city: data.city,
+                    createdAt: serverTimestamp()
+                });
+
+                window.location.href = 'profile.html';
+
+            } catch (error) {
+                console.error("Registration Error:", error);
+                errorDiv.textContent = this.getFriendlyAuthError(error);
+            }
+        });
+    }
+
+    attachLoginListener() {
+        const form = document.getElementById('login-form');
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorDiv = document.getElementById('auth-error');
+            errorDiv.textContent = '';
+
+            const email = form.email.value;
+            const password = form.password.value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = 'profile.html';
+            } catch (error) {
+                console.error("Login Error:", error);
+                errorDiv.textContent = this.getFriendlyAuthError(error);
+            }
+        });
+    }
+
+    attachGoogleLoginListener() {
+        const googleBtn = document.getElementById('google-login-btn');
+        if (!googleBtn) return;
+
+        googleBtn.addEventListener('click', async () => {
+            const errorDiv = document.getElementById('auth-error');
+            if(errorDiv) errorDiv.textContent = '';
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (!userDoc.exists()) {
+                    const [firstname, ...lastname] = user.displayName.split(' ');
+                    await setDoc(doc(db, "users", user.uid), {
+                        uid: user.uid,
+                        firstname: firstname || '',
+                        lastname: lastname.join(' ') || '',
+                        email: user.email,
+                        createdAt: serverTimestamp()
+                    });
+                }
+                window.location.href = 'profile.html';
+            } catch (error) {
+                console.error("Google Sign-In Error:", error);
+                if(errorDiv) errorDiv.textContent = this.getFriendlyAuthError(error);
+            }
+        });
+    }
+
+    attachLogoutListener() {
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error("Logout Error:", error);
+                }
+            });
+        }
+    }
+
+    async loadUserProfile(user) {
+        const nameEl = document.getElementById('profile-name');
+        const emailEl = document.getElementById('profile-email');
+        const addressEl = document.getElementById('profile-address');
+        
+        if (!nameEl || !emailEl || !addressEl) return;
 
         try {
-            await sendPasswordResetEmail(this.auth, email);
-            this.showSuccess('Passwort-Reset E-Mail wurde gesendet!');
-        } catch (error) {
-            this.showError(this.getErrorMessage(error.code));
-        }
-    }
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                nameEl.textContent = `${data.firstname} ${data.lastname}`;
+                emailEl.textContent = data.email;
+                
+                const addressParts = [data.address, data.zip, data.city].filter(Boolean);
+                addressEl.textContent = addressParts.join(', ') || 'Keine Adresse hinterlegt.';
 
-    checkAuthState() {
-        onAuthStateChanged(this.auth, (user) => {
-            if (user && window.location.pathname.includes('login.html')) {
-                window.location.href = 'profile.html';
+            } else {
+                nameEl.textContent = user.displayName || 'Willkommen';
+                emailEl.textContent = user.email;
+                addressEl.textContent = 'Bitte vervollständigen Sie Ihr Profil.';
             }
-        });
-    }
-
-    setLoading(isLoading) {
-        const submitBtn = document.getElementById('auth-submit');
-        if (submitBtn) {
-            submitBtn.disabled = isLoading;
-            submitBtn.textContent = isLoading ? 'Lädt...' : (this.isSignupMode ? 'Registrieren' : 'Anmelden');
+        } catch (error) {
+            console.error("Error loading user profile:", error);
+            nameEl.textContent = 'Fehler beim Laden des Profils.';
         }
     }
 
-    showError(message) {
-        const errorDiv = document.getElementById('auth-error');
-        if (errorDiv) {
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
+    updateUIAfterLogin(user) {
+        const authNavLink = document.getElementById('auth-nav-link');
+        const authNavText = document.getElementById('auth-nav-text');
+        if (authNavLink && authNavText) {
+            authNavLink.href = 'profile.html';
+            authNavText.textContent = 'Profil';
         }
     }
 
-    showSuccess(message) {
-        const successDiv = document.getElementById('auth-success');
-        if (successDiv) {
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
+    updateUIAfterLogout() {
+        const authNavLink = document.getElementById('auth-nav-link');
+        const authNavText = document.getElementById('auth-nav-text');
+        if (authNavLink && authNavText) {
+            authNavLink.href = 'login.html';
+            authNavText.textContent = 'Login';
         }
     }
-
-    clearMessages() {
-        const errorDiv = document.getElementById('auth-error');
-        const successDiv = document.getElementById('auth-success');
-        
-        if (errorDiv) {
-            errorDiv.style.display = 'none';
-            errorDiv.textContent = '';
+    
+    getFriendlyAuthError(error) {
+        switch (error.code) {
+            case 'auth/invalid-email':
+                return 'Ungültige E-Mail-Adresse.';
+            case 'auth/user-disabled':
+                return 'Dieses Konto wurde deaktiviert.';
+            case 'auth/user-not-found':
+                return 'Kein Konto mit dieser E-Mail-Adresse gefunden.';
+            case 'auth/wrong-password':
+                return 'Falsches Passwort. Bitte versuchen Sie es erneut.';
+            case 'auth/email-already-in-use':
+                return 'Diese E-Mail-Adresse wird bereits verwendet.';
+            case 'auth/weak-password':
+                return 'Das Passwort ist zu schwach. Es muss mindestens 6 Zeichen lang sein.';
+            case 'auth/popup-closed-by-user':
+                return 'Anmeldung abgebrochen.';
+            default:
+                return 'Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
         }
-        
-        if (successDiv) {
-            successDiv.style.display = 'none';
-            successDiv.textContent = '';
-        }
-    }
-
-    getErrorMessage(errorCode) {
-        const errorMessages = {
-            'auth/user-not-found': 'Kein Benutzer mit dieser E-Mail gefunden',
-            'auth/wrong-password': 'Falsches Passwort',
-            'auth/email-already-in-use': 'Diese E-Mail wird bereits verwendet',
-            'auth/weak-password': 'Das Passwort muss mindestens 6 Zeichen lang sein',
-            'auth/invalid-email': 'Ungültige E-Mail Adresse',
-            'auth/passwords-dont-match': 'Passwörter stimmen nicht überein',
-            'auth/network-request-failed': 'Netzwerkfehler. Bitte versuche es erneut.',
-            'auth/too-many-requests': 'Zu viele Anfragen. Bitte warte einen Moment.'
-        };
-
-        return errorMessages[errorCode] || 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
     }
 }
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new AuthManager();
+    window.authManager = new AuthManager();
 });
