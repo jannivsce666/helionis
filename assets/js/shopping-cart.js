@@ -56,7 +56,11 @@ class ShoppingCart {
         }
         this.saveCart();
         this.updateCartUI();
-        this.showNotification(`${name} wurde zum Warenkorb hinzugefügt`);
+        if (this.isOpen) {
+            this.updateCartContent();
+        } else {
+            this.showNotification(`${name} wurde zum Warenkorb hinzugefügt`);
+        }
     }
 
     removeFromCart(productId) {
@@ -68,6 +72,9 @@ class ShoppingCart {
             }
             this.saveCart();
             this.updateCartUI();
+            if (this.isOpen) {
+                this.updateCartContent();
+            }
         }
     }
 
