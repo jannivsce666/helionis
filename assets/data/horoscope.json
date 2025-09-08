@@ -1,54 +1,54 @@
 {
-  "date": "2025-09-07",
-  "generated_at": "2025-09-07T04:16:05.578Z",
+  "date": "2025-09-08",
+  "generated_at": "2025-09-08T04:17:15.534Z",
   "signs": {
     "widder": {
       "name": "Widder",
-      "text": "Ein neuer Tag voller Energie und Tatendrang erwartet dich! Nutze deine Leidenschaft, um Herausforderungen zu meistern. Sei offen für neue Begegnungen, sie könnten dein Leben bereichern."
+      "text": "Heute ist ein Tag der neuen Möglichkeiten. Lass deinen Mut leuchten und gehe auf neue Abenteuer zu. Deine Leidenschaft wird dich führen."
     },
     "stier": {
       "name": "Stier",
-      "text": "Heute ist der perfekte Tag, um deine Träume in die Tat umzusetzen. Vertraue auf deine Fähigkeiten und genieße die kleinen Freuden des Lebens. Achte auf die Natur um dich herum."
+      "text": "Ein harmonischer Tag für Beziehungen. Zeige deinen Liebsten, wie viel sie dir bedeuten. Kleine Gesten können große Wunder bewirken."
     },
     "zwillinge": {
       "name": "Zwillinge",
-      "text": "Kommunikation ist heute der Schlüssel! Teile deine Gedanken und Ideen, und du wirst auf viel positive Resonanz stoßen. Lass dich von deiner Neugier leiten."
+      "text": "Deine Neugier ist heute besonders stark. Nutze sie, um neue Ideen zu entdecken. Kommunikation bringt frischen Wind in dein Leben."
     },
     "krebs": {
       "name": "Krebs",
-      "text": "Heute fühlst du dich besonders einfühlsam. Nutze diese Sensibilität, um tiefer in deine Beziehungen einzutauchen. Deine Intuition führt dich zu wertvollen Einsichten."
+      "text": "Selbstfürsorge steht heute an erster Stelle. Nimm dir Zeit für dich. Eine kleine Auszeit kann Wunder wirken und dein Herz öffnen."
     },
     "loewe": {
       "name": "Löwe",
-      "text": "Dein Charisma strahlt heute hell! Du ziehst Menschen an und inspirierst sie mit deiner Kreativität. Sei mutig und teile deine Visionen mit der Welt."
+      "text": "Zeige heute deine kreative Seite! Lass dein inneres Licht strahlen und inspiriere andere mit deiner Begeisterung. Du wirst im Rampenlicht stehen."
     },
     "jungfrau": {
       "name": "Jungfrau",
-      "text": "Präzision und Klarheit stehen heute im Vordergrund. Nutze deinen analytischen Verstand, um Probleme zu lösen. Achte darauf, auch auf dich selbst gut zu achten."
+      "text": "Ordnung und Struktur bringen dir heute Frieden. Setze Prioritäten und arbeite fokussiert an deinen Zielen. Deine Disziplin wird belohnt."
     },
     "waage": {
       "name": "Waage",
-      "text": "Harmonie und Balance sind heute dein Motto. Verbringe Zeit mit geliebten Menschen und schaffe eine friedliche Atmosphäre. Dein diplomatisches Geschick wird geschätzt."
+      "text": "Harmonie ist dein Schlüssel heute. Suche den Ausgleich in deinen Beziehungen und schaffe Frieden. Deine diplomatischen Fähigkeiten sind gefragt."
     },
     "skorpion": {
       "name": "Skorpion",
-      "text": "Heute ist ein Tag voller Leidenschaft und Intensität. Lass deine Emotionen fließen und gehe tief in deine eigenen Bedürfnisse. Transformation ist möglich – nutze sie!"
+      "text": "Intuition und Leidenschaft prägen deinen Tag. Vertraue deinem Bauchgefühl und gehe mutig deinen Weg. Veränderungen bringen Wachstum."
     },
     "schuetze": {
       "name": "Schütze",
-      "text": "Ein Abenteuer wartet auf dich! Offenheit für neue Erfahrungen wird dir viele Lektionen bringen. Lass deine Freiheit und Neugier dich leiten."
+      "text": "Die Welt liegt dir heute zu Füßen. Nutze deine Abenteuerlust, um neue Horizonte zu erkunden. Offenheit wird dir Freude bringen."
     },
     "steinbock": {
       "name": "Steinbock",
-      "text": "Fokus und Entschlossenheit bringen dich heute einen Schritt näher an deine Ziele. Arbeite hart, aber vergiss nicht, dir Zeit für Erholung zu gönnen."
+      "text": "Fokussiere dich auf deine Ziele. Dein Ehrgeiz ist heute stark, und die harte Arbeit wird sich auszahlen. Bleibe geduldig und beharrlich."
     },
     "wassermann": {
       "name": "Wassermann",
-      "text": "Kreativität sprudelt heute! Lass deiner Fantasie freien Lauf und teile deine Ideen mit anderen. Du bist ein Innovator, also scheue dich nicht, anders zu denken."
+      "text": "Sei offen für neue Ideen und Perspektiven. Dein kreatives Denken wird heute geschätzt. Lass deinen Geist frei fließen."
     },
     "fische": {
       "name": "Fische",
-      "text": "Deine Intuition ist heute besonders stark. Vertraue auf deine innere Stimme und lass dich von deiner Vorstellungskraft leiten. Kreative Projekte können heute blühen."
+      "text": "Deine Sensibilität ist heute ein Geschenk. Lass dich von deinen Träumen leiten und teile deine Visionen mit anderen. Inspiration ist überall."
     }
   }
 }
