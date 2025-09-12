@@ -1,54 +1,54 @@
 {
-  "date": "2025-09-11",
-  "generated_at": "2025-09-11T04:17:14.504Z",
+  "date": "2025-09-12",
+  "generated_at": "2025-09-12T04:16:24.042Z",
   "signs": {
     "widder": {
       "name": "Widder",
-      "text": "Heute sprühst du vor Energie! Nutze deine Leidenschaft, um neue Herausforderungen anzugehen. Deine Entschlossenheit wird belohnt."
+      "text": "Heute ist ein Tag voller Energie! Nutze deinen Elan, um neue Projekte zu starten. Deine Entschlossenheit wird bewundert."
     },
     "stier": {
       "name": "Stier",
-      "text": "Stabilität umgibt dich. Setze deine Sinne ein, um die kleinen Freuden des Lebens zu genießen. Heute ist ein Tag für Genüsse!"
+      "text": "Die Harmonie in deinen Beziehungen blüht auf. Verbringe Zeit mit geliebten Menschen und genieße die kleinen Dinge des Lebens."
     },
     "zwillinge": {
       "name": "Zwillinge",
-      "text": "Deine Neugier führt dich zu spannenden Gesprächen. Öffne dich für neue Ideen und teile deine Gedanken – sie könnten inspirieren!"
+      "text": "Neues Lernen liegt in der Luft! Sei offen für inspirierende Gespräche und entdecke frische Ideen, die deinen Geist beflügeln."
     },
     "krebs": {
       "name": "Krebs",
-      "text": "Emotionale Tiefe prägt deinen Tag. Lass deine Intuition leiten und schaffe Verbindungen, die dein Herz erwärmen."
+      "text": "Deine Intuition ist heute besonders stark. Höre auf dein Bauchgefühl und vertraue darauf, dass es dich richtig leitet."
     },
     "loewe": {
       "name": "Löwe",
-      "text": "Strahle voller Selbstvertrauen! Deine Kreativität blüht. Nutze diese Gabe, um deine Träume in die Realität umzusetzen."
+      "text": "Schöpferische Energien umgeben dich! Lass deiner Fantasie freien Lauf und verwandle deine Visionen in Realität. Du strahlst!"
     },
     "jungfrau": {
       "name": "Jungfrau",
-      "text": "Ordnung und Klarheit sind heute deine Begleiter. Plane weise und bringe Struktur in deine Projekte – es wird sich auszahlen."
+      "text": "Ordnung und Klarheit bringen dir Frieden. Nutze den Tag, um deine Umgebung zu organisieren und Raum für Neues zu schaffen."
     },
     "waage": {
       "name": "Waage",
-      "text": "Harmonie umgibt dich. Suche nach Balance in deinen Beziehungen und genieße den Austausch – er bringt Freude und Verständnis."
+      "text": "Die Balance in deinem Leben ist wichtig. Suche nach Kompromissen und bringe Harmonie in deine Beziehungen. Du bist ein Friedensstifter."
     },
     "skorpion": {
       "name": "Skorpion",
-      "text": "Deine tiefsten Wünsche kommen ans Licht. Vertraue deinem Instinkt und gehe mutig voran – die Transformation steht bevor."
+      "text": "Leidenschaft liegt in der Luft! Lass deine Gefühle fließen und teile sie mit jemand Besonderem. Dein Charisma wird unwiderstehlich."
     },
     "schuetze": {
       "name": "Schütze",
-      "text": "Abenteuerlust treibt dich an! Nutze die Chance, neue Horizonte zu erkunden. Dein Optimismus zieht positive Erlebnisse an."
+      "text": "Abenteuer warten auf dich! Sei bereit, neue Wege zu erkunden und deinen Horizont zu erweitern. Es wird aufregend!"
     },
     "steinbock": {
       "name": "Steinbock",
-      "text": "Fokus und Disziplin führen dich heute zum Erfolg. Setze dir klare Ziele und gehe Schritt für Schritt – du bist auf dem richtigen Weg."
+      "text": "Ziele rücken näher! Dein Fleiß zahlt sich aus. Halte den Fokus und lass dich nicht von Rückschlägen entmutigen. Du schaffst das!"
     },
     "wassermann": {
       "name": "Wassermann",
-      "text": "Innovative Ideen sprießen! Teile deine Visionen mit anderen und inspiriere sie. Gemeinsam könnt ihr Großes erreichen."
+      "text": "Kreativität sprudelt! Nutze den Tag, um innovative Lösungen zu finden. Deine Ideen sind gefragt und bringen frischen Wind."
     },
     "fische": {
       "name": "Fische",
-      "text": "Intuition leitet deinen Tag. Lass dich von deiner Kreativität treiben und teile deine Träume. Sie könnten bald Realität werden."
+      "text": "Träume werden heute lebendig. Lass dich von deiner Vorstellungskraft leiten und entdecke die Schönheit in den kleinen Dingen."
     }
   }
 }
