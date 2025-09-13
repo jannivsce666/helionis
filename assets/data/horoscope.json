@@ -1,54 +1,54 @@
 {
-  "date": "2025-09-12",
-  "generated_at": "2025-09-12T04:16:24.042Z",
+  "date": "2025-09-13",
+  "generated_at": "2025-09-13T04:15:21.633Z",
   "signs": {
     "widder": {
       "name": "Widder",
-      "text": "Heute ist ein Tag voller Energie! Nutze deinen Elan, um neue Projekte zu starten. Deine Entschlossenheit wird bewundert."
+      "text": "Heute spürst du den Drang, neue Wege zu gehen. Nutze deinen Mut, um Veränderungen anzustoßen. Deine Energie ist ansteckend und inspiriert andere."
     },
     "stier": {
       "name": "Stier",
-      "text": "Die Harmonie in deinen Beziehungen blüht auf. Verbringe Zeit mit geliebten Menschen und genieße die kleinen Dinge des Lebens."
+      "text": "Ein perfekter Tag, um deine Kreativität auszuleben. Lass deiner Phantasie freien Lauf und genieße die kleinen Dinge. Harmonie umgibt dich."
     },
     "zwillinge": {
       "name": "Zwillinge",
-      "text": "Neues Lernen liegt in der Luft! Sei offen für inspirierende Gespräche und entdecke frische Ideen, die deinen Geist beflügeln."
+      "text": "Kommunikation steht heute im Mittelpunkt. Teile deine Gedanken und höre zu. Ein spannendes Gespräch könnte dir neue Perspektiven eröffnen."
     },
     "krebs": {
       "name": "Krebs",
-      "text": "Deine Intuition ist heute besonders stark. Höre auf dein Bauchgefühl und vertraue darauf, dass es dich richtig leitet."
+      "text": "Heute ist ein idealer Tag für emotionale Bindungen. Verbringe Zeit mit geliebten Menschen. Dein Gefühl für Fürsorglichkeit wird geschätzt."
     },
     "loewe": {
       "name": "Löwe",
-      "text": "Schöpferische Energien umgeben dich! Lass deiner Fantasie freien Lauf und verwandle deine Visionen in Realität. Du strahlst!"
+      "text": "Strahle heute wie die Sonne! Deine positive Ausstrahlung zieht Menschen an. Nutze diese Energie, um neue Kontakte zu knüpfen."
     },
     "jungfrau": {
       "name": "Jungfrau",
-      "text": "Ordnung und Klarheit bringen dir Frieden. Nutze den Tag, um deine Umgebung zu organisieren und Raum für Neues zu schaffen."
+      "text": "Organisiere deinen Tag mit einem klaren Plan. Deine Detailverliebtheit zahlt sich aus und bringt dir Zufriedenheit. Alles wird rund laufen."
     },
     "waage": {
       "name": "Waage",
-      "text": "Die Balance in deinem Leben ist wichtig. Suche nach Kompromissen und bringe Harmonie in deine Beziehungen. Du bist ein Friedensstifter."
+      "text": "Heute ist der perfekte Zeitpunkt, um Harmonie in dein Leben zu bringen. Suche das Gleichgewicht und genieße die Schönheit um dich herum."
     },
     "skorpion": {
       "name": "Skorpion",
-      "text": "Leidenschaft liegt in der Luft! Lass deine Gefühle fließen und teile sie mit jemand Besonderem. Dein Charisma wird unwiderstehlich."
+      "text": "Deine Intuition ist heute besonders stark. Vertraue deinem Bauchgefühl in wichtigen Entscheidungen. Du bist auf dem richtigen Weg."
     },
     "schuetze": {
       "name": "Schütze",
-      "text": "Abenteuer warten auf dich! Sei bereit, neue Wege zu erkunden und deinen Horizont zu erweitern. Es wird aufregend!"
+      "text": "Ein Tag voller Abenteuer erwartet dich! Sei offen für neue Erfahrungen und lass dich von deiner Neugier leiten. Freiheit liegt in der Luft."
     },
     "steinbock": {
       "name": "Steinbock",
-      "text": "Ziele rücken näher! Dein Fleiß zahlt sich aus. Halte den Fokus und lass dich nicht von Rückschlägen entmutigen. Du schaffst das!"
+      "text": "Fokussiere dich auf deine Ziele. Disziplin und Durchhaltevermögen bringen dich voran. Der Erfolg ist zum Greifen nah."
     },
     "wassermann": {
       "name": "Wassermann",
-      "text": "Kreativität sprudelt! Nutze den Tag, um innovative Lösungen zu finden. Deine Ideen sind gefragt und bringen frischen Wind."
+      "text": "Sei heute kreativ und denke außerhalb der gewohnten Grenzen. Deine Ideen könnten frischen Wind in bestehende Strukturen bringen."
     },
     "fische": {
       "name": "Fische",
-      "text": "Träume werden heute lebendig. Lass dich von deiner Vorstellungskraft leiten und entdecke die Schönheit in den kleinen Dingen."
+      "text": "Ein Tag der Träume und Intuition. Lass dich von deiner Sensibilität leiten und schaffe Raum für deine inneren Gedanken und Gefühle."
     }
   }
 }
