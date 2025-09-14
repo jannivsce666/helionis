@@ -103,7 +103,7 @@ header {
 nav {
     position: fixed;
     top: 80px;
-    right: -350px;
+    right: -100%; /* Start off-screen */
     width: 300px;
     background: rgba(13, 13, 13, 0.95);
     backdrop-filter: blur(20px);
@@ -115,12 +115,11 @@ nav {
     transition: right 0.4s ease;
     z-index: 1003;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-    display: none; /* WICHTIG: Navigation ist standardmäßig versteckt */
+    display: flex; /* Always flex for column layout */
 }
 
 nav.active {
-    right: 20px;
-    display: flex; /* Nur sichtbar wenn Hamburger-Menü aktiv ist */
+    right: 20px; /* Slide in when active */
 }
 
 nav a {
@@ -143,30 +142,152 @@ nav a.active {
     border-color: rgba(184, 115, 51, 0.5);
 }
 
-/* Hamburger-Menü ist auf ALLEN Bildschirmgrößen sichtbar - WICHTIG! */
-.menu-toggle {
-    display: block !important; /* WICHTIG: Immer sichtbar, auch auf Desktop */
-    z-index: 1004;
-}
-
+/* Desktop Navigation */
 @media (min-width: 1024px) {
-    /* Das Hamburger-Menü bleibt auch auf Desktop aktiv */
     .menu-toggle {
-        display: block !important; /* Hamburger bleibt sichtbar */
+        display: none; /* Hide hamburger on desktop */
     }
-    
-    /* Navigation bleibt als Dropdown */
+
     nav {
-        width: 320px; /* Etwas breiter auf Desktop */
-        top: 70px; /* Angepasste Position */
+        position: static;
+        flex-direction: row;
+        background: none;
+        backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+        width: auto;
+        padding: 0;
+        display: flex !important; /* Ensure nav is visible */
+        gap: 1rem;
+    }
+
+    nav a {
+        background: none;
+        border: none;
+        padding: 0.5rem 1rem;
+        position: relative;
+        color: #E5D5C8;
+        font-size: 1rem;
+    }
+
+    nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: var(--accent-color);
+        transition: width 0.3s ease;
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+        width: 60%;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: none;
+        transform: none;
+        box-shadow: none;
+        color: var(--accent-color);
     }
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
+/* Mobile Navigation (existing styles adapted) */
+@media (max-width: 1023px) {
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        z-index: 1004;
+    }
+
+    .hamburger,
+    .hamburger::before,
+    .hamburger::after {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: #B87333;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .hamburger::before,
+    .hamburger::after {
+        content: '';
+        position: absolute;
+        left: 0;
+    }
+
+    .hamburger::before {
+        top: -8px;
+    }
+
+    .hamburger::after {
+        top: 8px;
+    }
+
+    .menu-toggle.active .hamburger {
+        background: transparent;
+    }
+
+    .menu-toggle.active .hamburger::before {
+        transform: rotate(45deg);
+        top: 0;
+    }
+
+    .menu-toggle.active .hamburger::after {
+        transform: rotate(-45deg);
+        top: 0;
+    }
+
+    nav {
+        position: fixed;
+        top: 80px;
+        right: -100%; /* Start off-screen */
+        width: 300px;
+        background: rgba(13, 13, 13, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(184, 115, 51, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 0.8rem;
+        transition: right 0.4s ease;
+        z-index: 1003;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+        display: flex; /* Always flex for column layout */
+    }
+
+    nav.active {
+        right: 20px; /* Slide in when active */
+    }
+
     nav a {
-        font-size: 1.2rem;
-        width: 200px;
+        font-size: 1.1rem;
+        padding: 0.8rem 1.2rem;
+        text-align: center;
+        background: rgba(184, 115, 51, 0.1);
+        border: 1px solid rgba(184, 115, 51, 0.25);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #E5D5C8;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: rgba(184, 115, 51, 0.25);
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(184, 115, 51, 0.2);
+        border-color: rgba(184, 115, 51, 0.5);
     }
 }
 
