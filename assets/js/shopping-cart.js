@@ -1,7 +1,10 @@
+import { auth, db } from './firebase-config.js';
 import {
     getDoc,
     updateDoc,
     doc,
+    setDoc,
+    collection,
     serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
@@ -193,30 +196,36 @@ class ShoppingCart {
 
     async saveCart() {
         try {
-            // Save to Firebase if user is authenticated
-            if (window.googleAuth && window.googleAuth.isAuthenticated()) {
-                await window.googleAuth.saveCartToDatabase(this.cart);
+            const user = auth.currentUser;
+            if (user) {
+                const userRef = doc(db, 'users', user.uid);
+                // Merge with existing data to avoid overwriting other fields
+                await setDoc(userRef, { cart: this.cart }, { merge: true });
             } else {
-                // Fallback to localStorage for non-authenticated users
                 localStorage.setItem('helionis_cart', JSON.stringify(this.cart));
             }
         } catch (error) {
             console.error('Fehler beim Speichern des Warenkorbs:', error);
-            // Fallback to localStorage
             localStorage.setItem('helionis_cart', JSON.stringify(this.cart));
         }
     }
 
-    async loadCart(cartData = null) {
+    async loadCart() {
         try {
-            if (cartData) {
-                // Load provided cart data (from Firebase)
-                this.cart = cartData || {};
-            } else if (window.googleAuth && window.googleAuth.isAuthenticated()) {
-                // Load from Firebase for authenticated users
-                this.cart = await window.googleAuth.loadCartFromDatabase() || {};
+            const user = auth.currentUser;
+            if (user) {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists() && userDoc.data().cart) {
+                    this.cart = userDoc.data().cart;
+                } else {
+                    // If no cart in DB, check localStorage and sync if needed
+                    const saved = localStorage.getItem('helionis_cart');
+                    this.cart = saved ? JSON.parse(saved) : {};
+                    if (Object.keys(this.cart).length > 0) {
+                        await this.saveCart(); // Sync local cart to Firebase
+                    }
+                }
             } else {
-                // Load from localStorage for non-authenticated users
                 const saved = localStorage.getItem('helionis_cart');
                 this.cart = saved ? JSON.parse(saved) : {};
             }
@@ -228,8 +237,10 @@ class ShoppingCart {
     }
 
     async checkout() {
-        if (!window.googleAuth || !window.googleAuth.isAuthenticated()) {
+        const user = auth.currentUser;
+        if (!user) {
             alert('Bitte melden Sie sich an, um eine Bestellung aufzugeben.');
+            window.location.href = 'login.html';
             return;
         }
 
@@ -241,19 +252,22 @@ class ShoppingCart {
 
         try {
             const orderData = {
+                userId: user.uid,
                 items: this.cart,
                 total: this.getCartTotal(),
-                currency: 'EUR'
+                currency: 'EUR',
+                createdAt: serverTimestamp()
             };
 
-            const orderId = await window.googleAuth.saveOrder(orderData);
+            const newOrderRef = doc(collection(db, 'orders'));
+            await setDoc(newOrderRef, orderData);
+            const orderId = newOrderRef.id;
             
             if (orderId) {
                 this.clearCart();
                 this.closeCart();
                 alert(`Bestellung erfolgreich aufgegeben! Bestellnummer: ${orderId}`);
                 
-                // Redirect to profile page to show order
                 if (window.location.pathname !== '/profile.html') {
                     window.location.href = 'profile.html';
                 }

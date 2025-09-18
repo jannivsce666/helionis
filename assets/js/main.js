@@ -3,202 +3,148 @@ import './auth.js';
 import './shopping-cart.js';
 import './mobile-nav.js';
 
-// Mystical Luminescent Background Effects
-class MysticalGlow {
-// ... existing code ...
+// Teal Smoke Background Effect (replaces MysticalGlow)
+class TealSmoke {
     constructor() {
         this.canvas = null;
         this.ctx = null;
-        this.particles = [];
-        this.mouse = { x: 0, y: 0 };
+        this.clouds = [];
         this.animationId = null;
         this.lastFrameTime = 0;
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 'ontouchstart' in window;
-        this.targetFPS = this.isMobile ? 15 : 30; // Reduzierte FPS auf Mobile
+        this.targetFPS = this.isMobile ? 12 : 24;
         this.frameInterval = 1000 / this.targetFPS;
-        
         try {
             this.init();
-        } catch (error) {
-            console.warn('MysticalGlow initialization failed:', error);
+        } catch (e) {
+            console.warn('TealSmoke init failed:', e);
         }
     }
 
     init() {
         this.createCanvas();
-        this.createParticles();
+        this.createCloudLayers();
         this.bindEvents();
         this.animate();
     }
 
     createCanvas() {
-        try {
-            this.canvas = document.createElement('canvas');
-            this.canvas.style.position = 'fixed';
-            this.canvas.style.top = '0';
-            this.canvas.style.left = '0';
-            this.canvas.style.width = '100%';
-            this.canvas.style.height = '100%';
-            this.canvas.style.pointerEvents = 'none';
-            this.canvas.style.zIndex = '-1';
-            this.canvas.style.opacity = '0.8';
-            
-            document.body.appendChild(this.canvas);
-            
-            this.ctx = this.canvas.getContext('2d');
-            if (!this.ctx) {
-                throw new Error('Canvas context not available');
-            }
-            this.resize();
-        } catch (error) {
-            console.warn('Canvas creation failed:', error);
-        }
-    }
-
-    createParticles() {
-        // Weniger Partikel auf Mobile für bessere Performance
-        const particleCount = this.isMobile ? 15 : 60;
-        
-        for (let i = 0; i < particleCount; i++) {
-            this.particles.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                vx: (Math.random() - 0.5) * (this.isMobile ? 0.3 : 0.5), // Langsamere Bewegung auf Mobile
-                vy: (Math.random() - 0.5) * (this.isMobile ? 0.3 : 0.5),
-                size: Math.random() * 3 + 1,
-                life: Math.random() * 100 + 100,
-                maxLife: Math.random() * 100 + 100,
-                color: {
-                    h: Math.random() * 60 + 200,
-                    s: 80,
-                    l: 70
-                }
-            });
-        }
+        this.canvas = document.createElement('canvas');
+        Object.assign(this.canvas.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: '-1',
+            opacity: '0.85'
+        });
+        document.body.appendChild(this.canvas);
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
     }
 
     bindEvents() {
         window.addEventListener('resize', () => this.resize());
-        window.addEventListener('mousemove', (e) => {
-            this.mouse.x = e.clientX;
-            this.mouse.y = e.clientY;
-        });
     }
 
     resize() {
-        if (this.canvas) {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-        }
-    }
-
-    drawParticle(particle) {
-        if (!this.ctx) return;
-
-        const { x, y, size, opacity, hue, pulse } = particle;
-        
-        // Simple pulsing size
-        const currentSize = size + Math.sin(pulse) * 0.2;
-        
-        // Simple gradient glow
-        const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, currentSize * 8);
-        gradient.addColorStop(0, `hsla(${hue}, 70%, 60%, ${opacity})`);
-        gradient.addColorStop(0.5, `hsla(${hue}, 60%, 50%, ${opacity * 0.4})`);
-        gradient.addColorStop(1, `hsla(${hue}, 50%, 40%, 0)`);
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, currentSize * 8, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        // Simple center dot
-        this.ctx.fillStyle = `hsla(${hue}, 80%, 80%, ${opacity * 0.8})`;
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, currentSize, 0, Math.PI * 2);
-        this.ctx.fill();
-    }
-
-    updateParticle(particle) {
         if (!this.canvas) return;
-
-        // Gentle floating movement
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-        
-        // Subtle pulsing effect
-        particle.pulse += 0.008;
-        const gentlePulse = Math.sin(particle.pulse) * 0.15;
-        particle.opacity = 0.2 + gentlePulse;
-        
-        // Boundary wrapping
-        if (particle.x < -50) particle.x = this.canvas.width + 50;
-        if (particle.x > this.canvas.width + 50) particle.x = -50;
-        if (particle.y < -50) particle.y = this.canvas.height + 50;
-        if (particle.y > this.canvas.height + 50) particle.y = -50;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
 
-    drawConnections() {
-        if (!this.ctx) return;
-
-        for (let i = 0; i < this.particles.length; i++) {
-            for (let j = i + 1; j < this.particles.length; j++) {
-                const dx = this.particles[i].x - this.particles[j].x;
-                const dy = this.particles[i].y - this.particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 100) {
-                    const opacity = (100 - distance) / 100 * 0.1;
-                    
-                    // Simple subtle connection
-                    this.ctx.strokeStyle = `hsla(210, 60%, 70%, ${opacity})`;
-                    this.ctx.lineWidth = 0.5;
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
-                    this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
-                    this.ctx.stroke();
-                }
-            }
+    // Create layered smoke clouds with gentle drift
+    createCloudLayers() {
+        const layerCount = this.isMobile ? 2 : 3;
+        this.clouds = [];
+        for (let i = 0; i < layerCount; i++) {
+            this.clouds.push(this.createCloud({ scale: 1 + i * 0.4, speed: 0.05 + i * 0.03, alpha: 0.15 + i * 0.07 }));
         }
+    }
+
+    createCloud({ scale, speed, alpha }) {
+        const off = document.createElement('canvas');
+        const size = Math.min(800, Math.max(400, Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.8)));
+        off.width = size;
+        off.height = size;
+        const octx = off.getContext('2d');
+
+        // Draw soft blobs to approximate noise-based smoke
+        for (let i = 0; i < 40; i++) {
+            const x = Math.random() * size;
+            const y = Math.random() * size;
+            const r = (Math.random() * 0.15 + 0.05) * size;
+            const g = octx.createRadialGradient(x, y, 0, x, y, r);
+            const color = `rgba(155, 210, 203, ${0.04 + Math.random() * 0.05})`;
+            g.addColorStop(0, color);
+            g.addColorStop(1, 'rgba(155, 210, 203, 0)');
+            octx.fillStyle = g;
+            octx.beginPath();
+            octx.arc(x, y, r, 0, Math.PI * 2);
+            octx.fill();
+        }
+
+        return {
+            canvas: off,
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            dx: (Math.random() * 2 - 1) * speed,
+            dy: (Math.random() * 2 - 1) * speed,
+            scale,
+            alpha
+        };
+    }
+
+    updateCloud(cloud) {
+        cloud.x += cloud.dx;
+        cloud.y += cloud.dy;
+        const w = this.canvas.width;
+        const h = this.canvas.height;
+        const sw = cloud.canvas.width * cloud.scale;
+        const sh = cloud.canvas.height * cloud.scale;
+        // wrap around
+        if (cloud.x < -sw) cloud.x = w;
+        if (cloud.y < -sh) cloud.y = h;
+        if (cloud.x > w) cloud.x = -sw;
+        if (cloud.y > h) cloud.y = -sh;
     }
 
     animate() {
-        if (!this.ctx || !this.canvas) return;
-
-        const currentTime = performance.now();
-        const elapsed = currentTime - this.lastFrameTime;
-        
-        // Frame rate control - nur animieren wenn genug Zeit vergangen ist
-        if (elapsed >= this.frameInterval) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            // Ambient background glow with pulsing - reduziert auf Mobile
-            if (!this.isMobile) {
-                const time = Date.now() * 0.001;
-                const ambientGradient = this.ctx.createRadialGradient(
-                    this.canvas.width / 2, this.canvas.height / 2, 0,
-                    this.canvas.width / 2, this.canvas.height / 2, Math.max(this.canvas.width, this.canvas.height)
-                );
-                
-                const pulseIntensity = Math.sin(time * 0.2) * 0.01 + 0.02;
-                ambientGradient.addColorStop(0, `hsla(210, 80%, 50%, ${pulseIntensity})`);
-                ambientGradient.addColorStop(0.5, `hsla(240, 80%, 40%, ${pulseIntensity * 0.6})`);
-                ambientGradient.addColorStop(1, 'hsla(45, 80%, 30%, 0)');
-                
-                this.ctx.fillStyle = ambientGradient;
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Draw connections nur auf Desktop
-                this.drawConnections();
-            }
-            
-            this.particles.forEach(particle => {
-                this.updateParticle(particle);
-                this.drawParticle(particle);
-            });
-            
-            this.lastFrameTime = currentTime;
+        if (!this.ctx) return;
+        const now = performance.now();
+        const elapsed = now - this.lastFrameTime;
+        if (elapsed < this.frameInterval) {
+            this.animationId = requestAnimationFrame(() => this.animate());
+            return;
         }
-        
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Subtle vignette background in teal tones
+        const grad = this.ctx.createRadialGradient(
+            this.canvas.width * 0.5, this.canvas.height * 0.45, Math.min(this.canvas.width, this.canvas.height) * 0.1,
+            this.canvas.width * 0.5, this.canvas.height * 0.5, Math.max(this.canvas.width, this.canvas.height)
+        );
+        grad.addColorStop(0, 'rgba(20, 35, 37, 0.2)');
+        grad.addColorStop(1, 'rgba(11, 17, 19, 0)');
+        this.ctx.fillStyle = grad;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw clouds
+        this.clouds.forEach(cloud => {
+            this.ctx.globalAlpha = cloud.alpha;
+            this.ctx.drawImage(cloud.canvas, cloud.x, cloud.y, cloud.canvas.width * cloud.scale, cloud.canvas.height * cloud.scale);
+            // mirror copy for richness
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(cloud.canvas, -cloud.x - cloud.canvas.width * cloud.scale, cloud.y, cloud.canvas.width * cloud.scale, cloud.canvas.height * cloud.scale);
+            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            this.ctx.globalAlpha = 1;
+            this.updateCloud(cloud);
+        });
+
+        this.lastFrameTime = now;
         this.animationId = requestAnimationFrame(() => this.animate());
     }
 }
@@ -220,11 +166,11 @@ class GlowEnhancer {
         if (hero) {
             // Transparentere Multi-layer luminescent background
             hero.style.background = `
-                radial-gradient(ellipse 100% 60% at 30% 40%, rgba(0, 150, 255, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse 80% 100% at 70% 20%, rgba(100, 200, 255, 0.05) 0%, transparent 70%),
-                radial-gradient(ellipse 120% 80% at 50% 80%, rgba(50, 180, 255, 0.06) 0%, transparent 80%),
-                radial-gradient(circle at 20% 60%, rgba(0, 120, 255, 0.04) 0%, transparent 50%),
-                rgba(13, 13, 13, 0.4)
+                radial-gradient(ellipse 100% 60% at 30% 40%, rgba(155, 210, 203, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 100% at 70% 20%, rgba(127, 189, 181, 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 120% 80% at 50% 80%, rgba(100, 170, 165, 0.05) 0%, transparent 80%),
+                radial-gradient(circle at 20% 60%, rgba(80, 140, 135, 0.04) 0%, transparent 50%),
+                rgba(12, 18, 19, 0.4)
             `;
         }
     }
@@ -253,15 +199,10 @@ class GlowEnhancer {
         style.textContent = `
             @keyframes mysticalPulse {
                 0%, 100% { 
-                    text-shadow: 
-                        0 0 20px rgba(184, 115, 51, 0.4),
-                        0 0 30px rgba(0, 150, 255, 0.2);
+                    text-shadow: 0 0 20px rgba(155, 210, 203, 0.25);
                 }
                 50% { 
-                    text-shadow: 
-                        0 0 40px rgba(184, 115, 51, 0.8),
-                        0 0 60px rgba(0, 150, 255, 0.4),
-                        0 0 80px rgba(100, 200, 255, 0.2);
+                    text-shadow: 0 0 40px rgba(155, 210, 203, 0.45);
                 }
             }
             
@@ -280,9 +221,9 @@ class GlowEnhancer {
                 background: linear-gradient(
                     45deg,
                     transparent 20%,
-                    rgba(0, 150, 255, 0.02) 40%,
-                    rgba(100, 200, 255, 0.03) 50%,
-                    rgba(0, 150, 255, 0.02) 60%,
+                    rgba(155, 210, 203, 0.06) 40%,
+                    rgba(127, 189, 181, 0.05) 50%,
+                    rgba(155, 210, 203, 0.06) 60%,
                     transparent 80%
                 );
                 background-size: 300% 300%;
@@ -309,8 +250,8 @@ class GlowEnhancer {
                 height: 100%;
                 background: radial-gradient(
                     circle,
-                    rgba(0, 150, 255, 0.1) 0%,
-                    rgba(100, 200, 255, 0.05) 50%,
+                    rgba(155, 210, 203, 0.10) 0%,
+                    rgba(127, 189, 181, 0.05) 50%,
                     transparent 100%
                 );
                 transform: translate(-50%, -50%);
@@ -524,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize mystical glow effect
     try {
-        new MysticalGlow();
+    new TealSmoke();
     } catch (error) {
         console.warn('MysticalGlow failed to initialize:', error);
     }

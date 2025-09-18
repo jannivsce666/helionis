@@ -171,11 +171,11 @@ class HoroscopeSlideshow {
 
     init() {
         this.setupCanvas();
-        this.createStars();
+        this.initMist();
         this.createSlides();
         this.setupControls();
         this.updateDate();
-        this.startStarAnimation();
+        this.startMistAnimation();
         this.startAutoPlay();
         this.showSlide(0);
     }
@@ -198,68 +198,83 @@ class HoroscopeSlideshow {
         this.canvas.height = window.innerHeight;
     }
 
-    createStars() {
-        this.backgroundStars = [];
-        const starCount = window.innerWidth < 768 ? 30 : 60; // Fewer stars on mobile
-        
-        for (let i = 0; i < starCount; i++) {
-            this.backgroundStars.push({
+    initMist() {
+        // Prepare offscreen canvas for mist texture
+        this.mistLayers = [];
+        const layerCount = window.innerWidth < 768 ? 2 : 3;
+        const size = Math.min(800, Math.max(400, Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.8)));
+        for (let i = 0; i < layerCount; i++) {
+            const off = document.createElement('canvas');
+            off.width = size;
+            off.height = size;
+            const octx = off.getContext('2d');
+            for (let j = 0; j < 36; j++) {
+                const x = Math.random() * size;
+                const y = Math.random() * size;
+                const r = (Math.random() * 0.15 + 0.05) * size;
+                const g = octx.createRadialGradient(x, y, 0, x, y, r);
+                const color = `rgba(155, 210, 203, ${0.035 + Math.random() * 0.05})`;
+                g.addColorStop(0, color);
+                g.addColorStop(1, 'rgba(155, 210, 203, 0)');
+                octx.fillStyle = g;
+                octx.beginPath();
+                octx.arc(x, y, r, 0, Math.PI * 2);
+                octx.fill();
+            }
+            this.mistLayers.push({
+                canvas: off,
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
-                size: Math.random() * 2 + 0.5,
-                opacity: Math.random() * 0.8 + 0.2,
-                twinkleSpeed: Math.random() * 0.02 + 0.01,
-                twinkleOffset: Math.random() * Math.PI * 2
+                dx: (Math.random() * 2 - 1) * (0.03 + i * 0.02),
+                dy: (Math.random() * 2 - 1) * (0.02 + i * 0.015),
+                scale: 1 + i * 0.35,
+                alpha: 0.12 + i * 0.06
             });
         }
     }
 
-    startStarAnimation() {
+    startMistAnimation() {
         if (!this.canvas || !this.ctx) return;
-        
         const animate = () => {
-            this.drawStarBackground();
+            this.drawMistBackground();
             this.animationId = requestAnimationFrame(animate);
         };
         animate();
     }
 
-    drawStarBackground() {
-        // Clear canvas with dark space background
-        this.ctx.fillStyle = 'rgba(13, 13, 13, 0.1)';
+    drawMistBackground() {
+        // Subtle dark base
+        this.ctx.fillStyle = 'rgba(11, 17, 19, 0.2)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Draw twinkling stars
-        this.backgroundStars.forEach((star, index) => {
-            const twinkle = Math.sin(Date.now() * star.twinkleSpeed + star.twinkleOffset);
-            const alpha = star.opacity * (0.5 + 0.5 * twinkle);
-            
-            // Star glow
-            const glowSize = star.size * 4;
-            const gradient = this.ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, glowSize);
-            gradient.addColorStop(0, `rgba(184, 115, 51, ${alpha * 0.8})`);
-            gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
-            
-            this.ctx.fillStyle = gradient;
-            this.ctx.beginPath();
-            this.ctx.arc(star.x, star.y, glowSize, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Star center
-            this.ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`;
-            this.ctx.beginPath();
-            this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Gentle floating motion
-            star.y += Math.sin(Date.now() * 0.0005 + index) * 0.1;
-            star.x += Math.cos(Date.now() * 0.0003 + index) * 0.05;
-            
-            // Wrap around edges
-            if (star.x > this.canvas.width) star.x = 0;
-            if (star.x < 0) star.x = this.canvas.width;
-            if (star.y > this.canvas.height) star.y = 0;
-            if (star.y < 0) star.y = this.canvas.height;
+        // Teal vignette
+        const grad = this.ctx.createRadialGradient(
+            this.canvas.width * 0.5, this.canvas.height * 0.45, Math.min(this.canvas.width, this.canvas.height) * 0.1,
+            this.canvas.width * 0.5, this.canvas.height * 0.5, Math.max(this.canvas.width, this.canvas.height)
+        );
+        grad.addColorStop(0, 'rgba(20, 35, 37, 0.2)');
+        grad.addColorStop(1, 'rgba(11, 17, 19, 0)');
+        this.ctx.fillStyle = grad;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        // Mist layers
+        this.mistLayers.forEach(layer => {
+            this.ctx.globalAlpha = layer.alpha;
+            this.ctx.drawImage(layer.canvas, layer.x, layer.y, layer.canvas.width * layer.scale, layer.canvas.height * layer.scale);
+            // mirrored
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(layer.canvas, -layer.x - layer.canvas.width * layer.scale, layer.y, layer.canvas.width * layer.scale, layer.canvas.height * layer.scale);
+            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            this.ctx.globalAlpha = 1;
+            // move
+            layer.x += layer.dx;
+            layer.y += layer.dy;
+            const w = this.canvas.width;
+            const h = this.canvas.height;
+            const sw = layer.canvas.width * layer.scale;
+            const sh = layer.canvas.height * layer.scale;
+            if (layer.x < -sw) layer.x = w;
+            if (layer.y < -sh) layer.y = h;
+            if (layer.x > w) layer.x = -sw;
+            if (layer.y > h) layer.y = -sh;
         });
     }
 
@@ -362,29 +377,29 @@ class HoroscopeSlideshow {
             this.stopAutoPlay();
             // Play Symbol (Triangle)
             svg.innerHTML = `
-                <circle cx="32" cy="32" r="28" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
-                <circle cx="20" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="44" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="32" cy="12" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="52" cy="32" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="20" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <path d="M22 16 L22 48 L46 32 Z" fill="#D4AF37" stroke="#B87333" stroke-width="1"/>
+                <circle cx="32" cy="32" r="28" fill="none" stroke="#9bd2cb" stroke-width="2" opacity="0.6"/>
+                <circle cx="20" cy="20" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="44" cy="20" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="32" cy="12" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="52" cy="32" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="44" cy="44" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="20" cy="44" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <path d="M22 16 L22 48 L46 32 Z" fill="#9bd2cb" stroke="#7fbdb5" stroke-width="1"/>
             `;
             this.isAutoPlaying = false;
         } else {
             this.startAutoPlay();
             // Pause Symbol (Two Bars)
             svg.innerHTML = `
-                <circle cx="32" cy="32" r="28" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
-                <circle cx="20" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="44" cy="20" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="32" cy="12" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="52" cy="32" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <circle cx="20" cy="44" r="1.5" fill="#FFD700" opacity="0.8"/>
-                <rect x="20" y="16" width="8" height="32" fill="#D4AF37" stroke="#B87333" stroke-width="1" rx="2"/>
-                <rect x="36" y="16" width="8" height="32" fill="#D4AF37" stroke="#B87333" stroke-width="1" rx="2"/>
+                <circle cx="32" cy="32" r="28" fill="none" stroke="#9bd2cb" stroke-width="2" opacity="0.6"/>
+                <circle cx="20" cy="20" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="44" cy="20" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="32" cy="12" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="52" cy="32" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="44" cy="44" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <circle cx="20" cy="44" r="1.5" fill="#dff5f2" opacity="0.8"/>
+                <rect x="20" y="16" width="8" height="32" fill="#9bd2cb" stroke="#7fbdb5" stroke-width="1" rx="2"/>
+                <rect x="36" y="16" width="8" height="32" fill="#9bd2cb" stroke="#7fbdb5" stroke-width="1" rx="2"/>
             `;
             this.isAutoPlaying = true;
         }
@@ -441,12 +456,12 @@ class HoroscopeSlideshow {
         const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, glowRadius);
         
         if (isConstellation) {
-            gradient.addColorStop(0, `rgba(255, 215, 0, ${alpha})`);
-            gradient.addColorStop(0.5, `rgba(184, 115, 51, ${alpha * 0.8})`);
-            gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+            gradient.addColorStop(0, `rgba(155, 210, 203, ${alpha})`);
+            gradient.addColorStop(0.5, `rgba(155, 210, 203, ${alpha * 0.6})`);
+            gradient.addColorStop(1, 'rgba(155, 210, 203, 0)');
         } else {
-            gradient.addColorStop(0, `rgba(184, 115, 51, ${alpha})`);
-            gradient.addColorStop(1, 'rgba(184, 115, 51, 0)');
+            gradient.addColorStop(0, `rgba(155, 210, 203, ${alpha * 0.8})`);
+            gradient.addColorStop(1, 'rgba(155, 210, 203, 0)');
         }
         
         this.ctx.fillStyle = gradient;
@@ -455,16 +470,16 @@ class HoroscopeSlideshow {
         this.ctx.fill();
         
         // Star center
-        this.ctx.fillStyle = isConstellation ? '#FFD700' : '#B87333';
+        this.ctx.fillStyle = isConstellation ? '#dff5f2' : '#9bd2cb';
         this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, Math.PI * 2);
         this.ctx.fill();
     }
 
     drawConnection(x1, y1, x2, y2) {
-        this.ctx.strokeStyle = 'rgba(184, 115, 51, 0.7)';
+    this.ctx.strokeStyle = 'rgba(155, 210, 203, 0.6)';
         this.ctx.lineWidth = 1.5;
-        this.ctx.shadowColor = '#B87333';
+    this.ctx.shadowColor = 'rgba(155, 210, 203, 0.9)';
         this.ctx.shadowBlur = 2;
         
         this.ctx.beginPath();
